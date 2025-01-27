@@ -73,10 +73,17 @@ t4 = BashOperator(
     dag=dag,
 )
 
+t5 = BashOperator(
+    task_id='print_date',
+    bash_command='date',
+    dag=dag,
+)
+
+'''
 def cadeia01():
     chain(t1, t4)
 
 def cadeia02():
     chain(t3, cadeia04() )
-
-chain(tsnow1, cadeia02() , t2)
+'''
+chain(tsnow1, t1, [ t2, [t3, t4] ], t5)
