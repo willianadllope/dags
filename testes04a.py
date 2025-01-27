@@ -2,6 +2,7 @@ from datetime import timedelta, datetime
 
 # The DAG object; we'll need this to instantiate a DAG
 from airflow import DAG
+from airflow.models.baseoperator import chain
 
 # Operators; we need this to operate!
 from airflow.operators.bash import BashOperator
@@ -71,5 +72,4 @@ t4 = BashOperator(
     retries=3,
     dag=dag,
 )
-
-tsnow1 >> [t3 >> t4]
+chain(tsnow1, [t3, t4])
