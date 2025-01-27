@@ -73,4 +73,4 @@ t4 = BashOperator(
     dag=dag,
 )
 
-chain(tsnow1, [t3, [t1, t4]], t2)
+chain(tsnow1, chain(t3, chain(t1, t4) ), t2)
