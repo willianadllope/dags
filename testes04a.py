@@ -42,13 +42,13 @@ dag = DAG(
 
 t1 = BashOperator(
     task_id="bash_example1",
-    bash_command="python teste05b.py",
+    bash_command="python scripts/teste05b.py",
     dag=dag,
 )
 
 t2 = BashOperator(
     task_id="bash_example2",
-    bash_command="python teste05c.py",
+    bash_command="python scripts/teste05c.py",
     dag=dag,
 )
 
