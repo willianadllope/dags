@@ -73,4 +73,4 @@ t4 = BashOperator(
 )
 '''
 
-t1 >> [t2 >> tsnow1]
+tsnow1 >> t1 >> t2
