@@ -57,7 +57,7 @@ tsnow1 = BashOperator(
     bash_command="python testesnow01.py",
     dag=dag,
 )
-
+'''
 t3 = BashOperator(
     task_id='print_date',
     bash_command='date',
@@ -71,6 +71,6 @@ t4 = BashOperator(
     retries=3,
     dag=dag,
 )
+'''
 
-
-t3 >> t2 >> tsnow1
+t1 >> [t2 >> tsnow1]
