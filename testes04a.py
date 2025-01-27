@@ -46,16 +46,19 @@ t1 = BashOperator(
     bash_command="python /root/airflow/dags/scripts/testes04b.py",
     dag=dag,
 )
+
 t2 = BashOperator(
     task_id="bash_example2",
     bash_command="python /root/airflow/dags/scripts/testes04c.py",
     dag=dag,
 )
+
 tsnow1 = BashOperator(
     task_id="bash_snow01",
     bash_command="python /root/airflow/dags/scripts/testesnow01.py",
     dag=dag,
 )
+
 t3 = BashOperator(
     task_id='print_date',
     bash_command='date',
@@ -69,4 +72,5 @@ t4 = BashOperator(
     retries=3,
     dag=dag,
 )
-chain(tsnow1, [t3, [t1 >> t4]], t2)
+
+chain(tsnow1, [t3, [t1, t4]], t2)
