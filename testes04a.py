@@ -74,7 +74,7 @@ t4 = BashOperator(
 )
 
 t5 = BashOperator(
-    task_id='print_date',
+    task_id='print_date2',
     bash_command='date',
     dag=dag,
 )
