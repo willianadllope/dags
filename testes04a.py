@@ -90,4 +90,4 @@ def cadeia02():
 
 ## chain(tsnow1, t1, [ t2, chain(t3, t4) ], t5)
 
-chain(tsnow1, t1, [ t2, chain(t4, t5) ], t3)
+chain(tsnow1, t1, chain( t2, chain(t4, t5) ), t3)
