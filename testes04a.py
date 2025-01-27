@@ -86,4 +86,4 @@ def cadeia01():
 def cadeia02():
     chain(t3, cadeia04() )
 '''
-chain(tsnow1, t1, [ t2, [t3, t4] ], t5)
+chain(tsnow1, t1, [ t2, t3, t4 ], t5)
