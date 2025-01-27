@@ -39,7 +39,7 @@ dag = DAG(
     template_searchpath="/root/airflow/dags/",
     catchup=False,
 )
-
+'''
 t1 = BashOperator(
     task_id="bash_example1",
     bash_command="python /root/airflow/dags/scripts/teste05b.py",
@@ -51,13 +51,13 @@ t2 = BashOperator(
     bash_command="python /root/airflow/dags/scripts/teste05c.py",
     dag=dag,
 )
-
+'''
 tsnow1 = BashOperator(
     task_id="bash_snow01",
-    bash_command="python scripts/testesnow01.py",
+    bash_command="python /root/airflow/dags/scripts/testesnow01.py",
     dag=dag,
 )
-'''
+
 t3 = BashOperator(
     task_id='print_date',
     bash_command='date',
@@ -67,10 +67,9 @@ t3 = BashOperator(
 t4 = BashOperator(
     task_id='sleep',
     depends_on_past=False,
-    bash_command='sleep 5',
+    bash_command='sleep 2',
     retries=3,
     dag=dag,
 )
-'''
 
-tsnow1 >> t1 >> t2
+tsnow1 >> [t3 >> t4]
