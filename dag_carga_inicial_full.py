@@ -45,7 +45,7 @@ systax_app.snowflake.pr_preparar_carga_schemafull
 '''
 carga_custom_prod = BashOperator(
     task_id="carga_custom_prod",
-    bash_command="python /root/airflow/dags/scripts/call_procedure_carga_inicial.py 'pr_preparar_carga_custom_prod', 'full'",
+    bash_command="python /root/airflow/dags/scripts/call_procedure_carga_inicial.py 'pr_preparar_carga_custom_prod' 'full'",
     dag=dag,
 )
 
