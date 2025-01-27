@@ -54,7 +54,7 @@ t2 = BashOperator(
 
 tsnow1 = BashOperator(
     task_id="bash_snow01",
-    bash_command="python testesnow01.py",
+    bash_command="python scripts/testesnow01.py",
     dag=dag,
 )
 '''
