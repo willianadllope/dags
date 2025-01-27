@@ -31,9 +31,10 @@ if len(sys.argv)  >= 3:
 
 engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
 
-conx = engine.raw_connection()
-cursor = conx.cursor()
+#conx = engine.raw_connection()
+#cursor = conx.cursor()
 command = "snowflake."+procedure+" '"+tipo+"'"
-cursor.execute(command)
-conx.commit()
-cursor.close()
+print(command)
+#cursor.execute(command)
+#conx.commit()
+#cursor.close()
