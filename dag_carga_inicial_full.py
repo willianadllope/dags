@@ -32,7 +32,7 @@ dag = DAG(
 '''
 systax_app.snowflake.pr_preparar_carga_inicial_truncate
 systax_app.snowflake.pr_preparar_carga_custom_prod
-systax_app.snowflake.pr_preparar_carga_cean_relacinado
+systax_app.snowflake.pr_preparar_carga_cean_relacionado
 systax_app.snowflake.pr_preparar_carga_grupo
 systax_app.snowflake.pr_preparar_carga_grupo_custom_prod
 systax_app.snowflake.pr_preparar_carga_grupo_config
@@ -43,56 +43,84 @@ systax_app.snowflake.pr_preparar_carga_tributos_internos_cache_config
 systax_app.snowflake.pr_preparar_carga_envio
 systax_app.snowflake.pr_preparar_carga_schemafull
 '''
+carga_inicial_truncate = BashOperator(
+    task_id="carga_inicial_truncate",
+    bash_command="python /root/airflow/dags/scripts/call_procedure_carga_inicial.py 'pr_preparar_carga_inicial_truncate' 'full'",
+    dag=dag,
+)
 carga_custom_prod = BashOperator(
     task_id="carga_custom_prod",
     bash_command="python /root/airflow/dags/scripts/call_procedure_carga_inicial.py 'pr_preparar_carga_custom_prod' 'full'",
     dag=dag,
 )
-
-t2 = BashOperator(
-    task_id="bash_example2",
-    bash_command="python /root/airflow/dags/scripts/testes04c.py",
+carga_cean_relacionado = BashOperator(
+    task_id="carga_cean_relacionado",
+    bash_command="python /root/airflow/dags/scripts/call_procedure_carga_inicial.py 'pr_preparar_carga_cean_relacionado' 'full'",
     dag=dag,
 )
-
+carga_grupo = BashOperator(
+    task_id="carga_grupo",
+    bash_command="python /root/airflow/dags/scripts/call_procedure_carga_inicial.py 'pr_preparar_carga_grupo' 'full'",
+    dag=dag,
+)
+carga_grupo_custom_prod = BashOperator(
+    task_id="carga_grupo_custom_prod",
+    bash_command="python /root/airflow/dags/scripts/call_procedure_carga_inicial.py 'pr_preparar_carga_grupo_custom_prod' 'full'",
+    dag=dag,
+)
+carga_grupo_config = BashOperator(
+    task_id="carga_grupo_config",
+    bash_command="python /root/airflow/dags/scripts/call_procedure_carga_inicial.py 'pr_preparar_carga_grupo_config' 'full'",
+    dag=dag,
+)
+carga_clientes = BashOperator(
+    task_id="carga_clientes",
+    bash_command="python /root/airflow/dags/scripts/call_procedure_carga_inicial.py 'pr_preparar_carga_clientes' 'full'",
+    dag=dag,
+)
+carga_tributos_internos_cache_st = BashOperator(
+    task_id="carga_tributos_internos_cache_st",
+    bash_command="python /root/airflow/dags/scripts/call_procedure_carga_inicial.py 'pr_preparar_carga_tributos_internos_cache_st' 'full'",
+    dag=dag,
+)
+carga_tributos_internos_cache = BashOperator(
+    task_id="carga_tributos_internos_cache",
+    bash_command="python /root/airflow/dags/scripts/call_procedure_carga_inicial.py 'pr_preparar_carga_tributos_internos_cache' 'full'",
+    dag=dag,
+)
+carga_tributos_internos_cache_config = BashOperator(
+    task_id="carga_tributos_internos_cache_config",
+    bash_command="python /root/airflow/dags/scripts/call_procedure_carga_inicial.py 'pr_preparar_carga_tributos_internos_cache_config' 'full'",
+    dag=dag,
+)
+carga_envio = BashOperator(
+    task_id="carga_envio",
+    bash_command="python /root/airflow/dags/scripts/call_procedure_carga_inicial.py 'pr_preparar_carga_envio' 'full'",
+    dag=dag,
+)
+carga_schemafull = BashOperator(
+    task_id="carga_schemafull",
+    bash_command="python /root/airflow/dags/scripts/call_procedure_carga_inicial.py 'pr_preparar_carga_schemafull' 'full'",
+    dag=dag,
+)
+'''
 tsnow1 = BashOperator(
     task_id="bash_snow01",
     bash_command="python /root/airflow/dags/scripts/testesnow01.py",
     dag=dag,
 )
-
-t3 = BashOperator(
-    task_id='print_date',
-    bash_command='date',
-    dag=dag,
-)
-
-t4 = BashOperator(
-    task_id='sleep',
-    depends_on_past=False,
-    bash_command='sleep 2',
-    retries=3,
-    dag=dag,
-)
-
-t5 = BashOperator(
-    task_id='print_date2',
-    bash_command='date',
-    dag=dag,
-)
-
 '''
-def cadeia01():
-    chain(t1, t4)
-
-def cadeia02():
-    chain(t3, cadeia04() )
-'''
-## chain(tsnow1, t1, [ t2, t3, t4 ], t5)
-
-## chain(tsnow1, t1, [ t2, chain(t3, t4) ], t5)
-
-chain(tsnow1, carga_custom_prod, t2, [t4, t5], t3)
+chain(carga_inicial_truncate, [
+    carga_custom_prod,
+    carga_cean_relacionado,
+    carga_grupo,
+    carga_grupo_config,
+    carga_grupo_custom_prod,
+    carga_tributos_internos_cache,
+    carga_tributos_internos_cache_st,
+    carga_clientes,
+    carga_tributos_internos_cache_config
+    ], carga_envio, carga_schemafull )
 
 ### teste de sobe um restore do DBCarrefourAtualizacao
 ### mudanca para o DBControle do 379 e 380
