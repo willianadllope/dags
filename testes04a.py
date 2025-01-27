@@ -36,25 +36,25 @@ dag = DAG(
     default_args=default_args,
     start_date=datetime(2025, 1, 21),
     tags=['example','mssql'],
-    template_searchpath="/root/airflow/scripts/",
+    template_searchpath="/root/airflow/dags/scripts/",
     catchup=False,
 )
 
 t1 = BashOperator(
     task_id="bash_example1",
-    bash_command="python /root/airflow/scripts/teste04b.py",
+    bash_command="python /root/airflow/dags/scripts/teste04b.py",
     dag=dag,
 )
 
 t2 = BashOperator(
     task_id="bash_example2",
-    bash_command="python /root/airflow/scripts/teste04c.py",
+    bash_command="python /root/airflow/dags/scripts/teste04c.py",
     dag=dag,
 )
 
 tsnow1 = BashOperator(
     task_id="bash_snow01",
-    bash_command="python /root/airflow/scripts/testesnow01.py",
+    bash_command="python /root/airflow/dags/scripts/testesnow01.py",
     dag=dag,
 )
 
