@@ -42,19 +42,19 @@ dag = DAG(
 
 t1 = BashOperator(
     task_id="bash_example1",
-    bash_command="python /root/airflow/dags/scripts/teste05b.py",
+    bash_command="python /root/airflow/scripts/teste05b.py",
     dag=dag,
 )
 
 t2 = BashOperator(
     task_id="bash_example2",
-    bash_command="python /root/airflow/dags/scripts/teste05c.py",
+    bash_command="python /root/airflow/scripts/teste05c.py",
     dag=dag,
 )
 
 tsnow1 = BashOperator(
     task_id="bash_snow01",
-    bash_command="python /root/airflow/dags/scripts/testesnow01.py",
+    bash_command="python /root/airflow/scripts/testesnow01.py",
     dag=dag,
 )
 '''
