@@ -9,10 +9,10 @@ prod01sql = {
 }
 
 snowtabelao = {
-    user='SYSTAXSNOW24',
-    password="Dkjj$@8$g@hgsgj!!",
-    account='DJDYJNY-ZK69750',
-    warehouse='COMPUTE_WH',
-    database='DB_TABELAO',
-    schema='DBO'
+    'user':'SYSTAXSNOW24',
+    'password':'Dkjj$@8$g@hgsgj!!',
+    'account':'DJDYJNY-ZK69750',
+    'warehouse':'COMPUTE_WH',
+    'database':'DB_TABELAO',
+    'schema':'DBO'
 }
