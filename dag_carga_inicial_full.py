@@ -5,7 +5,8 @@ from airflow import DAG
 from airflow.models.baseoperator import chain
 
 # Operators; we need this to operate!
-from airflow.operators.bash import BashOperator, DummyOperator
+from airflow.operators.bash import BashOperator
+from airflow.operators.dummy import DummyOperator
 from airflow.utils.dates import days_ago
 
 from airflow.utils.task_group import TaskGroup
