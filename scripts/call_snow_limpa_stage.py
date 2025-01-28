@@ -10,10 +10,10 @@ conn = sf.connector.connect(
     database='DB_TABELAO',
     schema='DBO'
 )
-print('conectou')
+#print('conectou')
 
 cs = conn.cursor()
-print('conectou 2')
+print('conectou')
 
 #results = cs.execute('select current_version()').fetchone()
 #print(results[0]
@@ -26,10 +26,10 @@ print('conectou 2')
 #comando='execute task full.task_teste_chamada01;'
 comando="CALL full.pr_carga_inicial_limpa_arquivos();"
 print(comando)
-#results = cs.execute(comando).fetchone()
+results = cs.execute(comando).fetchone()
 #print(results)
 
 
 cs.close()
 
-#print('fechou')
+print('fechou')
