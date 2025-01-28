@@ -31,7 +31,7 @@ with DAG(
     default_args=default_args,
     start_date=datetime(2025, 1, 21),
     tags=['tabelaoprod01'],
-    template_searchpath=pastas.dag,
+    params=pastas,
     concurrency=3,
     catchup=False,
 ) as dag:
@@ -51,7 +51,7 @@ with DAG(
         ) as carrega_ids:
         carga_inicial_truncate = BashOperator(
             task_id="carga_inicial_truncate",
-            bash_command="python "+pastas.scripts+"call_procedure_carga_inicial.py 'pr_preparar_carga_inicial_truncate' 'full'",
+            bash_command="python "+context['pastas']['scripts']+"call_procedure_carga_inicial.py 'pr_preparar_carga_inicial_truncate' 'full'",
         )
         carga_custom_prod = BashOperator(
             task_id="carga_custom_prod",
