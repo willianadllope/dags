@@ -12,6 +12,7 @@ import snowflake as sf
 from snowflake import connector
 
 db = config.prod01sql
+cfg = config.snowtabelao
 
 Consultas = namedtuple('Consultas',['consulta','tabela','limite'])
 
@@ -25,13 +26,14 @@ props = ul.parse.quote_plus("DRIVER={SQL Server Native Client 11.0};"
                                 "Encrypt=yes;TrustServerCertificate=yes;")
 con = create_engine("mssql+pyodbc:///?odbc_connect={}".format(props))
 
+
 connSnow = sf.connector.connect(
-user='SYSTAXSNOW24',
-    password="Dkjj$@8$g@hgsgj!!",
-    account='DJDYJNY-ZK69750',
-    warehouse='COMPUTE_WH',
-    database='DB_TABELAO',
-    schema='DBO'
+    user=cfg['user'],
+    password=cfg['password'],
+    account=cfg['account'],
+    warehouse=cfg['warehouse'],
+    database=cfg['database'],
+    schema=cfg['schema']
 )
 
 def export_query_to_parquet(sql,tipo, fileprefix, limit, strposicao='001'):
