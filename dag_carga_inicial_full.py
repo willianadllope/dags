@@ -47,11 +47,12 @@ with DAG(
             group_id="carrega_id_tabelas",
             ui_color="blue", 
             ui_fgcolor="green",
-            tooltip="Carrega as tabelas de controle de ID do que sera enviado para o Snowflake"
+            params=params,
+            tooltip="Carrega as tabelas de controle de ID do que sera enviado para o Snowflake",
         ) as carrega_ids:
         carga_inicial_truncate = BashOperator(
             task_id="carga_inicial_truncate",
-            bash_command="python "+context['pastas']['scripts']+"call_procedure_carga_inicial.py 'pr_preparar_carga_inicial_truncate' 'full'",
+            bash_command="python "+params['scripts']+"call_procedure_carga_inicial.py 'pr_preparar_carga_inicial_truncate' 'full'",
         )
         carga_custom_prod = BashOperator(
             task_id="carga_custom_prod",
