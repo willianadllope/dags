@@ -16,11 +16,3 @@ snowtabelao = {
     'database':'DB_TABELAO',
     'schema':'DBO'
 }
-
-pastas = {
-    'dag':'/root/airflow/dags/',
-    'scripts':'/root/airflow/dags/scripts/',
-    'csvfull':'/csvs/full/',
-    'csvincremental':'/csvs/incremental/'
-}
-## checar como colocar o config da aws
