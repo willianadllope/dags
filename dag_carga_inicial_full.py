@@ -42,8 +42,8 @@ with DAG(
 
     with TaskGroup(
             group_id="carrega_id_tabelas",
-            ui_color="yellow", 
-            ui_fgcolor="dark green",
+            ui_color="blue", 
+            ui_fgcolor="green",
             tooltip="Carrega as tabelas de controle de ID do que sera enviado para o Snowflake"
         ) as carrega_ids:
         carga_inicial_truncate = BashOperator(
@@ -105,8 +105,11 @@ with DAG(
             carga_tributos_internos_cache_st,
             carga_tributos_internos_cache
             ], carga_envio, carga_schemafull )
-        
-    chain(start_task, carrega_ids, end_task)
+    limpa_stage = BashOperator(
+        task_id="limpa_stage",
+        bash_command="python /root/airflow/dags/scripts/call_snow_limpa_stage.py 'full'",
+    )   
+    chain(start_task, carrega_ids, limpa_stage, end_task)
 ### teste de sobe um restore do DBCarrefourAtualizacao
 ### mudanca para o DBControle do 379 e 380
 ### change 263 para change normal 
