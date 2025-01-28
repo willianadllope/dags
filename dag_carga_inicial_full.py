@@ -51,7 +51,7 @@ with DAG(
         ) as carrega_ids:
         carga_inicial_truncate = BashOperator(
             task_id="carga_inicial_truncate",
-            bash_command="python "+params['scripts']+"call_procedure_carga_inicial.py 'pr_preparar_carga_inicial_truncate' 'full'",
+            bash_command="python "+dag.params['scripts']+"call_procedure_carga_inicial.py 'pr_preparar_carga_inicial_truncate' 'full'",
         )
         carga_custom_prod = BashOperator(
             task_id="carga_custom_prod",
