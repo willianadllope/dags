@@ -47,7 +47,6 @@ with DAG(
             group_id="carrega_id_tabelas",
             ui_color="blue", 
             ui_fgcolor="green",
-            params=params,
             tooltip="Carrega as tabelas de controle de ID do que sera enviado para o Snowflake",
         ) as carrega_ids:
         carga_inicial_truncate = BashOperator(
