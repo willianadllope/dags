@@ -16,3 +16,5 @@ snowtabelao = {
     'database':'DB_TABELAO',
     'schema':'DBO'
 }
+
+## checar como colocar o config da aws
