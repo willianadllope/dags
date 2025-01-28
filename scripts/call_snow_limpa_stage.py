@@ -1,14 +1,18 @@
 import snowflake as sf
 from snowflake import connector
+from .. import config
 import sys
 print('iniciou')
+
+cfg = config.snowtabelao
+
 conn = sf.connector.connect(
-    user='SYSTAXSNOW24',
-    password="Dkjj$@8$g@hgsgj!!",
-    account='DJDYJNY-ZK69750',
-    warehouse='COMPUTE_WH',
-    database='DB_TABELAO',
-    schema='DBO'
+    user=cfg['user'],
+    password=cfg['password'],
+    account=cfg['account'],
+    warehouse=cfg['warehouse'],
+    database=cfg['database'],
+    schema=cfg['schema']
 )
 #print('conectou')
 
