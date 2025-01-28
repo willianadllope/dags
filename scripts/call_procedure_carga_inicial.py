@@ -2,7 +2,7 @@ import sys
 import os
 import shutil
 import pyodbc
-import ..config
+import config
 from time import time
 from collections import namedtuple
 from sqlalchemy import create_engine, text

@@ -1,6 +1,6 @@
 import snowflake as sf
 from snowflake import connector
-from .. import config
+import config
 import sys
 print('iniciou')
 

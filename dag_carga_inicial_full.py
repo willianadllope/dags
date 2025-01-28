@@ -1,5 +1,5 @@
 from datetime import timedelta, datetime
-import config
+import scripts.config
 
 # The DAG object; we'll need this to instantiate a DAG
 from airflow import DAG
