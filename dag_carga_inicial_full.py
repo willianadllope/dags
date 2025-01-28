@@ -27,8 +27,9 @@ with DAG(
     schedule="@daily",
     default_args=default_args,
     start_date=datetime(2025, 1, 21),
-    tags=['mssql'],
+    tags=['tabelaoprod01'],
     template_searchpath="/root/airflow/dags/",
+    concurrency=3,
     catchup=False,
 ) as dag:
     start_task = DummyOperator(
@@ -39,7 +40,12 @@ with DAG(
         task_id='end',
     )
 
-    with TaskGroup(group_id="carrega_id_tabelas") as carrega_ids:
+    with TaskGroup(
+            group_id="carrega_id_tabelas",
+            ui_color="yellow", 
+            ui_fgcolor="dark green",
+            tooltip="Carrega as tabelas de controle de ID do que sera enviado para o Snowflake"
+        ) as carrega_ids:
         carga_inicial_truncate = BashOperator(
             task_id="carga_inicial_truncate",
             bash_command="python /root/airflow/dags/scripts/call_procedure_carga_inicial.py 'pr_preparar_carga_inicial_truncate' 'full'",
