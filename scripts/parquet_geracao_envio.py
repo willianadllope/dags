@@ -54,7 +54,7 @@ def export_query_to_parquet(sql,tipo, fileprefix, limit, strposicao='001'):
 
 def delete_files_directory(tipo, diretorio):
     # Specify the path of the directory to be deleted
-    directory_path = '\\parquet\\tabelao\\'+tipo+'\\'+diretorio
+    directory_path = '//parquet//tabelao//'+tipo+'//'+diretorio
     # Check if the directory exists before attempting to delete it
     if os.path.exists(directory_path):
         shutil.rmtree(directory_path)
@@ -65,7 +65,7 @@ def delete_files_directory(tipo, diretorio):
 
 def send_parquet_snowflake(tipo, tabela):
     # populate the file_name and stage_name with the arguments
-    file_name = '\\parquet\\tabelao\\'+tipo+'\\'+tabela+'\*'
+    file_name = '//parquet//tabelao//'+tipo+'//'+tabela+'//*'
     STAGE_SCHEMA = 'FULL'
     if(tipo=='INCREMENTAL'):
         STAGE_SCHEMA = 'INCREMENTAL'
