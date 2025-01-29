@@ -42,6 +42,7 @@ def export_query_to_parquet(sql,tipo, fileprefix, limit, strposicao='001'):
     time_step = time()
     print("Let's export", fileprefix)
     lines = 0
+    print("SQL: "+sql)
     for i, df in enumerate(pd.read_sql(sql, con, chunksize=limit)):
 		# by chunk of 1M rows if needed
         t_step = time()
