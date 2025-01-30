@@ -32,5 +32,4 @@ print(command)
 
 #cursor.execute(command)
 #conx.commit()
-
 #cursor.close()
