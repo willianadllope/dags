@@ -20,7 +20,9 @@ snowtabelao = {
 pastas = {
     'dag':'/root/airflow/dags/',
     'scripts':'/root/airflow/dags/scripts/',
-    'csvfull':'/csvs/full/',
-    'csvincremental':'/csvs/incremental/'
+    'parquet':'/parquet2/tabelao/',
+    'parquetfull':'/parquet2/tabelao/FULL/',
+    'parquetincremental':'/parquet2/tabelao/INCREMENTAL/'
 }
+
 ## checar como colocar o config da aws
