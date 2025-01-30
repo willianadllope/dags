@@ -35,12 +35,9 @@ with DAG(
     concurrency=3,
     catchup=False,
 ) as dag:
+    
     start_task = DummyOperator(
         task_id='start',
-    )
-
-    end_task = DummyOperator(
-        task_id='end',
     )
 
     with TaskGroup(
@@ -108,11 +105,115 @@ with DAG(
             carga_tributos_internos_cache_st,
             carga_tributos_internos_cache
             ], carga_envio, carga_schemafull )
+        
+    with TaskGroup(
+            group_id="gera_envia_arquivos_parquet",
+            ui_color="red", 
+            ui_fgcolor="white",
+            tooltip="Gera e envia os arquivos parquet das tabelas que participam da criação do Tabelao no Snowflake",
+        ) as gera_envia_parquet:
+        parquet_clientes = BashOperator(
+            task_id="parquet_clientes",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py clientes FULL",
+        )
+        parquet_grupo_custom_prod = BashOperator(
+            task_id="parquet_grupo_custom_prod",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py grupo_custom_prod FULL",
+        )
+        parquet_grupo_config = BashOperator(
+            task_id="parquet_grupo_config",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py grupo_config FULL",
+        )
+        parquet_ts_diario = BashOperator(
+            task_id="parquet_ts_diario",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py ts_diario FULL",
+        )
+        parquet_agrupamento_produtos = BashOperator(
+            task_id="parquet_agrupamento_produtos",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py agrupamento_produtos FULL",
+        )
+        parquet_cean_relacionado = BashOperator(
+            task_id="parquet_cean_relacionado",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py cean_relacionado FULL",
+        )
+        parquet_custom_prod = BashOperator(
+            task_id="parquet_custom_prod",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod FULL",
+        )
+        parquet_ex_origem_cache_familia = BashOperator(
+            task_id="parquet_ex_origem_cache_familia",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py ex_origem_cache_familia FULL",
+        )
+        parquet_tributos_internos_cache_config = BashOperator(
+            task_id="parquet_tributos_internos_cache_config",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache_config FULL",
+        )
+        chain(parquet_grupo_custom_prod, parquet_custom_prod, parquet_clientes, parquet_grupo_config, parquet_cean_relacionado,
+              parquet_agrupamento_produtos, parquet_ex_origem_cache_familia, parquet_ts_diario, parquet_tributos_internos_cache_config )
+    
+    with TaskGroup(
+            group_id="gera_arquivos_parquet_cache",
+            ui_color="red", 
+            ui_fgcolor="white",
+            tooltip="Gera os arquivos parquet da tabela de tributos_internos_cache e cache_st",
+        ) as gera_parquet_caches:
+        parquet_tributos_internos_cache_001 = BashOperator(
+            task_id="parquet_tributos_internos_cache_001",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache FULL 1 100",
+        )
+        parquet_tributos_internos_cache_101 = BashOperator(
+            task_id="parquet_tributos_internos_cache_101",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache FULL 101 200",
+        )
+        parquet_tributos_internos_cache_201 = BashOperator(
+            task_id="parquet_tributos_internos_cache_201",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache FULL 201 300",
+        )
+        parquet_tributos_internos_cache_301 = BashOperator(
+            task_id="parquet_tributos_internos_cache_301",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache FULL 301 400",
+        )
+        parquet_tributos_internos_cache_401 = BashOperator(
+            task_id="parquet_tributos_internos_cache_401",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache FULL 401 500",
+        )
+        parquet_tributos_internos_cache_st_01 = BashOperator(
+            task_id="parquet_tributos_internos_cache_st_01",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache_st FULL 1 10",
+        )
+        parquet_tributos_internos_cache_st_11 = BashOperator(
+            task_id="parquet_tributos_internos_cache_st_11",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache_st FULL 11 20",
+        )
+        parquet_tributos_internos_cache_st_21 = BashOperator(
+            task_id="parquet_tributos_internos_cache_st_01",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache_st FULL 21 30",
+        )
+        parquet_tributos_internos_cache_st_31 = BashOperator(
+            task_id="parquet_tributos_internos_cache_st_01",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache_st FULL 31 40",
+        )
+        parquet_tributos_internos_cache_st_41 = BashOperator(
+            task_id="parquet_tributos_internos_cache_st_01",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache_st FULL 41 50",
+        )
+        chain(
+                [parquet_tributos_internos_cache_001, parquet_tributos_internos_cache_st_01],
+                [parquet_tributos_internos_cache_101, parquet_tributos_internos_cache_st_11],
+                [parquet_tributos_internos_cache_201, parquet_tributos_internos_cache_st_21],
+                [parquet_tributos_internos_cache_301, parquet_tributos_internos_cache_st_31],
+                [parquet_tributos_internos_cache_401, parquet_tributos_internos_cache_st_41]
+        )
     limpa_stage = BashOperator(
         task_id="limpa_stage",
         bash_command="python "+dag.params['scripts']+"call_snow_limpa_stage.py 'full'",
     )   
-    chain(start_task, carrega_ids, limpa_stage, end_task)
+    
+    end_task = DummyOperator(
+        task_id='end',
+    )
+
+    chain(start_task, carrega_ids, limpa_stage, gera_envia_parquet, gera_parquet_caches, end_task)
 ### teste de sobe um restore do DBCarrefourAtualizacao
 ### mudanca para o DBControle do 379 e 380
 ### change 263 para change normal 
