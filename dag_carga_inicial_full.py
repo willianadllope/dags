@@ -198,8 +198,20 @@ with DAG(
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache_st FULL 41 50",
         )
         chain(
-                [parquet_tributos_internos_cache_st_01, parquet_tributos_internos_cache_st_11, parquet_tributos_internos_cache_st_21, parquet_tributos_internos_cache_st_31, parquet_tributos_internos_cache_st_41]
-                [parquet_tributos_internos_cache_001, parquet_tributos_internos_cache_101, parquet_tributos_internos_cache_201, parquet_tributos_internos_cache_301, parquet_tributos_internos_cache_401],
+            [ 
+                parquet_tributos_internos_cache_st_01,
+                parquet_tributos_internos_cache_st_11, 
+                parquet_tributos_internos_cache_st_21, 
+                parquet_tributos_internos_cache_st_31, 
+                parquet_tributos_internos_cache_st_41
+            ],
+            [
+                parquet_tributos_internos_cache_001, 
+                parquet_tributos_internos_cache_101, 
+                parquet_tributos_internos_cache_201, 
+                parquet_tributos_internos_cache_301, 
+                parquet_tributos_internos_cache_401
+            ]
         )
     limpa_stage = BashOperator(
         task_id="limpa_stage",
