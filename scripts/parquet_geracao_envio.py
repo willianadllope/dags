@@ -415,7 +415,7 @@ sql_queries = [
                     WHERE exists(SELECT TOP 1 1 FROM systax_app.[SNOWFLAKE].enviar_tributos_internos_cache ecp (NOLOCK) WHERE ecp.id = a.id and ecp.posicao = [POSICAO] );
                   """,
                   tabela='tributos_internos_cache',
-                  limite=100000)
+                  limite=1000000)
 ]
 
 # clientes id integer, flag_setor integer, situacao integer, deletado integer, flag_retorno_ipi integer
