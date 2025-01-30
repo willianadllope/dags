@@ -186,15 +186,15 @@ with DAG(
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache_st FULL 11 20",
         )
         parquet_tributos_internos_cache_st_21 = BashOperator(
-            task_id="parquet_tributos_internos_cache_st_01",
+            task_id="parquet_tributos_internos_cache_st_21",
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache_st FULL 21 30",
         )
         parquet_tributos_internos_cache_st_31 = BashOperator(
-            task_id="parquet_tributos_internos_cache_st_01",
+            task_id="parquet_tributos_internos_cache_st_31",
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache_st FULL 31 40",
         )
         parquet_tributos_internos_cache_st_41 = BashOperator(
-            task_id="parquet_tributos_internos_cache_st_01",
+            task_id="parquet_tributos_internos_cache_st_41",
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache_st FULL 41 50",
         )
         chain(
