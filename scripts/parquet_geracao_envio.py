@@ -319,11 +319,11 @@ sql_queries = [
                           estatisticas,
                           fcp,
                           bc_composicao_fcp
-                    FROM systax_app.dbo.tributos_internos_cache_st a (NOLOCK)
-                    WHERE exists(SELECT TOP 1 1 FROM systax_app.[SNOWFLAKE].enviar_tributos_internos_cache_st ecp (NOLOCK) WHERE ecp.id = a.id);
+                  FROM systax_app.dbo.tributos_internos_cache_st a(NOLOCK)
+                  WHERE exists(SELECT TOP 1 1 FROM systax_app.[SNOWFLAKE].enviar_tributos_internos_cache_st ecp (NOLOCK) WHERE ecp.id = a.id and ecp.posicao = [POSICAO] );
                   """,
                   tabela='tributos_internos_cache_st',
-                  limite=100000),
+                  limite=1000000),
         Consultas(consulta="""
                 SELECT  id,
                         id_cliente,
@@ -456,7 +456,7 @@ def main():
         cons = consulta.consulta.replace('[SNOWFLAKE]','snowflake_'+tipoExecucao.lower())
         if(posicao==1):
           delete_files_directory(tipoExecucao, consulta.tabela)
-        if(consulta.tabela=='tributos_internos_cache'):
+        if(consulta.tabela in ('tributos_internos_cache', 'tributos_internos_cache_st') ):
           while posicao<=posicao_final:
             stringposicao = str(posicao)
             if(posicao < 10):
@@ -473,10 +473,10 @@ def main():
           export_query_to_parquet(cons, tipoExecucao, consulta.tabela, consulta.limite)
           send_parquet_snowflake(tipoExecucao, consulta.tabela)
 ## exemplos:
-## csv_geracao_envio.py ALL FULL 1 500
-## csv_geracao_envio.py tributos_internos_cache incremental 1 500
-## csv_geracao_envio.py tributos_internos_cache FULL 999  => somente envio da tributos_internos_cache
-## csv_geracao_envio.py tributos_internos_cache incremental 999  => somente envio da tributos_internos_cache
+## parquet_geracao_envio.py ALL FULL 1 500
+## parquet_geracao_envio.py tributos_internos_cache incremental 1 500
+## parquet_geracao_envio.py tributos_internos_cache FULL 999  => somente envio da tributos_internos_cache
+## parquet_geracao_envio.py tributos_internos_cache incremental 999  => somente envio da tributos_internos_cache
 
 if __name__ == "__main__":
     print('INICIO: '+datetime.now().strftime("%Y-%m-%d %H %M %S"))
