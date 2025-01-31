@@ -2,6 +2,8 @@ import snowflake as sf
 from snowflake import connector
 import config
 import sys
+import pandas
+
 #print('iniciou')
 
 cfg = config.snowtabelao
@@ -35,10 +37,18 @@ if len(sys.argv)  >= 6:
 cs = conn.cursor()
 
 comando='EXECUTE TASK '+schema+'.'+task+' '+param1+' '+param2+' '+param3
-print(comando)
-
 results = cs.execute(comando)
-print(results)
+
+try:
+    comando = "SELECT STATE, NAME , COMPLETED_TIME FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE <> 'SUCCEEDED' AND NAME LIKE '%TASK_TESTE%' ORDER BY query_start_time DESC"
+    cs.execute(comando)
+    df = cs.fetch_pandas_all()
+    df.info()
+    print("__________")
+    print(df.to_string())
+finally:
+    conn.close()
+
 cs.close()
 
 #print('fechou')
