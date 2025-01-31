@@ -51,12 +51,14 @@ try:
     # comando = "SELECT STATE, NAME , COMPLETED_TIME FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE = 'EXECUTING' AND NAME LIKE '%TASK_TESTE%' AND query_start_time >= '"+str(datainicial)+"' ORDER BY query_start_time DESC"
     executar = 1
     while executar == 1:
-        executar = 0
         comando = "SELECT COUNT(1) FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE = 'EXECUTING' AND NAME LIKE '%TASK_TESTE%' AND query_start_time >= '"+str(datainicial)+"' "
         print(comando)
+        time.sleep(10)
         results = cs.execute(comando).fetchone()
-        if int(results[0])==1:
-            executar = 1
+        if int(results[0])==0:
+            executou = executou + 1
+        if executou > 5:
+            executar = 0
 finally:
     conn.close()
 
