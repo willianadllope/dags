@@ -36,11 +36,12 @@ if len(sys.argv)  >= 6:
 
 cs = conn.cursor()
 
-comando='EXECUTE TASK '+schema+'.'+task+' '+param1+' '+param2+' '+param3
-results = cs.execute(comando)
+#comando='EXECUTE TASK '+schema+'.'+task+' '+param1+' '+param2+' '+param3
+#results = cs.execute(comando)
 
 try:
-    comando = "SELECT STATE, NAME , COMPLETED_TIME FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE <> 'SUCCEEDED' AND NAME LIKE '%TASK_TESTE%' ORDER BY query_start_time DESC"
+    # AND NAME LIKE '%TASK_TESTE%' 
+    comando = "SELECT STATE, NAME , COMPLETED_TIME FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE <> 'SUCCEEDED' ORDER BY query_start_time DESC"
     cs.execute(comando)
     df = cs.fetch_pandas_all()
     df.info()
