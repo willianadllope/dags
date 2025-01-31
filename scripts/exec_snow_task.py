@@ -50,13 +50,13 @@ try:
     # AND NAME LIKE '%TASK_TESTE%' 
     comando = "SELECT STATE, NAME , COMPLETED_TIME FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE <> 'SUCCEEDED' AND NAME LIKE '%TASK_TESTE%' AND query_start_time >= '"+datainicial+"' ORDER BY query_start_time DESC"
     print(comando)
-    cs.execute(comando)
-    df = cs.fetch_pandas_all()
-    print("Total:"+df.size)
+    #cs.execute(comando)
+    #df = cs.fetch_pandas_all()
+    #print("Total:"+df.size)
     
-    df.info()
-    print("__________")
-    print(df.to_string())
+    #df.info()
+    #print("__________")
+    #print(df.to_string())
 finally:
     conn.close()
 
