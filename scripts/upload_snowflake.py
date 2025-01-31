@@ -40,8 +40,9 @@ print('Pasta: '+pastas['parquet']+tipoExecucao+'/'+tabela+'/*.parquet')
 
 arquivos = [f for f in glob.glob(pastas['parquet']+tipoExecucao+'/'+tabela+'/*.parquet')]
 
-if(reverse==1):
+if(reverse=="1"):
     arquivos.sort(reverse=True)
+    print("reverse")
 else:
     arquivos.sort()
 
