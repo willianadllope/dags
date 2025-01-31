@@ -8,15 +8,15 @@ from datetime import datetime
 
 cfg = config.snowtabelao
 pastas = config.pastas
+reverse = 0
 
 if len(sys.argv)  >= 2:
     tabela = sys.argv[1]
 if len(sys.argv)  >= 3:
     tipoExecucao = sys.argv[2] # FULL | INCREMENTAL      
-#print('tabela: ' +tabela)
-#print('tipo: ' +tipoExecucao)
+if len(sys.argv) >= 4:
+    reverse = sys.argv[3]
 
-#print('iniciou')
 conn = sf.connector.connect(
     user=cfg['user'],
     password=cfg['password'],
@@ -28,24 +28,23 @@ conn = sf.connector.connect(
 
 # populate the file_name and stage_name with the arguments
 file_name =tipoExecucao+'/'+tabela+'/*'
-#sys.argv[1]
 stage_name = 'DB_TABELAO.'+tipoExecucao+'.STAGE_FILES_TABELAO/tabelao/'+tabela+'/'
-#sys.argv[2]
 print('stage: ' +stage_name)
+
 
 cs = conn.cursor()
 print('cursor aberto')
-#try:
-#    cs.execute(f"PUT file://{file_name} @{stage_name} auto_compress=false")
-#    print(cs.fetchall())
-#finally:
-#    cs.close()
 
 # parquet_prod01sql stage_files_snowflake_tabelao COPY INTO dbo.interno_cean_relacionado from @stage_files_snowflake_tabelao/tabelao/cean_relacionado/ FILE_FORMAT = (TYPE = CSV FIELD_DELIMITER = '|' ) MATCH_BY_COLUMN_NAME=CASE_INSENSITIVE
 print('Pasta: '+pastas['parquet']+tipoExecucao+'/'+tabela+'/*.parquet')
 
 arquivos = [f for f in glob.glob(pastas['parquet']+tipoExecucao+'/'+tabela+'/*.parquet')]
-arquivos.sort()
+
+if(reverse==1):
+    arquivos.sort(reverse=True)
+else:
+    arquivos.sort()
+
 try:
     for arq in arquivos:
         print('INICIO: '+datetime.now().strftime("%Y-%m-%d %H %M %S"))
@@ -54,5 +53,7 @@ try:
         print('FIM: '+datetime.now().strftime("%Y-%m-%d %H %M %S"))
         print("----------------")
 finally:
-    cs.close()        
+    cs.close()      
+
+
 print('cursor fechado')    

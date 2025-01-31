@@ -17,15 +17,11 @@ cfg = config.snowtabelao
 sql_queries = queries.sql_queries
 pastas = config.pastas
 
-#engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
-#con = engine.connect().execution_options(stream_results=True)
-
 props = ul.parse.quote_plus("DRIVER={SQL Server Native Client 11.0};"
                                 "SERVER=" + db['SERVER'] + ";"
                                 "DATABASE=" + db['DATABASE'] + ";"
                                 "uid="+db['UID']+";pwd="+db['PWD']+";"
                                 "Encrypt=yes;TrustServerCertificate=yes;")
-##con = create_engine("mssql+pyodbc:///?odbc_connect={}".format(props))
 con = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
 
 
@@ -138,7 +134,7 @@ def main():
 
 if __name__ == "__main__":
     print('INICIO: '+datetime.now().strftime("%Y-%m-%d %H %M %S"))
-    main()
+    #main()
     print('FIM: '+datetime.now().strftime("%Y-%m-%d %H %M %S"))
 
     

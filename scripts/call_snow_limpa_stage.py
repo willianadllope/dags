@@ -14,24 +14,14 @@ conn = sf.connector.connect(
     database=cfg['database'],
     schema=cfg['schema']
 )
-#print('conectou')
-
-#cs = conn.cursor()
-#print('conectou')
 
 
-#comando='select count(1) as total from DB_TABELAO.DBO.clientes;'
-#results = cs.execute(comando).fetchone()
-#print(results)
 
-
-#comando='execute task full.task_teste_chamada01;'
 comando="CALL full.pr_carga_inicial_limpa_arquivos();"
 print(comando)
-#results = cs.execute(comando).fetchone()
-#print(results)
-
-
-#cs.close()
-
+'''
+results = cs.execute(comando).fetchone()
+print(results)
+cs.close()
+'''
 print('fechou')
