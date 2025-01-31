@@ -46,10 +46,10 @@ comando='EXECUTE TASK '+schema+'.'+task+' '+param1+' '+param2+' '+param3
 results = cs.execute(comando)
 
 time.sleep(5)
-
+executou = 0
+executar = 1
 try:
     # comando = "SELECT STATE, NAME , COMPLETED_TIME FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE = 'EXECUTING' AND NAME LIKE '%TASK_TESTE%' AND query_start_time >= '"+str(datainicial)+"' ORDER BY query_start_time DESC"
-    executar = 1
     while executar == 1:
         comando = "SELECT COUNT(1) FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE = 'EXECUTING' AND NAME LIKE '%TASK_TESTE%' AND query_start_time >= '"+str(datainicial)+"' "
         print(comando)
