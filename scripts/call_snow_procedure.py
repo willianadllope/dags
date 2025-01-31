@@ -2,7 +2,7 @@ import snowflake as sf
 from snowflake import connector
 import config
 import sys
-print('iniciou')
+#print('iniciou')
 
 cfg = config.snowtabelao
 
@@ -15,14 +15,22 @@ conn = sf.connector.connect(
     schema=cfg['schema']
 )
 
+schema = 'full'
+procedure = 'pr_carga_inicial_ts_atual'
 
-# cs = conn.cursor()
 
-comando="CALL full.pr_carga_inicial_limpa_arquivos();"
+cs = conn.cursor()
+
+if len(sys.argv)  >= 2:
+    schema = sys.argv[1]
+if len(sys.argv)  >= 3:
+    procedure = sys.argv[2]
+
+comando='CALL '+schema+'.'+procedure+'();'
 print(comando)
-'''
+
 results = cs.execute(comando).fetchone()
 print(results)
 cs.close()
-'''
-print('fechou')
+
+#print('fechou')
