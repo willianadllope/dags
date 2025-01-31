@@ -37,26 +37,26 @@ if len(sys.argv)  >= 6:
 
 cs = conn.cursor()
 
-#comando='EXECUTE TASK '+schema+'.'+task+' '+param1+' '+param2+' '+param3
-#results = cs.execute(comando)
+results = cs.execute('select current_timestamp()').fetchone()
+datainicial = results[0]
+
+time.sleep(30)
+
+comando='EXECUTE TASK '+schema+'.'+task+' '+param1+' '+param2+' '+param3
+results = cs.execute(comando)
 
 time.sleep(5)
 
-results = cs.execute('select current_timestamp()').fetchone()
-datainicial = results[0]
-print("data:"+str(datainicial))
-
 try:
-    # AND NAME LIKE '%TASK_TESTE%' 
-    comando = "SELECT STATE, NAME , COMPLETED_TIME FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE <> 'SUCCEEDED' AND NAME LIKE '%TASK_TESTE%' AND query_start_time >= '"+datainicial+"' ORDER BY query_start_time DESC"
+    comando = "SELECT STATE, NAME , COMPLETED_TIME FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE <> 'SUCCEEDED' AND NAME LIKE '%TASK_TESTE%' AND query_start_time >= '"+str(datainicial)+"' ORDER BY query_start_time DESC"
     print(comando)
-    #cs.execute(comando)
-    #df = cs.fetch_pandas_all()
-    #print("Total:"+df.size)
+    cs.execute(comando)
+    df = cs.fetch_pandas_all()
+    print("Total:"+df.size)
     
-    #df.info()
-    #print("__________")
-    #print(df.to_string())
+    df.info()
+    print("__________")
+    print(df.to_string())
 finally:
     conn.close()
 
