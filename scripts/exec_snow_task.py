@@ -3,6 +3,7 @@ from snowflake import connector
 import config
 import sys
 import pandas
+import time 
 
 #print('iniciou')
 
@@ -39,11 +40,20 @@ cs = conn.cursor()
 #comando='EXECUTE TASK '+schema+'.'+task+' '+param1+' '+param2+' '+param3
 #results = cs.execute(comando)
 
+time.sleep(5)
+
+results = cs.execute('select current_version()').fetchone()
+datainicial = results[0]
+print("data:"+datainicial)
+
 try:
     # AND NAME LIKE '%TASK_TESTE%' 
-    comando = "SELECT STATE, NAME , COMPLETED_TIME FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE <> 'SUCCEEDED' AND NAME LIKE '%TASK_TESTE%' ORDER BY query_start_time DESC"
+    comando = "SELECT STATE, NAME , COMPLETED_TIME FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE <> 'SUCCEEDED' AND NAME LIKE '%TASK_TESTE%' AND query_start_time >= '"+datainicial"' ORDER BY query_start_time DESC"
+    print(comando)
     cs.execute(comando)
     df = cs.fetch_pandas_all()
+    print("Total:"+df.size)
+    
     df.info()
     print("__________")
     print(df.to_string())
