@@ -16,7 +16,7 @@ conn = sf.connector.connect(
 )
 
 schema = 'full'
-task = 'ts_carga_inicial_carrega_ts_atual'
+task = 'task_teste_inicio'
 param1 = ''
 param2 = ''
 param3 = ''
