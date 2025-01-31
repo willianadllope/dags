@@ -37,7 +37,7 @@ cs = conn.cursor()
 comando='EXECUTE TASK '+schema+'.'+task+' '+param1+' '+param2+' '+param3
 print(comando)
 
-results = cs.execute(comando).fetchone()
+results = cs.execute(comando)
 print(results)
 cs.close()
 
