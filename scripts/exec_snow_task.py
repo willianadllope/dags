@@ -37,22 +37,22 @@ if len(sys.argv)  >= 6:
 
 cs = conn.cursor()
 
-results = cs.execute('select current_timestamp()').fetchone()
-datainicial = results[0]
+#results = cs.execute('select current_timestamp()').fetchone()
+#datainicial = results[0]
+datainicial = '2025-01-31 11:00:59.466000-08:00'
+# time.sleep(30)
 
-time.sleep(30)
+#comando='EXECUTE TASK '+schema+'.'+task+' '+param1+' '+param2+' '+param3
+#results = cs.execute(comando)
 
-comando='EXECUTE TASK '+schema+'.'+task+' '+param1+' '+param2+' '+param3
-results = cs.execute(comando)
-
-time.sleep(5)
+#time.sleep(5)
 
 try:
     comando = "SELECT STATE, NAME , COMPLETED_TIME FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE <> 'SUCCEEDED' AND NAME LIKE '%TASK_TESTE%' AND query_start_time >= '"+str(datainicial)+"' ORDER BY query_start_time DESC"
     print(comando)
     cs.execute(comando)
     df = cs.fetch_pandas_all()
-    print("Total:"+df.size)
+    print("Total:"+str(df.size))
     
     df.info()
     print("__________")
