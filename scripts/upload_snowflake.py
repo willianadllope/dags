@@ -42,6 +42,7 @@ print('cursor aberto')
 #    cs.close()
 
 # parquet_prod01sql stage_files_snowflake_tabelao COPY INTO dbo.interno_cean_relacionado from @stage_files_snowflake_tabelao/tabelao/cean_relacionado/ FILE_FORMAT = (TYPE = CSV FIELD_DELIMITER = '|' ) MATCH_BY_COLUMN_NAME=CASE_INSENSITIVE
+print('Pasta: '+pastas['parquet']+tipoExecucao+'/'+tabela+'/*.parquet')
 
 arquivos = [f for f in glob.glob(pastas['parquet']+tipoExecucao+'/'+tabela+'/*.parquet')]
 arquivos.sort()
