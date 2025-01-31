@@ -41,7 +41,7 @@ cs = conn.cursor()
 
 try:
     # AND NAME LIKE '%TASK_TESTE%' 
-    comando = "SELECT STATE, NAME , COMPLETED_TIME FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE <> 'SUCCEEDED' ORDER BY query_start_time DESC"
+    comando = "SELECT STATE, NAME , COMPLETED_TIME FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE <> 'SUCCEEDED' AND NAME LIKE '%TASK_TESTE%' ORDER BY query_start_time DESC"
     cs.execute(comando)
     df = cs.fetch_pandas_all()
     df.info()
