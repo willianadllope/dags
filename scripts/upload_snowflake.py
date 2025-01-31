@@ -31,7 +31,7 @@ file_name =tipoExecucao+'/'+tabela+'/*'
 stage_name = 'DB_TABELAO.'+tipoExecucao+'.STAGE_FILES_TABELAO/tabelao/'+tabela+'/'
 print('stage: ' +stage_name)
 
-
+'''
 cs = conn.cursor()
 print('cursor aberto')
 
@@ -56,5 +56,5 @@ try:
 finally:
     cs.close()      
 
-
+'''
 print('cursor fechado')    

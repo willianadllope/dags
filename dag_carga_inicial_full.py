@@ -213,6 +213,7 @@ with DAG(
                 parquet_tributos_internos_cache_401
             ]
         )
+
     limpa_stage = BashOperator(
         task_id="limpa_stage",
         bash_command="python "+dag.params['scripts']+"call_snow_limpa_stage.py 'full'",
@@ -233,11 +234,16 @@ with DAG(
             bash_command="python "+dag.params['scripts']+"upload_snowflake.py tributos_internos_cache_st FULL",
         )
 
+    task_carga_snowflake = BashOperator(
+        task_id="task_carga_snowflake",
+        bash_command="python "+dag.params['scripts']+"exec_snow_task.py FULL TASK_CARGA_INICIAL",
+    )   
+
     end_task = DummyOperator(
         task_id='end',
     )
 
-    chain(start_task, carrega_ids, limpa_stage, gera_envia_parquet, gera_parquet_caches, envia_parquet_caches, end_task)
+    chain(start_task, carrega_ids, limpa_stage, gera_envia_parquet, gera_parquet_caches, envia_parquet_caches, task_carga_snowflake, end_task)
 ### teste de sobe um restore do DBCarrefourAtualizacao
 ### mudanca para o DBControle do 379 e 380
 ### change 263 para change normal 
