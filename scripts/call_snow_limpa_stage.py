@@ -16,11 +16,9 @@ conn = sf.connector.connect(
 )
 #print('conectou')
 
-cs = conn.cursor()
-print('conectou')
+#cs = conn.cursor()
+#print('conectou')
 
-#results = cs.execute('select current_version()').fetchone()
-#print(results[0]
 
 #comando='select count(1) as total from DB_TABELAO.DBO.clientes;'
 #results = cs.execute(comando).fetchone()
@@ -30,10 +28,10 @@ print('conectou')
 #comando='execute task full.task_teste_chamada01;'
 comando="CALL full.pr_carga_inicial_limpa_arquivos();"
 print(comando)
-results = cs.execute(comando).fetchone()
+#results = cs.execute(comando).fetchone()
 #print(results)
 
 
-cs.close()
+#cs.close()
 
 print('fechou')

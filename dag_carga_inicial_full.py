@@ -217,12 +217,27 @@ with DAG(
         task_id="limpa_stage",
         bash_command="python "+dag.params['scripts']+"call_snow_limpa_stage.py 'full'",
     )   
-    
+
+    with TaskGroup(
+            group_id="envia_arquivos_parquet_cache",
+            ui_color="red", 
+            ui_fgcolor="white",
+            tooltip="Envia os arquivos parquet da tabela de tributos_internos_cache e cache_st",
+        ) as envia_parquet_caches:
+        envia_parquet_tributos_internos_cache = BashOperator(
+            task_id="envia_parquet_tributos_internos_cache",
+            bash_command="python "+dag.params['scripts']+"upload_snowflake.py tributos_internos_cache FULL",
+        )
+        envia_parquet_tributos_internos_cache_st = BashOperator(
+            task_id="envia_parquet_tributos_internos_cache_st",
+            bash_command="python "+dag.params['scripts']+"upload_snowflake.py tributos_internos_cache_st FULL",
+        )
+
     end_task = DummyOperator(
         task_id='end',
     )
 
-    chain(start_task, carrega_ids, limpa_stage, gera_envia_parquet, gera_parquet_caches, end_task)
+    chain(start_task, carrega_ids, limpa_stage, gera_envia_parquet, gera_parquet_caches, envia_parquet_caches, end_task)
 ### teste de sobe um restore do DBCarrefourAtualizacao
 ### mudanca para o DBControle do 379 e 380
 ### change 263 para change normal 
