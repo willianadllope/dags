@@ -20,7 +20,7 @@ conn = sf.connector.connect(
 
 schema = 'full'
 task = 'task_teste_inicio'
-param1 = ''
+param1 = 'task_teste'
 param2 = ''
 param3 = ''
 
@@ -49,7 +49,7 @@ time.sleep(5)
 executou = 0
 executar = 1
 try:
-    comando = "SELECT COUNT(1) FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE = 'EXECUTING' AND NAME LIKE '%TASK_CARGA%' AND query_start_time >= '"+str(datainicial)+"' "
+    comando = "SELECT COUNT(1) FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE = 'EXECUTING' AND NAME LIKE '%"+param1+"%' AND query_start_time >= '"+str(datainicial)+"' "
     print(comando)
     # comando = "SELECT STATE, NAME , COMPLETED_TIME FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE = 'EXECUTING' AND NAME LIKE '%TASK_TESTE%' AND query_start_time >= '"+str(datainicial)+"' ORDER BY query_start_time DESC"
     while executar == 1:
@@ -64,5 +64,7 @@ finally:
     conn.close()
 
 cs.close()
+#dbo.task_gera_tabelao TASK_GERA_TABELAO
+#dbo.task_tabelao_apaga_indevidos TASK_TABELAO_APAGA_INDEVIDOS;
 
 #print('fechou')
