@@ -44,7 +44,7 @@ time.sleep(5)
 
 results = cs.execute('select current_timestamp()').fetchone()
 datainicial = results[0]
-print("data:"+datainicial)
+print(datainicial)
 
 try:
     # AND NAME LIKE '%TASK_TESTE%' 
