@@ -20,20 +20,20 @@ conn = sf.connector.connect(
 
 schema = 'full'
 task = 'task_teste_inicio'
-param1 = 'task_teste'
+filtro = 'task_teste'
+param1 = ''
 param2 = ''
-param3 = ''
 
 if len(sys.argv)  >= 2:
     schema = sys.argv[1]
 if len(sys.argv)  >= 3:
     task = sys.argv[2]
 if len(sys.argv)  >= 4:
-    param1 = sys.argv[3]
+    filtro = sys.argv[3]
 if len(sys.argv)  >= 5:
-    param2 = sys.argv[4]
+    param1 = sys.argv[4]
 if len(sys.argv)  >= 6:
-    param3 = sys.argv[5]
+    param2 = sys.argv[5]
 
 cs = conn.cursor()
 
@@ -42,14 +42,14 @@ datainicial = results[0]
 #datainicial = '2025-01-31 11:00:59.466000-08:00'
 time.sleep(10)
 
-comando='EXECUTE TASK '+schema+'.'+task+' '+param1+' '+param2+' '+param3
+comando='EXECUTE TASK '+schema+'.'+task+' '+param1+' '+param2
 results = cs.execute(comando)
 
 time.sleep(10)
 executou = 0
 executar = 1
 try:
-    comando = "SELECT COUNT(1) FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE = 'EXECUTING' AND NAME LIKE '%"+param1+"%' AND query_start_time >= '"+str(datainicial)+"' "
+    comando = "SELECT COUNT(1) FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE = 'EXECUTING' AND NAME LIKE '%"+filtro+"%' AND query_start_time >= '"+str(datainicial)+"' "
     print(comando)
     # comando = "SELECT STATE, NAME , COMPLETED_TIME FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) WHERE STATE = 'EXECUTING' AND NAME LIKE '%TASK_TESTE%' AND query_start_time >= '"+str(datainicial)+"' ORDER BY query_start_time DESC"
     while executar == 1:
