@@ -45,7 +45,7 @@ time.sleep(10)
 comando='EXECUTE TASK '+schema+'.'+task+' '+param1+' '+param2+' '+param3
 results = cs.execute(comando)
 
-time.sleep(5)
+time.sleep(10)
 executou = 0
 executar = 1
 try:
