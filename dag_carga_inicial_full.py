@@ -254,8 +254,8 @@ with DAG(
 
     envia_tabelao_s3 = BashOperator(
         task_id="envia_tabelao_s3",
-        bash_command="python "+dag.params['scripts']+"call_snow_procedure.py dbo pr_envia_tabelao_s3",
-        #bash_command="echo 'TASK_TABELAO_APAGA_INDEVIDOS' ",
+        #bash_command="python "+dag.params['scripts']+"call_snow_procedure.py dbo pr_envia_tabelao_s3",
+        bash_command="echo 'envia_tabelao_s3' ",
     )   
 
     end_task = DummyOperator(
