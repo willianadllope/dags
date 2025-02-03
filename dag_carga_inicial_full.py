@@ -242,8 +242,8 @@ with DAG(
 
     task_gera_tabelao = BashOperator(
         task_id="task_gera_tabelao",
-        #bash_command="python "+dag.params['scripts']+"exec_snow_task.py DBO TASK_GERA_TABELAO TASK_GERA_TABELAO",
-        bash_command="echo 'TASK_GERA_TABELAO' ",
+        bash_command="python "+dag.params['scripts']+"exec_snow_task.py DBO TASK_GERA_TABELAO TASK_GERA_TABELAO",
+        #bash_command="echo 'TASK_GERA_TABELAO' ",
     )   
 
     task_tabelao_apaga_indevidos = BashOperator(
@@ -271,7 +271,7 @@ with DAG(
         envia_parquet_caches, 
         task_carga_snowflake, 
         task_gera_tabelao, 
-        # task_tabelao_apaga_indevidos, 
+        task_tabelao_apaga_indevidos, 
         envia_tabelao_s3,
         end_task
     )
