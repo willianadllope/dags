@@ -237,17 +237,25 @@ with DAG(
     task_carga_snowflake = BashOperator(
         task_id="task_carga_snowflake",
         #bash_command="python "+dag.params['scripts']+"exec_snow_task.py FULL TASK_CARGA_INICIAL TASK_CARGA",
-        bash_command="echo 'TESTE'",
+        bash_command="echo 'TASK_CARGA_INICIAL'",
     )   
 
     task_gera_tabelao = BashOperator(
         task_id="task_gera_tabelao",
-        bash_command="python "+dag.params['scripts']+"exec_snow_task.py DBO TASK_GERA_TABELAO TASK_GERA_TABELAO",
+        #bash_command="python "+dag.params['scripts']+"exec_snow_task.py DBO TASK_GERA_TABELAO TASK_GERA_TABELAO",
+        bash_command="echo 'TASK_GERA_TABELAO' ",
     )   
 
     task_tabelao_apaga_indevidos = BashOperator(
         task_id="task_tabelao_apaga_indevidos",
-        bash_command="python "+dag.params['scripts']+"exec_snow_task.py DBO TASK_TABELAO_APAGA_INDEVIDOS TASK_TABELAO_APAGA_INDEVIDOS",
+        #bash_command="python "+dag.params['scripts']+"exec_snow_task.py DBO TASK_TABELAO_APAGA_INDEVIDOS TASK_TABELAO_APAGA_INDEVIDOS",
+        bash_command="echo 'TASK_TABELAO_APAGA_INDEVIDOS' ",
+    )   
+
+    envia_tabelao_s3 = BashOperator(
+        task_id="envia_tabelao_s3",
+        bash_command="python "+dag.params['scripts']+"call_snow_procedure.py dbo pr_envia_tabelao_s3",
+        #bash_command="echo 'TASK_TABELAO_APAGA_INDEVIDOS' ",
     )   
 
     end_task = DummyOperator(
@@ -263,7 +271,8 @@ with DAG(
         envia_parquet_caches, 
         task_carga_snowflake, 
         task_gera_tabelao, 
-        task_tabelao_apaga_indevidos, 
+        # task_tabelao_apaga_indevidos, 
+        envia_tabelao_s3,
         end_task
     )
 ### teste de sobe um restore do DBCarrefourAtualizacao
