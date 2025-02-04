@@ -78,8 +78,8 @@ with DAG(
         )
         carga_clientes = BashOperator(
             task_id="carga_clientes",
-            #bash_command="python "+dag.params['scripts']+"call_procedure_carga_inicial.py 'pr_preparar_carga_clientes' 'full'",
-            bash_command="echo 'carga_clientes'",
+            bash_command="python "+dag.params['scripts']+"call_procedure_carga_inicial.py 'pr_preparar_carga_clientes' 'full'",
+            #bash_command="echo 'carga_clientes'",
         )
         carga_tributos_internos_cache_st = BashOperator(
             task_id="carga_tributos_internos_cache_st",
@@ -111,7 +111,7 @@ with DAG(
             carga_cean_relacionado,
             carga_grupo,
             carga_grupo_config,
-            carga_clientes
+            carga_clientes,
             carga_tributos_internos_cache_config,
             carga_grupo_custom_prod,
             carga_tributos_internos_cache_st,
