@@ -31,6 +31,6 @@ command = "snowflake."+procedure+" @tipo='"+tipo+"'"
 print(command)
 
 cursor.execute(command)
-conx.commit()
+#conx.commit()
 
 cursor.close()
