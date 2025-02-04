@@ -288,16 +288,22 @@ with DAG(
 
     envia_tabelao_s3 = BashOperator(
         task_id="envia_tabelao_s3",
-        bash_command="python "+dag.params['scripts']+"call_snow_procedure.py dbo pr_envia_tabelao_s3",
-        #bash_command="echo 'envia_tabelao_s3' ",
+        #bash_command="python "+dag.params['scripts']+"call_snow_procedure.py dbo pr_envia_tabelao_s3",
+        bash_command="echo 'envia_tabelao_s3' ",
     )   
 
     apaga_csv_s3_tabelao = BashOperator(
             task_id="apaga_csv_s3_tabelao",
-            bash_command="python "+dag.params['scripts']+"call_procedure_carga_inicial.py pr_apaga_csv_s3_tabelao full",
-            #bash_command="echo 'apaga_csv_s3_tabelao'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_carga_inicial.py pr_apaga_csv_s3_tabelao full",
+            bash_command="echo 'apaga_csv_s3_tabelao'",
     )
-        
+ 
+    download_csvs_tabelao = BashOperator(
+            task_id="download_csvs_tabelao",
+            bash_command="python "+dag.params['scripts']+"call_procedure_carga_inicial.py pr_download_csvs_tabelao full",
+            #bash_command="echo 'carrega_csv_tabelao_prod01sql'",
+    )
+
     carrega_csv_tabelao_prod01sql = BashOperator(
             task_id="carrega_csv_tabelao_prod01sql",
             bash_command="python "+dag.params['scripts']+"call_procedure_carga_inicial.py pr_carrega_tabelao full",
