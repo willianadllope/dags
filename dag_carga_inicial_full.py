@@ -78,8 +78,8 @@ with DAG(
         )
         carga_clientes = BashOperator(
             task_id="carga_clientes",
-            #bash_command="python "+dag.params['scripts']+"call_procedure_carga_inicial.py 'pr_preparar_carga_clientes' 'full'",
-            bash_command="echo 'carga_clientes'",
+            bash_command="python "+dag.params['scripts']+"call_procedure_carga_inicial.py 'pr_preparar_carga_clientes' 'full'",
+            #bash_command="echo 'carga_clientes'",
         )
         carga_tributos_internos_cache_st = BashOperator(
             task_id="carga_tributos_internos_cache_st",
@@ -107,15 +107,15 @@ with DAG(
             bash_command="echo 'carga_schemafull'",
         )
         chain(carga_inicial_truncate, [
-            carga_custom_prod,
-            carga_cean_relacionado,
-            carga_grupo,
-            carga_grupo_config,
-            carga_clientes,
-            carga_tributos_internos_cache_config,
-            carga_grupo_custom_prod,
-            carga_tributos_internos_cache_st,
-            carga_tributos_internos_cache
+            #carga_custom_prod,
+            #carga_cean_relacionado,
+            #carga_grupo,
+            #carga_grupo_config,
+            carga_clientes
+            #carga_tributos_internos_cache_config,
+            #carga_grupo_custom_prod,
+            #carga_tributos_internos_cache_st,
+            #carga_tributos_internos_cache
             ], carga_envio, carga_schemafull )
         
     with TaskGroup(
@@ -169,8 +169,9 @@ with DAG(
             #bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache_config FULL",
             bash_command="echo 'parquet_tributos_internos_cache_config'",
         )
-        chain(parquet_grupo_custom_prod, parquet_custom_prod, parquet_clientes, parquet_grupo_config, parquet_cean_relacionado,
-              parquet_agrupamento_produtos, parquet_ex_origem_cache_familia, parquet_ts_diario, parquet_tributos_internos_cache_config )
+        chain(parquet_grupo_custom_prod#, parquet_custom_prod, parquet_clientes, parquet_grupo_config, parquet_cean_relacionado,
+              #parquet_agrupamento_produtos, parquet_ex_origem_cache_familia, parquet_ts_diario, parquet_tributos_internos_cache_config 
+        )
     
     with TaskGroup(
             group_id="gera_arquivos_parquet_cache",
@@ -319,13 +320,13 @@ with DAG(
         carrega_ids, 
         limpa_stage, 
         gera_envia_parquet, 
-        gera_parquet_caches, 
-        envia_parquet_caches, 
-        task_carga_snowflake, 
-        task_gera_tabelao, 
-        task_tabelao_apaga_indevidos, 
-        apaga_csv_s3_tabelao,
-        envia_tabelao_s3,
+        #gera_parquet_caches, 
+        #envia_parquet_caches, 
+        #task_carga_snowflake, 
+        #task_gera_tabelao, 
+        #task_tabelao_apaga_indevidos, 
+        #apaga_csv_s3_tabelao,
+        #envia_tabelao_s3,
         download_csvs_tabelao,
         carrega_csv_tabelao_prod01sql,
         end_task
