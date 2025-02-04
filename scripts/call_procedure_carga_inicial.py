@@ -23,13 +23,14 @@ if len(sys.argv)  >= 2:
 if len(sys.argv)  >= 3:
     tipo = sys.argv[2]
 
-#engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
+engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
 
-#conx = engine.raw_connection()
-#cursor = conx.cursor()
+conx = engine.raw_connection()
+cursor = conx.cursor()
 command = "snowflake."+procedure+" @tipo='"+tipo+"'"
 print(command)
 
-#cursor.execute(command)
-#conx.commit()
-#cursor.close()
+cursor.execute(command)
+conx.commit()
+
+cursor.close()

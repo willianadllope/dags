@@ -31,9 +31,9 @@ file_name =tipoExecucao+'/'+tabela+'/*'
 stage_name = 'DB_TABELAO.'+tipoExecucao+'.STAGE_FILES_TABELAO/tabelao/'+tabela+'/'
 print('stage: ' +stage_name)
 
-'''
+
 cs = conn.cursor()
-print('cursor aberto')
+#print('cursor aberto')
 
 # parquet_prod01sql stage_files_snowflake_tabelao COPY INTO dbo.interno_cean_relacionado from @stage_files_snowflake_tabelao/tabelao/cean_relacionado/ FILE_FORMAT = (TYPE = CSV FIELD_DELIMITER = '|' ) MATCH_BY_COLUMN_NAME=CASE_INSENSITIVE
 print('Pasta: '+pastas['parquet']+tipoExecucao+'/'+tabela+'/*.parquet')
@@ -56,5 +56,5 @@ try:
 finally:
     cs.close()      
 
-'''
-print('cursor fechado')    
+
+#print('cursor fechado')    
