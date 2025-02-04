@@ -326,6 +326,7 @@ with DAG(
         task_tabelao_apaga_indevidos, 
         apaga_csv_s3_tabelao,
         envia_tabelao_s3,
+        download_csvs_tabelao,
         carrega_csv_tabelao_prod01sql,
         end_task
     )
