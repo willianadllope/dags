@@ -185,6 +185,79 @@ with DAG(
               parquet_ts_diario, 
               parquet_tributos_internos_cache_config 
         )
+        
+    with TaskGroup(
+            group_id="gera_arquivos_parquet_custom_prod",
+            ui_color="red", 
+            ui_fgcolor="white",
+            tooltip="Gera os arquivos parquet das tabelas custom_prod e grupo_custom_prod",
+        ) as gera_parquet_custom_prod:
+        parquet_custom_prod_001 = BashOperator(
+            task_id="parquet_custom_prod_001",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod FULL 1 10",
+            #bash_command="echo 'parquet_custom_prod_001'",
+        )
+        parquet_custom_prod_002 = BashOperator(
+            task_id="parquet_custom_prod_002",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod FULL 11 20",
+            #bash_command="echo 'parquet_custom_prod_002'",
+        )
+        parquet_custom_prod_003 = BashOperator(
+            task_id="parquet_custom_prod_003",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod FULL 21 30",
+            #bash_command="echo 'parquet_custom_prod_003'",
+        )
+        parquet_custom_prod_004 = BashOperator(
+            task_id="parquet_custom_prod_004",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod FULL 31 40",
+            #bash_command="echo 'parquet_custom_prod_004'",
+        )
+        parquet_custom_prod_005 = BashOperator(
+            task_id="parquet_custom_prod_005",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod FULL 41 50",
+            #bash_command="echo 'parquet_custom_prod_005'",
+        )
+        parquet_grupo_custom_prod_001 = BashOperator(
+            task_id="parquet_grupo_custom_prod_001",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py grupo_custom_prod FULL 1 10",
+            #bash_command="echo 'parquet_grupo_custom_prod_001'",
+        )
+        parquet_grupo_custom_prod_002 = BashOperator(
+            task_id="parquet_grupo_custom_prod_002",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py grupo_custom_prod FULL 11 20",
+            #bash_command="echo 'parquet_grupo_custom_prod_002'",
+        )
+        parquet_grupo_custom_prod_003 = BashOperator(
+            task_id="parquet_grupo_custom_prod_003",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py grupo_custom_prod FULL 21 30",
+            #bash_command="echo 'parquet_grupo_custom_prod_003'",
+        )
+        parquet_grupo_custom_prod_004 = BashOperator(
+            task_id="parquet_grupo_custom_prod_004",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py grupo_custom_prod FULL 31 40",
+            #bash_command="echo 'parquet_grupo_custom_prod_004'",
+        )
+        parquet_grupo_custom_prod_005 = BashOperator(
+            task_id="parquet_grupo_custom_prod_005",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py grupo_custom_prod FULL 41 50",
+            #bash_command="echo 'parquet_grupo_custom_prod_005'",
+        )
+        chain(
+            [ 
+                parquet_custom_prod_001,
+                parquet_custom_prod_002, 
+                parquet_custom_prod_003, 
+                parquet_custom_prod_004, 
+                parquet_custom_prod_005
+            ],
+            [
+                parquet_grupo_custom_prod_001, 
+                parquet_grupo_custom_prod_002, 
+                parquet_grupo_custom_prod_003, 
+                parquet_grupo_custom_prod_004, 
+                parquet_grupo_custom_prod_005
+            ]
+        )
 
     with TaskGroup(
             group_id="gera_arquivos_parquet_cache",
@@ -260,11 +333,11 @@ with DAG(
         )
 
     with TaskGroup(
-            group_id="envia_arquivos_parquet_cache",
+            group_id="envia_arquivos_parquet_caches_cp_gcp",
             ui_color="red", 
             ui_fgcolor="white",
             tooltip="Envia os arquivos parquet da tabela de tributos_internos_cache e cache_st",
-        ) as envia_parquet_caches:
+        ) as envia_parquet_caches_cp_gcp:
         envia_parquet_tributos_internos_cache = BashOperator(
             task_id="envia_parquet_tributos_internos_cache",
             bash_command="python "+dag.params['scripts']+"upload_snowflake.py tributos_internos_cache FULL",
@@ -274,6 +347,24 @@ with DAG(
             task_id="envia_parquet_tributos_internos_cache_st",
             bash_command="python "+dag.params['scripts']+"upload_snowflake.py tributos_internos_cache_st FULL",
             #bash_command="echo 'envia_parquet_tributos_internos_cache_st'",
+        )
+        envia_parquet_custom_prod = BashOperator(
+            task_id="envia_parquet_custom_prod",
+            bash_command="python "+dag.params['scripts']+"upload_snowflake.py custom_prod FULL",
+            #bash_command="echo 'envia_parquet_custom_prod'",
+        )
+        envia_parquet_grupo_custom_prod = BashOperator(
+            task_id="envia_parquet_grupo_custom_prod",
+            bash_command="python "+dag.params['scripts']+"upload_snowflake.py grupo_custom_prod FULL",
+            #bash_command="echo 'envia_parquet_grupo_custom_prod'",
+        )
+        chain(
+            [ 
+                envia_parquet_custom_prod,
+                envia_parquet_grupo_custom_prod,
+                envia_parquet_tributos_internos_cache,
+                envia_parquet_tributos_internos_cache_st
+            ]
         )
 
     task_carga_snowflake = BashOperator(
@@ -328,7 +419,8 @@ with DAG(
         limpa_stage, 
         gera_envia_parquet, 
         gera_parquet_caches, 
-        envia_parquet_caches, 
+        gera_parquet_custom_prod,
+        envia_parquet_caches_cp_gcp, 
         task_carga_snowflake, 
         task_gera_tabelao, 
         task_tabelao_apaga_indevidos, 

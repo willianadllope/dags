@@ -80,7 +80,7 @@ sql_queries =   [
                         flag_multiplicacao_origem,
                         cean14 
                     FROM systax_app.dbo.custom_prod a(NOLOCK)
-                    WHERE exists(SELECT TOP 1 1 FROM systax_app.[SNOWFLAKE].enviar_custom_prod ecp (NOLOCK) WHERE ecp.id = a.id);
+                    WHERE exists(SELECT TOP 1 1 FROM systax_app.[SNOWFLAKE].enviar_custom_prod ecp (NOLOCK) WHERE ecp.id = a.id and ecp.posicao = [POSICAO] );
                   """,
                   tabela='custom_prod',
                   limite=1000000),
@@ -203,7 +203,7 @@ sql_queries =   [
         Consultas(consulta="""
                 SELECT id, id_grupo, id_custom_prod, id_cli, convert(bigint,ts) as ts 
                     FROM systax_app.dbo.grupo_custom_prod a(NOLOCK)
-                    WHERE exists(SELECT TOP 1 1 FROM systax_app.[SNOWFLAKE].enviar_grupo_custom_prod ecp (NOLOCK) WHERE ecp.id = a.id);
+                    WHERE exists(SELECT TOP 1 1 FROM systax_app.[SNOWFLAKE].enviar_grupo_custom_prod ecp (NOLOCK) WHERE ecp.id = a.id and ecp.posicao = [POSICAO] );
                   """,
                   tabela='grupo_custom_prod',
                   limite=10000000),
