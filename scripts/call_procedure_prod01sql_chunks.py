@@ -28,7 +28,7 @@ engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:
 
 conx = engine.raw_connection()
 cursor = conx.cursor()
-command = "execute snowflake."+procedure+" @tipo='"+tipo+"' @tabela='"+tabela+"' "
+command = "execute snowflake."+procedure+" @tipo='"+tipo+"', @tabela='"+tabela+"' "
 print(command)
 
 cursor.execute(command)
