@@ -88,7 +88,7 @@ with DAG(
         )
         carga_chunk_tributos_internos_cache = BashOperator(
             task_id="carga_chunk_tributos_internos_cache",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'carga_chunk_tributos_internos_cache'",
+            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'tributos_internos_cache'",
             #bash_command="echo 'carga_chunk_tributos_internos_cache'",
         )
         chain(
