@@ -134,7 +134,7 @@ def main():
 
 if __name__ == "__main__":
     print('INICIO: '+datetime.now().strftime("%Y-%m-%d %H %M %S"))
-    #main()
+    main()
     print('FIM: '+datetime.now().strftime("%Y-%m-%d %H %M %S"))
 
     
