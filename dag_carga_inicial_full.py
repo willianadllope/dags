@@ -48,48 +48,48 @@ with DAG(
         ) as carga_chunks:
         carga_chunk_clientes = BashOperator(
             task_id="carga_chunk_clientes",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'clientes'",
-            #bash_command="echo 'carga_chunk_clientes'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'clientes'",
+            bash_command="echo 'carga_chunk_clientes'",
         )
         carga_chunk_grupo = BashOperator(
             task_id="carga_chunk_grupo",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'grupo'",
-            #bash_command="echo 'carga_chunk_grupo'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'grupo'",
+            bash_command="echo 'carga_chunk_grupo'",
         )
         carga_chunk_grupo_config = BashOperator(
             task_id="carga_chunk_grupo_config",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'grupo_config'",
-            #bash_command="echo 'carga_chunk_grupo_config'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'grupo_config'",
+            bash_command="echo 'carga_chunk_grupo_config'",
         )
         carga_chunk_tributos_internos_cache_config = BashOperator(
             task_id="carga_chunk_tributos_internos_cache_config",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'tributos_internos_cache_config'",
-            #bash_command="echo 'carga_chunk_tributos_internos_cache_config'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'tributos_internos_cache_config'",
+            bash_command="echo 'carga_chunk_tributos_internos_cache_config'",
         )
         carga_chunk_cean_relacionado = BashOperator(
             task_id="carga_chunk_cean_relacionado",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'cean_relacionado'",
-            #bash_command="echo 'carga_chunk_cean_relacionado'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'cean_relacionado'",
+            bash_command="echo 'carga_chunk_cean_relacionado'",
         )
         carga_chunk_custom_prod = BashOperator(
             task_id="carga_chunk_custom_prod",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'custom_prod'",
-            #bash_command="echo 'carga_chunk_custom_prod'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'custom_prod'",
+            bash_command="echo 'carga_chunk_custom_prod'",
         )
         carga_chunk_grupo_custom_prod = BashOperator(
             task_id="carga_chunk_grupo_custom_prod",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'grupo_custom_prod'",
-            #bash_command="echo 'carga_chunk_grupo_custom_prod'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'grupo_custom_prod'",
+            bash_command="echo 'carga_chunk_grupo_custom_prod'",
         )
         carga_chunk_tributos_internos_cache_st = BashOperator(
             task_id="carga_chunk_tributos_internos_cache_st",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'tributos_internos_cache_st'",
-            #bash_command="echo 'carga_chunk_tributos_internos_cache_st'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'tributos_internos_cache_st'",
+            bash_command="echo 'carga_chunk_tributos_internos_cache_st'",
         )
         carga_chunk_tributos_internos_cache = BashOperator(
             task_id="carga_chunk_tributos_internos_cache",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'tributos_internos_cache'",
-            #bash_command="echo 'carga_chunk_tributos_internos_cache'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py 'full' 'tributos_internos_cache'",
+            bash_command="echo 'carga_chunk_tributos_internos_cache'",
         )
         chain(
             carga_chunk_clientes,
@@ -111,58 +111,58 @@ with DAG(
         ) as carrega_ids:
         carga_inicial_truncate = BashOperator(
             task_id="carga_inicial_truncate",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_inicial_truncate' 'full'",
-            #bash_command="echo 'carga_inicial_truncate'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_inicial_truncate' 'full'",
+            bash_command="echo 'carga_inicial_truncate'",
         )
         carga_custom_prod = BashOperator(
             task_id="carga_custom_prod",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_custom_prod' 'full'",
-            #bash_command="echo 'carga_custom_prod'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_custom_prod' 'full'",
+            bash_command="echo 'carga_custom_prod'",
         )
         carga_cean_relacionado = BashOperator(
             task_id="carga_cean_relacionado",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_cean_relacionado' 'full'",
-            #bash_command="echo 'carga_cean_relacionado'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_cean_relacionado' 'full'",
+            bash_command="echo 'carga_cean_relacionado'",
         )
         carga_grupo = BashOperator(
             task_id="carga_grupo",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_grupo' 'full'",
-            #bash_command="echo 'carga_grupo'",            
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_grupo' 'full'",
+            bash_command="echo 'carga_grupo'",            
         )
         carga_grupo_custom_prod = BashOperator(
             task_id="carga_grupo_custom_prod",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_grupo_custom_prod' 'full'",
-            #bash_command="echo 'carga_grupo_custom_prod'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_grupo_custom_prod' 'full'",
+            bash_command="echo 'carga_grupo_custom_prod'",
         )
         carga_grupo_config = BashOperator(
             task_id="carga_grupo_config",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_grupo_config' 'full'",
-            #bash_command="echo 'carga_grupo_config'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_grupo_config' 'full'",
+            bash_command="echo 'carga_grupo_config'",
         )
         carga_clientes = BashOperator(
             task_id="carga_clientes",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_clientes' 'full'",
-            #bash_command="echo 'carga_clientes'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_clientes' 'full'",
+            bash_command="echo 'carga_clientes'",
         )
         carga_tributos_internos_cache_st = BashOperator(
             task_id="carga_tributos_internos_cache_st",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_tributos_internos_cache_st' 'full'",
-            #bash_command="echo 'carga_tributos_internos_cache_st'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_tributos_internos_cache_st' 'full'",
+            bash_command="echo 'carga_tributos_internos_cache_st'",
         )
         carga_tributos_internos_cache = BashOperator(
             task_id="carga_tributos_internos_cache",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_tributos_internos_cache' 'full'",
-            #bash_command="echo 'carga_tributos_internos_cache'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_tributos_internos_cache' 'full'",
+            bash_command="echo 'carga_tributos_internos_cache'",
         )
         carga_tributos_internos_cache_config = BashOperator(
             task_id="carga_tributos_internos_cache_config",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_tributos_internos_cache_config' 'full'",
-            #bash_command="echo 'carga_tributos_internos_cache_config'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_tributos_internos_cache_config' 'full'",
+            bash_command="echo 'carga_tributos_internos_cache_config'",
         )
         carga_schemafull = BashOperator(
             task_id="carga_schemafull",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_schemafull' 'full'",
-            #bash_command="echo 'carga_schemafull'",
+            #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_schemafull' 'full'",
+            bash_command="echo 'carga_schemafull'",
         )
         chain(carga_inicial_truncate, [
             carga_custom_prod,
