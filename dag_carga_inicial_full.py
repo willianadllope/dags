@@ -193,11 +193,6 @@ with DAG(
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py clientes FULL",
             #bash_command="echo 'parquet_clientes'",
         )
-        parquet_grupo_custom_prod = BashOperator(
-            task_id="parquet_grupo_custom_prod",
-            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py grupo_custom_prod FULL",
-            #bash_command="echo 'parquet_grupo_custom_prod'",
-        )
         parquet_grupo_config = BashOperator(
             task_id="parquet_grupo_config",
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py grupo_config FULL",
@@ -218,11 +213,6 @@ with DAG(
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py cean_relacionado FULL",
             #bash_command="echo 'parquet_cean_relacionado'",
         )
-        parquet_custom_prod = BashOperator(
-            task_id="parquet_custom_prod",
-            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod FULL",
-            #bash_command="echo 'parquet_custom_prod'",
-        )
         parquet_ex_origem_cache_familia = BashOperator(
             task_id="parquet_ex_origem_cache_familia",
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py ex_origem_cache_familia FULL",
@@ -233,9 +223,7 @@ with DAG(
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py tributos_internos_cache_config FULL",
             #bash_command="echo 'parquet_tributos_internos_cache_config'",
         )
-        chain(parquet_grupo_custom_prod, 
-              parquet_custom_prod,
-              parquet_clientes, 
+        chain(parquet_clientes, 
               parquet_grupo_config, 
               parquet_cean_relacionado,
               parquet_agrupamento_produtos, 
