@@ -27,7 +27,8 @@ pastas = scripts.config.pastas;
 
 with DAG(
     'carga_inicial_full',
-    schedule="@daily",
+    #schedule="@daily",
+    schedule_interval=None,
     default_args=default_args,
     start_date=datetime(2025, 1, 21),
     tags=['tabelaoprod01'],
