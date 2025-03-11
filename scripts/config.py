@@ -22,7 +22,8 @@ pastas = {
     'scripts':'/root/airflow/dags/scripts/',
     'parquet':'/parquet2/tabelao/',
     'parquetfull':'/parquet2/tabelao/FULL/',
-    'parquetincremental':'/parquet2/tabelao/INCREMENTAL/'
+    'parquetincremental':'/parquet2/tabelao/INCREMENTAL/',
+    'tipoCarga':''
 }
 
 ## checar como colocar o config da aws

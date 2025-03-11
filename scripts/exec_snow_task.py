@@ -26,6 +26,7 @@ param2 = ''
 
 if len(sys.argv)  >= 2:
     schema = sys.argv[1]
+schema = schema.upper()    
 if len(sys.argv)  >= 3:
     task = sys.argv[2]
 if len(sys.argv)  >= 4:

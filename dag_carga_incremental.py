@@ -25,10 +25,10 @@ default_args = {
 
 pastas = scripts.config.pastas;
 
-pastas['tipoCarga'] = 'full';
+pastas['tipoCarga'] = 'incremental';
 
 with DAG(
-    'carga_inicial_full',
+    'carga_incremental',
     #schedule="@daily",
     schedule_interval=None,
     default_args=default_args,
@@ -43,141 +43,11 @@ with DAG(
         task_id='start',
     )
 
-    with TaskGroup(
-            group_id="carga_chunks",
-            ui_color="blue", 
-            ui_fgcolor="green",
-            tooltip="Carrega os chunks das tabelas de controle de ID do que sera enviado para o Snowflake",
-        ) as carga_chunks:
-        carga_chunk_clientes = BashOperator(
-            task_id="carga_chunk_clientes",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py '"+dag.params['tipoCarga']+"' 'clientes'",
-            #bash_command="echo 'carga_chunk_clientes'",
-        )
-        carga_chunk_grupo = BashOperator(
-            task_id="carga_chunk_grupo",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py '"+dag.params['tipoCarga']+"' 'grupo'",
-            #bash_command="echo 'carga_chunk_grupo'",
-        )
-        carga_chunk_grupo_config = BashOperator(
-            task_id="carga_chunk_grupo_config",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py '"+dag.params['tipoCarga']+"' 'grupo_config'",
-            #bash_command="echo 'carga_chunk_grupo_config'",
-        )
-        carga_chunk_tributos_internos_cache_config = BashOperator(
-            task_id="carga_chunk_tributos_internos_cache_config",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py '"+dag.params['tipoCarga']+"' 'tributos_internos_cache_config'",
-            #bash_command="echo 'carga_chunk_tributos_internos_cache_config'",
-        )
-        carga_chunk_cean_relacionado = BashOperator(
-            task_id="carga_chunk_cean_relacionado",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py '"+dag.params['tipoCarga']+"' 'cean_relacionado'",
-            #bash_command="echo 'carga_chunk_cean_relacionado'",
-        )
-        carga_chunk_custom_prod = BashOperator(
-            task_id="carga_chunk_custom_prod",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py '"+dag.params['tipoCarga']+"' 'custom_prod'",
-            #bash_command="echo 'carga_chunk_custom_prod'",
-        )
-        carga_chunk_grupo_custom_prod = BashOperator(
-            task_id="carga_chunk_grupo_custom_prod",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py '"+dag.params['tipoCarga']+"' 'grupo_custom_prod'",
-            #bash_command="echo 'carga_chunk_grupo_custom_prod'",
-        )
-        carga_chunk_tributos_internos_cache_st = BashOperator(
-            task_id="carga_chunk_tributos_internos_cache_st",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py '"+dag.params['tipoCarga']+"' 'tributos_internos_cache_st'",
-            #bash_command="echo 'carga_chunk_tributos_internos_cache_st'",
-        )
-        carga_chunk_tributos_internos_cache = BashOperator(
-            task_id="carga_chunk_tributos_internos_cache",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py '"+dag.params['tipoCarga']+"' 'tributos_internos_cache'",
-            #bash_command="echo 'carga_chunk_tributos_internos_cache'",
-        )
-        chain(
-            carga_chunk_clientes,
-            carga_chunk_grupo,
-            carga_chunk_grupo_config,
-            carga_chunk_cean_relacionado,
-            carga_chunk_tributos_internos_cache_config,            
-            carga_chunk_tributos_internos_cache_st,
-            carga_chunk_custom_prod,
-            carga_chunk_grupo_custom_prod,
-            carga_chunk_tributos_internos_cache
-        )
-
-    with TaskGroup(
-            group_id="carrega_id_tabelas",
-            ui_color="blue", 
-            ui_fgcolor="green",
-            tooltip="Carrega as tabelas de controle de ID do que sera enviado para o Snowflake",
-        ) as carrega_ids:
-        carga_inicial_truncate = BashOperator(
-            task_id="carga_inicial_truncate",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_inicial_truncate' '"+dag.params['tipoCarga']+"'",
-            #bash_command="echo 'carga_inicial_truncate'",
-        )
-        carga_custom_prod = BashOperator(
-            task_id="carga_custom_prod",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_custom_prod' '"+dag.params['tipoCarga']+"'",
-            #bash_command="echo 'carga_custom_prod'",
-        )
-        carga_cean_relacionado = BashOperator(
-            task_id="carga_cean_relacionado",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_cean_relacionado' '"+dag.params['tipoCarga']+"'",
-            #bash_command="echo 'carga_cean_relacionado'",
-        )
-        carga_grupo = BashOperator(
-            task_id="carga_grupo",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_grupo' '"+dag.params['tipoCarga']+"'",
-            #bash_command="echo 'carga_grupo'",            
-        )
-        carga_grupo_custom_prod = BashOperator(
-            task_id="carga_grupo_custom_prod",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_grupo_custom_prod' '"+dag.params['tipoCarga']+"'",
-            #bash_command="echo 'carga_grupo_custom_prod'",
-        )
-        carga_grupo_config = BashOperator(
-            task_id="carga_grupo_config",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_grupo_config' '"+dag.params['tipoCarga']+"'",
-            #bash_command="echo 'carga_grupo_config'",
-        )
-        carga_clientes = BashOperator(
-            task_id="carga_clientes",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_clientes' '"+dag.params['tipoCarga']+"'",
-            #bash_command="echo 'carga_clientes'",
-        )
-        carga_tributos_internos_cache_st = BashOperator(
-            task_id="carga_tributos_internos_cache_st",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_tributos_internos_cache_st' '"+dag.params['tipoCarga']+"'",
-            #bash_command="echo 'carga_tributos_internos_cache_st'",
-        )
-        carga_tributos_internos_cache = BashOperator(
-            task_id="carga_tributos_internos_cache",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_tributos_internos_cache' '"+dag.params['tipoCarga']+"'",
-            #bash_command="echo 'carga_tributos_internos_cache'",
-        )
-        carga_tributos_internos_cache_config = BashOperator(
-            task_id="carga_tributos_internos_cache_config",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_tributos_internos_cache_config' '"+dag.params['tipoCarga']+"'",
-            #bash_command="echo 'carga_tributos_internos_cache_config'",
-        )
-        carga_schemafull = BashOperator(
-            task_id="carga_schemafull",
-            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_schemafull' '"+dag.params['tipoCarga']+"'",
-            #bash_command="echo 'carga_schemafull'",
-        )
-        chain(carga_inicial_truncate, [
-            carga_custom_prod,
-            carga_cean_relacionado,
-            carga_grupo,
-            carga_grupo_config,
-            carga_clientes,
-            carga_tributos_internos_cache_config,
-            carga_grupo_custom_prod,
-            carga_tributos_internos_cache_st,
-            carga_tributos_internos_cache
-            ], carga_chunks, carga_schemafull )
+    carga_incremental = BashOperator(
+        task_id="carga_incremental",
+        bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_atualizacao' '"+dag.params['tipoCarga']+"'",
+        #bash_command="echo 'carga_inicial_truncate'",
+    )
 
     limpa_stage = BashOperator(
         task_id="limpa_stage",
@@ -382,6 +252,62 @@ with DAG(
         )
 
     with TaskGroup(
+            group_id="gera_deletados_parquet",
+            ui_color="red", 
+            ui_fgcolor="white",
+            tooltip="Atualiza no snowflake os registros apagados na prod01sql",
+        ) as gera_deletados_parquet:
+        apagar_clientes = BashOperator(
+            task_id="apagar_clientes",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py apagar_clientes "+dag.params['tipoCarga'],
+            #bash_command="echo 'parquet_clientes'",
+        )
+        apagar_grupo_config = BashOperator(
+            task_id="apagar_grupo_config",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py apagar_grupo_config "+dag.params['tipoCarga'],
+            #bash_command="echo 'parquet_grupo_config'",
+        )
+        apagar_custom_prod = BashOperator(
+            task_id="apagar_custom_prod",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py apagar_custom_prod "+dag.params['tipoCarga'],
+            #bash_command="echo 'parquet_ts_diario'",
+        )
+        apagar_grupo_custom_prod = BashOperator(
+            task_id="apagar_grupo_custom_prod",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py apagar_grupo_custom_prod "+dag.params['tipoCarga'],
+            #bash_command="echo 'parquet_agrupamento_produtos'",
+        )
+        apagar_cean_relacionado = BashOperator(
+            task_id="apagar_cean_relacionado",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py apagar_cean_relacionado "+dag.params['tipoCarga'],
+            #bash_command="echo 'parquet_cean_relacionado'",
+        )
+        apagar_tributos_internos_cache_config = BashOperator(
+            task_id="apagar_tributos_internos_cache_config",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py apagar_tributos_internos_cache_config "+dag.params['tipoCarga'],
+            #bash_command="echo 'parquet_tributos_internos_cache_config'",
+        )
+        apagar_tributos_internos_cache = BashOperator(
+            task_id="apagar_tributos_internos_cache",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py apagar_tributos_internos_cache "+dag.params['tipoCarga'],
+            #bash_command="echo 'parquet_tributos_internos_cache_config'",
+        )
+        apagar_tributos_internos_cache_st = BashOperator(
+            task_id="apagar_tributos_internos_cache_st",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py apagar_tributos_internos_cache_st "+dag.params['tipoCarga'],
+            #bash_command="echo 'parquet_tributos_internos_cache_config'",
+        )
+        chain(apagar_clientes, 
+              apagar_grupo_config, 
+              apagar_custom_prod,
+              apagar_grupo_custom_prod, 
+              apagar_cean_relacionado, 
+              apagar_tributos_internos_cache_config, 
+              apagar_tributos_internos_cache,
+              apagar_tributos_internos_cache_st 
+        )
+
+    with TaskGroup(
             group_id="envia_arquivos_parquet_caches_cp_gcp",
             ui_color="red", 
             ui_fgcolor="white",
@@ -389,7 +315,7 @@ with DAG(
         ) as envia_parquet_caches_cp_gcp:
         envia_parquet_tributos_internos_cache = BashOperator(
             task_id="envia_parquet_tributos_internos_cache",
-            bash_command="python "+dag.params['scripts']+"upload_snowflake.py tributos_internos_cache FULL",
+            bash_command="python "+dag.params['scripts']+"upload_snowflake.py tributos_internos_cache "+dag.params['tipoCarga'],
             #bash_command="echo 'envia_parquet_tributos_internos_cache'",
         )
         envia_parquet_tributos_internos_cache_st = BashOperator(
@@ -418,7 +344,7 @@ with DAG(
 
     task_carga_snowflake = BashOperator(
         task_id="task_carga_snowflake",
-        bash_command="python "+dag.params['scripts']+"exec_snow_task.py "+dag.params['tipoCarga']+" TASK_CARGA_INICIAL TASK_CARGA",
+        bash_command="python "+dag.params['scripts']+"exec_snow_task.py "+dag.params['tipoCarga']+" TASK_CARGA_INCREMENTAL TASK_CARGA",
         #bash_command="echo 'task_carga_snowflake'",
     )   
 
@@ -464,11 +390,12 @@ with DAG(
 
     chain(
         start_task, 
-        carrega_ids, 
+        carga_incremental, 
         limpa_stage, 
         gera_envia_parquet, 
+        gera_deletados_parquet, 
         gera_parquet_custom_prod,
-        gera_parquet_caches, 
+        gera_parquet_caches,
         envia_parquet_caches_cp_gcp, 
         task_carga_snowflake, 
         task_gera_tabelao, 

@@ -18,7 +18,11 @@ conn = sf.connector.connect(
 
 cs = conn.cursor()
 
-comando="CALL full.pr_carga_inicial_limpa_arquivos();"
+if len(sys.argv)  >= 2:
+    tipo = sys.argv[1]
+tipo = tipo.upper()
+
+comando="CALL "+tipo+".pr_carga_inicial_limpa_arquivos();"
 print(comando)
 
 results = cs.execute(comando).fetchone()

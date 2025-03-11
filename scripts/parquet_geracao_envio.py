@@ -101,6 +101,7 @@ def main():
 
     if len(sys.argv)  >= 3:
       tipoExecucao = sys.argv[2] # FULL | INCREMENTAL
+    tipoExecucao = tipoExecucao.upper()
     if len(sys.argv)  >= 4:
       posicao = int(sys.argv[3]) # inicio do loop
     if len(sys.argv)  >= 5:

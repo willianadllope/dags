@@ -14,6 +14,7 @@ if len(sys.argv)  >= 2:
     tabela = sys.argv[1]
 if len(sys.argv)  >= 3:
     tipoExecucao = sys.argv[2] # FULL | INCREMENTAL      
+tipoExecucao = tipoExecucao.upper()
 if len(sys.argv) >= 4:
     reverse = sys.argv[3]
 
