@@ -355,32 +355,32 @@ with DAG(
 
     task_tabelao_apaga_indevidos = BashOperator(
         task_id="task_tabelao_apaga_indevidos",
-        bash_command="python "+dag.params['scripts']+"exec_snow_task.py DBO TASK_TABELAO_APAGA_INDEVIDOS TASK_TABELAO_APAGA_INDEVIDOS",
-        #bash_command="echo 'task_tabelao_apaga_indevidos' ",
+        #bash_command="python "+dag.params['scripts']+"exec_snow_task.py DBO TASK_TABELAO_APAGA_INDEVIDOS TASK_TABELAO_APAGA_INDEVIDOS",
+        bash_command="echo 'task_tabelao_apaga_indevidos' ",
     )   
 
     apaga_csv_s3_tabelao = BashOperator(
         task_id="apaga_csv_s3_tabelao",
-        bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_apaga_csv_s3_tabelao' '"+dag.params['tipoCarga']+"'",
-        #bash_command="echo 'apaga_csv_s3_tabelao'",
+        #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_apaga_csv_s3_tabelao' '"+dag.params['tipoCarga']+"'",
+        bash_command="echo 'apaga_csv_s3_tabelao'",
     )
 
     envia_tabelao_s3 = BashOperator(
         task_id="envia_tabelao_s3",
-        bash_command="python "+dag.params['scripts']+"call_snow_procedure.py dbo pr_envia_tabelao_s3",
-        #bash_command="echo 'envia_tabelao_s3' ",
+        #bash_command="python "+dag.params['scripts']+"call_snow_procedure.py dbo pr_envia_tabelao_s3",
+        bash_command="echo 'envia_tabelao_s3' ",
     )   
  
     download_csvs_tabelao = BashOperator(
         task_id="download_csvs_tabelao",
-        bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_download_csvs_tabelao' '"+dag.params['tipoCarga']+"'",
-        #bash_command="echo 'download_csvs_tabelao'",
+        #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_download_csvs_tabelao' '"+dag.params['tipoCarga']+"'",
+        bash_command="echo 'download_csvs_tabelao'",
     )
 
     carrega_csv_tabelao_prod01sql = BashOperator(
         task_id="carrega_csv_tabelao_prod01sql",
-        bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_carrega_tabelao' '"+dag.params['tipoCarga']+"'",
-        #bash_command="echo 'carrega_csv_tabelao_prod01sql'",
+        #bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_carrega_tabelao' '"+dag.params['tipoCarga']+"'",
+        bash_command="echo 'carrega_csv_tabelao_prod01sql'",
     )
 
     end_task = DummyOperator(
