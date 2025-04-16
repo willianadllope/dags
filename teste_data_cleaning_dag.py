@@ -25,7 +25,7 @@ def data_cleaning_dag():
         # Trigger DAG 2 (Data Processing)
         trigger = TriggerDagRunOperator(
             task_id='trigger_data_processing',
-            trigger_dag_id='data_processing_dag',
+            trigger_dag_id='data_processing_dag2',
             conf={"clean_data": "processed"},
             dag=data_cleaning_dag
         )
@@ -38,3 +38,26 @@ def data_cleaning_dag():
     extract >> clean >> trigger
 
 data_cleaning_instance = data_cleaning_dag()
+
+
+@dag(start_date=datetime(2025, 3, 6), schedule_interval=None)
+def data_processing_dag2():
+
+    @task()
+    def process_data(cleaned_data):
+        # Code to process the cleaned data
+        return f"Data processed with {cleaned_data}"
+
+    @task()
+    def generate_report(processed_data):
+        # Code to generate a report
+        return f"Report generated for {processed_data}"
+
+    clean_data = "{{ task_instance.xcom_pull(task_ids='trigger_data_processing') }}"
+
+    processed = process_data(clean_data)
+    report = generate_report(processed)
+
+    processed >> report
+
+data_processing_instance = data_processing_dag2()
