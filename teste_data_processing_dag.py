@@ -1,20 +1,10 @@
 from datetime import timedelta, datetime
-import scripts.config
-
-
-# The DAG object; we'll need this to instantiate a DAG
 from airflow import DAG
 from airflow.models.baseoperator import chain
-
-# Operators; we need this to operate!
-
-from airflow.operators.bash import BashOperator
-from airflow.operators.dummy import DummyOperator
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.utils.dates import days_ago
 
-from airflow.utils.task_group import TaskGroup
-from airflow.decorators import dag, task_group, task
+from airflow.decorators import dag, task
 
 
 @dag(start_date=datetime(2025, 3, 6), schedule_interval=None)
