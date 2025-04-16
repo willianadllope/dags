@@ -1,17 +1,26 @@
 from datetime import timedelta, datetime
 import scripts.config
 
+
 # The DAG object; we'll need this to instantiate a DAG
 from airflow import DAG
 from airflow.models.baseoperator import chain
 
 # Operators; we need this to operate!
+
 from airflow.operators.bash import BashOperator
 from airflow.operators.dummy import DummyOperator
 from airflow.utils.dates import days_ago
 
 from airflow.utils.task_group import TaskGroup
 from airflow.decorators import dag, task_group, task
+
+import airflow.operators.trigger_dagrun
+import teste_dag_incremental
+import teste_dag_full
+
+dag_incremental = DAG('teste_dag_incremental')
+dag_full = DAG('teste_dag_full')
 
 default_args = {
     'owner': 'airflow',
@@ -65,6 +74,7 @@ with DAG(
     chain(
         start_task, 
         task_check_execucao,
+        task_carga_full,
         end_task
     )
 
