@@ -64,7 +64,7 @@ with DAG(
 
     chain(
         start_task, 
-        task_carga_incremental,
+        task_check_execucao,
         end_task
     )
 
