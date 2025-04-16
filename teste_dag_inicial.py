@@ -10,12 +10,13 @@ from airflow.models.baseoperator import chain
 
 from airflow.operators.bash import BashOperator
 from airflow.operators.dummy import DummyOperator
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.utils.dates import days_ago
 
 from airflow.utils.task_group import TaskGroup
 from airflow.decorators import dag, task_group, task
 
-from airflow.operators import trigger_dagrun
+
 import teste_dag_incremental
 import teste_dag_full
 
@@ -76,7 +77,7 @@ with DAG(
     )
 
     task_carga_full = inicia_carga_full();
-    
+
     chain(
         start_task, 
         task_check_execucao,
