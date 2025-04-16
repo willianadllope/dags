@@ -15,7 +15,7 @@ from airflow.utils.dates import days_ago
 from airflow.utils.task_group import TaskGroup
 from airflow.decorators import dag, task_group, task
 
-import airflow.operators.trigger_dagrun
+from airflow.operators import trigger_dagrun
 import teste_dag_incremental
 import teste_dag_full
 
@@ -61,6 +61,15 @@ with DAG(
         task_id="task_carga_full",
         bash_command="echo 'task_carga_full'",
     )
+
+    @task()
+    def trigger_next_dag():
+        trigger = TriggerDagRunOperator(
+            task_id='trigger_data_processing',
+            trigger_dag_id='teste_dag_full',
+            dag=teste_dag_inicial
+        )
+        return trigger
 
     task_carga_incremental = BashOperator(
         task_id="task_carga_incremental",
