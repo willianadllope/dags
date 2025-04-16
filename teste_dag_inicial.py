@@ -58,7 +58,7 @@ with DAG(
     )
 
     @task()
-    def task_carga_full():
+    def inicia_carga_full():
         trigger = TriggerDagRunOperator(
             task_id='trigger_data_processing',
             trigger_dag_id='teste_dag_full',
@@ -75,6 +75,8 @@ with DAG(
         task_id='end',
     )
 
+    task_carga_full = inicia_carga_full();
+    
     chain(
         start_task, 
         task_check_execucao,
