@@ -62,7 +62,7 @@ with DAG(
         trigger = TriggerDagRunOperator(
             task_id='trigger_data_processing',
             trigger_dag_id='teste_dag_full',
-            dag=teste_dag_inicial
+            dag=dag_full
         )
         return trigger
 
