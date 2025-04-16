@@ -7,17 +7,11 @@ from sqlalchemy import create_engine
 from datetime import datetime
 import pandas as pd
 import urllib as ul
+import config
 import snowflake as sf
 from snowflake import connector
 
-db = {
-    'DRIVER': '{ODBC Driver 17 for SQL Server}',
-    'SERVER': '192.168.0.35',
-    'DATABASE': 'systax_app',
-    'PORT': '1433',
-    'UID': 'willian',
-    'PWD': 'billpoker13!'
-}
+db = config.prod01sql
 
 
 Consultas = namedtuple('Consultas',['consulta','tabela','limite'])
