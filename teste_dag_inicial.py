@@ -57,13 +57,8 @@ with DAG(
         bash_command="echo 'task_check_execucao'",
     )
 
-    task_carga_full = BashOperator(
-        task_id="task_carga_full",
-        bash_command="echo 'task_carga_full'",
-    )
-
     @task()
-    def trigger_next_dag():
+    def task_carga_full():
         trigger = TriggerDagRunOperator(
             task_id='trigger_data_processing',
             trigger_dag_id='teste_dag_full',
