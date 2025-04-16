@@ -32,6 +32,6 @@ print(df)
 engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
 con = engine.connect().execution_options(stream_results=True)
 
-df = pd.read_sql("SELECT @@VERSION as versao", con)
+df = pd.read_sql("SELECT id, entidade from systax_app.dbo.clientes where id in (96201, 55982)", con)
 print(df)
 
