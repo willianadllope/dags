@@ -79,3 +79,43 @@ def external_task_sensor_taskflow_dag():
 
 
 external_task_sensor_taskflow_dag()
+
+
+with DAG(
+    'upstream_dag_1',
+    schedule_interval=None,
+    default_args=default_args,
+    start_date=datetime(2022, 8, 1),
+    concurrency=3,
+    catchup=False,
+) as dag:
+    
+    my_task = EmptyOperator(
+        task_id='start',
+    )
+
+with DAG(
+    'upstream_dag_2',
+    schedule_interval=None,
+    default_args=default_args,
+    start_date=datetime(2022, 8, 1),
+    concurrency=3,
+    catchup=False,
+) as dag:
+    
+    my_task = EmptyOperator(
+        task_id='start',
+    )
+
+with DAG(
+    'upstream_dag_3',
+    schedule_interval=None,
+    default_args=default_args,
+    start_date=datetime(2022, 8, 1),
+    concurrency=3,
+    catchup=False,
+) as dag:
+    
+    my_task = EmptyOperator(
+        task_id='start',
+    )
