@@ -41,7 +41,8 @@ def external_task_sensor_taskflow_dag():
 
     ets_branch_1 = ExternalTaskSensor(
         task_id="ets_branch_1",
-        external_task_id=None,
+        external_dag_id="upstream_dag_1",
+        external_task_id="my_task",
         allowed_states=["success"],
         failed_states=["failed", "skipped"],
     )
@@ -50,7 +51,8 @@ def external_task_sensor_taskflow_dag():
 
     ets_branch_2 = ExternalTaskSensor(
         task_id="ets_branch_2",
-        external_task_id=None,
+        external_dag_id="upstream_dag_2",
+        external_task_id="my_task",
         allowed_states=["success"],
         failed_states=["failed", "skipped"],
     )
@@ -59,7 +61,8 @@ def external_task_sensor_taskflow_dag():
 
     ets_branch_3 = ExternalTaskSensor(
         task_id="ets_branch_3",
-        external_task_id=None,
+        external_dag_id="upstream_dag_3",
+        external_task_id="my_task",
         allowed_states=["success"],
         failed_states=["failed", "skipped"],
     )
@@ -88,6 +91,10 @@ external_task_sensor_taskflow_dag()
 def upstream_dag_1():
     my_task = EmptyOperator(task_id='my_task')
 
+    [my_task]
+
+upstream_dag_1()    
+
 @dag(
     schedule_interval=None,
     default_args=default_args,
@@ -97,6 +104,10 @@ def upstream_dag_1():
 ) 
 def upstream_dag_2():
     my_task = EmptyOperator(task_id='my_task')
+
+    [my_task]
+
+upstream_dag_2()
 
 @dag(
     schedule_interval=None,
@@ -108,3 +119,6 @@ def upstream_dag_2():
 def upstream_dag_3():
     my_task = EmptyOperator(task_id='my_task')
 
+    [my_task]
+
+upstream_dag_3()
