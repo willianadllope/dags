@@ -41,7 +41,6 @@ def external_task_sensor_taskflow_dag():
 
     ets_branch_1 = ExternalTaskSensor(
         task_id="ets_branch_1",
-        external_dag_id="upstream_dag_1",
         external_task_id=None,
         allowed_states=["success"],
         failed_states=["failed", "skipped"],
@@ -51,7 +50,6 @@ def external_task_sensor_taskflow_dag():
 
     ets_branch_2 = ExternalTaskSensor(
         task_id="ets_branch_2",
-        external_dag_id="upstream_dag_2",
         external_task_id=None,
         allowed_states=["success"],
         failed_states=["failed", "skipped"],
@@ -61,7 +59,6 @@ def external_task_sensor_taskflow_dag():
 
     ets_branch_3 = ExternalTaskSensor(
         task_id="ets_branch_3",
-        external_dag_id="upstream_dag_3",
         external_task_id=None,
         allowed_states=["success"],
         failed_states=["failed", "skipped"],
