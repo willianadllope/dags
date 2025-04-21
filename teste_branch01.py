@@ -32,7 +32,7 @@ default_args = {
 @dag(
     start_date=datetime(2022, 8, 1),
     max_active_runs=3,
-    schedule_interval=None,
+    schedule="*/1 * * * *",
     catchup=False,
 )
 def external_task_sensor_taskflow_dag():
