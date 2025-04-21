@@ -5,6 +5,7 @@ from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.utils.dates import days_ago
 
 from airflow.decorators import dag, task
+import teste_data_processing_dag
 
 default_args = {
     'owner': 'airflow',
