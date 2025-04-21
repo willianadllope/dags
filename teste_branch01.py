@@ -25,14 +25,14 @@ default_args = {
     "email_on_failure": False,
     "email_on_retry": False,
     "retries": 1,
-    "retry_delay": duration(minutes=5),
+    "retry_delay": duration(seconds=5),
 }
 
 
 @dag(
     start_date=datetime(2022, 8, 1),
     max_active_runs=3,
-    schedule="*/1 * * * *",
+    schedule_interval=None,
     catchup=False,
 )
 def external_task_sensor_taskflow_dag():
