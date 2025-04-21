@@ -6,8 +6,17 @@ from airflow.utils.dates import days_ago
 
 from airflow.decorators import dag, task
 
+default_args = {
+    'owner': 'airflow',
+    'depends_on_past': False,
+    'email': ['willian.lopes@systax.com.br'],
+    'email_on_failure': False,
+    'email_on_retry': False,
+    'retries': 1,
+    'retry_delay': timedelta(minutes=1),
+}
 
-@dag(start_date=datetime(2025, 3, 6), schedule_interval=None)
+@dag(start_date=datetime(2025, 3, 6), schedule_interval=None, default_args=default_args)
 def data_cleaning_dag():
 
     @task()
