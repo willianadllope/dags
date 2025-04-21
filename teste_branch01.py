@@ -32,7 +32,7 @@ default_args = {
 @dag(
     start_date=datetime(2022, 8, 1),
     max_active_runs=3,
-    schedule="*/1 * * * *",
+    schedule_interval=None,
     catchup=False,
 )
 def external_task_sensor_taskflow_dag():
@@ -81,41 +81,33 @@ def external_task_sensor_taskflow_dag():
 external_task_sensor_taskflow_dag()
 
 
-with DAG(
-    'upstream_dag_1',
+@dag(
     schedule_interval=None,
     default_args=default_args,
     start_date=datetime(2022, 8, 1),
     concurrency=3,
     catchup=False,
-) as dag:
-    
-    my_task = EmptyOperator(
-        task_id='start',
-    )
+) 
+def upstream_dag_1():
+    my_task = EmptyOperator(task_id='my_task')
 
-with DAG(
-    'upstream_dag_2',
+@dag(
     schedule_interval=None,
     default_args=default_args,
     start_date=datetime(2022, 8, 1),
     concurrency=3,
     catchup=False,
-) as dag:
-    
-    my_task = EmptyOperator(
-        task_id='start',
-    )
+) 
+def upstream_dag_2():
+    my_task = EmptyOperator(task_id='my_task')
 
-with DAG(
-    'upstream_dag_3',
+@dag(
     schedule_interval=None,
     default_args=default_args,
     start_date=datetime(2022, 8, 1),
     concurrency=3,
     catchup=False,
-) as dag:
-    
-    my_task = EmptyOperator(
-        task_id='start',
-    )
+) 
+def upstream_dag_3():
+    my_task = EmptyOperator(task_id='my_task')
+
