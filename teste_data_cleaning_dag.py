@@ -37,6 +37,8 @@ def data_cleaning_dag():
             task_id='trigger_data_processing',
             trigger_dag_id='data_processing_dag',
             conf={"clean_data": "processed"},
+            wait_for_completion=True,
+            deferrable=True,  # Note that this parameter only exists in Airflow 2.6+
             dag=data_cleaning_dag
         )
         return trigger
