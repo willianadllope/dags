@@ -31,14 +31,21 @@ default_args = {
     'retry_delay': timedelta(minutes=1),
 }
 
-pastas = scripts.config.pastas;
+pastas = scripts.config.pastas
 
-pastas['tipoCarga'] = 'incremental';
+prod01sql = scripts.config.prod01sql
+
+pastas['tipoCarga'] = 'incremental'
 
 
 def check_carga_em_execucao():
-    x = '2'
-    return "carga_incremental" if x == '1' else "skip_execution"
+    engine = create_engine(f"mssql+pymssql://{prod01sql['UID']}:{prod01sql['PWD']}@{prod01sql['SERVER']}:{prod01sql['PORT']}/{prod01sql['DATABASE']}")
+    con = engine.connect().execution_options(stream_results=True)
+    df = pd.read_sql("SELECT carga from systax_app.snowflake.vw_carga_em_andamento", con)
+    carga = ''
+    for index,row in df.iterrows():
+        carga = row['carga']
+    return "carga_incremental" if carga == 'J' else "skip_execution"
 
 with DAG(
     'carga_incremental',
