@@ -81,7 +81,7 @@ with DAG(
 
     inicia_carga_incremental = BashOperator(
         task_id="inicia_carga_incremental",
-        bash_command="python "+dag.params['scripts']+"update_prod01sql.py '"+dag.params['tipoCarga']+"'"+" "+str(id_carga)+" 1",
+        bash_command="python "+dag.params['scripts']+"update_prod01sql.py '"+dag.params['tipoCarga']+"'"+" 0 1",
         #bash_command="echo 'carga_inicial_truncate'",
     )
 
