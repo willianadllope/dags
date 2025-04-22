@@ -38,7 +38,7 @@ with DAG(
 
     cond_false = ShortCircuitOperator(
         task_id='condition_is_False',
-        python_callable=lambda: True,
+        python_callable=lambda: False,
     )
 
     ds_true = EmptyOperator(task_id='ds_true')
