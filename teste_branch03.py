@@ -21,8 +21,13 @@ with DAG(
         task_id='run_this_first',
     )
 
-    complete = DummyOperator(
-        task_id="complete", 
+    complete_true = DummyOperator(
+        task_id="complete_true", 
+        trigger_rule=TriggerRule.NONE_FAILED,
+    )
+
+    complete_false = DummyOperator(
+        task_id="complete_true", 
         trigger_rule=TriggerRule.NONE_FAILED,
     )
 
@@ -39,5 +44,5 @@ with DAG(
     ds_true = EmptyOperator(task_id='ds_true')
     ds_false = EmptyOperator(task_id='ds_false')
 
-    run_this_first >> cond_true >> ds_true >> complete
-    run_this_first >> cond_false >> ds_false >> complete
+    run_this_first >> cond_true >> ds_true >> complete_true
+    run_this_first >> cond_false >> ds_false >> complete_false
