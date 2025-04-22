@@ -37,15 +37,17 @@ prod01sql = scripts.config.prod01sql
 
 pastas['tipoCarga'] = 'incremental'
 
+id_carga = 0
 
 def check_carga_em_execucao():
     engine = create_engine(f"mssql+pymssql://{prod01sql['UID']}:{prod01sql['PWD']}@{prod01sql['SERVER']}:{prod01sql['PORT']}/{prod01sql['DATABASE']}")
     con = engine.connect().execution_options(stream_results=True)
-    df = pd.read_sql("SELECT carga from systax_app.snowflake.vw_carga_em_andamento", con)
+    df = pd.read_sql("SELECT id, carga from systax_app.snowflake.vw_carga_em_andamento", con)
     carga = ''
     for index,row in df.iterrows():
+        id_carga = row['id']
         carga = row['carga']
-    return "carga_incremental" if carga == 'J' else "skip_execution"
+    return "inicia_carga_incremental" if carga == 'J' else "skip_execution"
 
 with DAG(
     'carga_incremental',
@@ -77,6 +79,11 @@ with DAG(
         python_callable=check_carga_em_execucao,
     )
 
+    inicia_carga_incremental = BashOperator(
+        task_id="inicia_carga_incremental",
+        bash_command="python "+dag.params['scripts']+"update_prod01sql.py '"+dag.params['tipoCarga']+"'"+" "+str(id_carga)+" 1",
+        #bash_command="echo 'carga_inicial_truncate'",
+    )
 
     carga_incremental = BashOperator(
         task_id="carga_incremental",
@@ -421,6 +428,7 @@ with DAG(
     chain(
         start_task, 
         branching,
+        inicia_carga_incremental,
         carga_incremental, 
         limpa_stage, 
         gera_envia_parquet, 
