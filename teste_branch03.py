@@ -4,6 +4,10 @@ from airflow.models.dag import DAG
 from airflow.models.baseoperator import chain
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import ShortCircuitOperator
+from airflow.operators.python import BranchPythonOperator
+from airflow.operators.dummy import DummyOperator
+from airflow.utils.edgemodifier import Label
+from airflow.utils.trigger_rule import TriggerRule
 
 from pendulum import datetime
 
@@ -13,6 +17,14 @@ with DAG(
     schedule="@daily",
     catchup=False,
 ) as dag:
+    run_this_first = EmptyOperator(
+        task_id='run_this_first',
+    )
+
+    complete = DummyOperator(
+        task_id="complete", 
+        trigger_rule=TriggerRule.NONE_FAILED,
+    )
 
     cond_true = ShortCircuitOperator(
         task_id='condition_is_True',
@@ -24,9 +36,8 @@ with DAG(
         python_callable=lambda: False,
     )
 
-    ds_true = [EmptyOperator(task_id='true_' + str(i)) for i in [1, 2]]
-    ds_false = [EmptyOperator(task_id='false_' + str(i)) for i in [1, 2]]
+    ds_true = EmptyOperator(task_id='ds_true')
+    ds_false = EmptyOperator(task_id='ds_false')
 
-    chain(cond_true, *ds_true)
-    chain(cond_false, *ds_false)
-    
+    run_this_first >> cond_true >> ds_true >> complete
+    run_this_first >> cond_false >> ds_false >> complete
