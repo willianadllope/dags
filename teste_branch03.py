@@ -27,7 +27,7 @@ with DAG(
     )
 
     complete_false = DummyOperator(
-        task_id="complete_true", 
+        task_id="complete_false", 
         trigger_rule=TriggerRule.NONE_FAILED,
     )
 
