@@ -8,6 +8,8 @@ from airflow.models.baseoperator import chain
 # Operators; we need this to operate!
 from airflow.operators.bash import BashOperator
 from airflow.operators.dummy import DummyOperator
+from airflow.operators.python import BranchPythonOperator
+from airflow.utils.trigger_rule import TriggerRule
 from airflow.utils.dates import days_ago
 
 from airflow.utils.task_group import TaskGroup
@@ -27,6 +29,11 @@ pastas = scripts.config.pastas;
 
 pastas['tipoCarga'] = 'incremental';
 
+
+def check_carga_em_execucao():
+    x = '2'
+    return "carga_incremental" if x == '1' else "skip_execution"
+
 with DAG(
     'carga_incremental',
     #schedule="@daily",
@@ -42,6 +49,20 @@ with DAG(
     start_task = DummyOperator(
         task_id='start',
     )
+
+    end_task = DummyOperator(
+        task_id='end',
+    )
+
+    skip_execution = DummyOperator(
+        task_id='skip_execution',
+    )
+
+    branching = BranchPythonOperator(
+        task_id='branching',
+        python_callable=check_carga_em_execucao,
+    )
+
 
     carga_incremental = BashOperator(
         task_id="carga_incremental",
@@ -383,12 +404,9 @@ with DAG(
         #bash_command="echo 'carrega_csv_tabelao_prod01sql'",
     )
 
-    end_task = DummyOperator(
-        task_id='end',
-    )
-
     chain(
         start_task, 
+        branching,
         carga_incremental, 
         limpa_stage, 
         gera_envia_parquet, 
@@ -405,6 +423,13 @@ with DAG(
         carrega_csv_tabelao_prod01sql,
         end_task
     )
+
+    chain(
+        start_task, 
+        branching,
+        skip_execution,
+        end_task
+    )    
 ### teste de sobe um restore do DBCarrefourAtualizacao
 ### mudanca para o DBControle do 379 e 380
 ### change 263 para change normal 
