@@ -47,7 +47,7 @@ def check_carga_em_execucao():
     for index,row in df.iterrows():
         id_carga = row['id']
         carga = row['carga']
-    return "inicia_carga_incremental" if carga == 'J' else "skip_execution"
+    return "carga_incremental" if carga == 'J' else "inicia_carga_incremental"
 
 with DAG(
     'carga_incremental',
@@ -428,7 +428,6 @@ with DAG(
     chain(
         start_task, 
         branching,
-        inicia_carga_incremental,
         carga_incremental, 
         limpa_stage, 
         gera_envia_parquet, 
@@ -449,6 +448,7 @@ with DAG(
     chain(
         start_task, 
         branching,
+        inicia_carga_incremental,
         skip_execution,
         end_task
     )    
