@@ -52,6 +52,7 @@ with DAG(
 
     end_task = DummyOperator(
         task_id='end',
+        trigger_rule=TriggerRule.NONE_FAILED,
     )
 
     skip_execution = DummyOperator(
