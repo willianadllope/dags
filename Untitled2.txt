@@ -1,0 +1,15 @@
+id bigint, id_cliente int, id_config int, cod_prod varchar(120), id_custom_prod int, id_custom_prod_padrao int, id_cache_icms int, id_cache_st int,
+id_cache_pis int, id_cache_cofins int, id_cache_ipi int, id_cache_antec int, origem_produto int, versao tinyint, menorts bigint, icms_ts bigint,
+st_ts bigint, ipi_ts bigint, pis_ts bigint, cofins_ts bigint, antec_ts bigint, flag_produto_pai tinyint
+
+03, 04, 07, 09, 10, 11, 13, 14, 15, 16
+
+
+05, 06, 12, 14
+
+---
+
+3, 4, 7, 9, 10,11,12,13,15,16
+
+UsrCKptwb2018!
+

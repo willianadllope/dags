@@ -37,15 +37,12 @@ prod01sql = scripts.config.prod01sql
 
 pastas['tipoCarga'] = 'incremental'
 
-id_carga = 0
-
 def check_carga_em_execucao():
     engine = create_engine(f"mssql+pymssql://{prod01sql['UID']}:{prod01sql['PWD']}@{prod01sql['SERVER']}:{prod01sql['PORT']}/{prod01sql['DATABASE']}")
     con = engine.connect().execution_options(stream_results=True)
-    df = pd.read_sql("SELECT id, carga from systax_app.snowflake.vw_carga_em_andamento", con)
+    df = pd.read_sql("SELECT carga from systax_app.snowflake.vw_carga_em_andamento", con)
     carga = ''
     for index,row in df.iterrows():
-        id_carga = row['id']
         carga = row['carga']
     return "inicia_carga_incremental" if carga == 'I' else "skip_execution"
 
@@ -82,6 +79,12 @@ with DAG(
     inicia_carga_incremental = BashOperator(
         task_id="inicia_carga_incremental",
         bash_command="python "+dag.params['scripts']+"update_prod01sql.py '"+dag.params['tipoCarga']+"'"+" 0 1",
+        #bash_command="echo 'carga_inicial_truncate'",
+    )
+
+    finaliza_carga_incremental = BashOperator(
+        task_id="finaliza_carga_incremental",
+        bash_command="python "+dag.params['scripts']+"update_prod01sql.py '"+dag.params['tipoCarga']+"'"+" 1 100",
         #bash_command="echo 'carga_inicial_truncate'",
     )
 
@@ -443,6 +446,7 @@ with DAG(
         envia_tabelao_s3,
         download_csvs_tabelao,
         carrega_csv_tabelao_prod01sql,
+        finaliza_carga_incremental,
         end_task
     )
 

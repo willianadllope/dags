@@ -1,4 +1,11 @@
+import sys
+import os
+import shutil
+from time import time
 from datetime import timedelta, datetime
+from sqlalchemy import create_engine
+import pandas as pd
+
 import scripts.config
 
 # The DAG object; we'll need this to instantiate a DAG
@@ -8,6 +15,9 @@ from airflow.models.baseoperator import chain
 # Operators; we need this to operate!
 from airflow.operators.bash import BashOperator
 from airflow.operators.dummy import DummyOperator
+from airflow.operators.python import BranchPythonOperator
+from airflow.utils.trigger_rule import TriggerRule
+
 from airflow.utils.dates import days_ago
 
 from airflow.utils.task_group import TaskGroup
@@ -23,9 +33,19 @@ default_args = {
     'retry_delay': timedelta(minutes=1),
 }
 
-pastas = scripts.config.pastas;
+pastas = scripts.config.pastas
+prod01sql = scripts.config.prod01sql
 
-pastas['tipoCarga'] = 'full';
+pastas['tipoCarga'] = 'full'
+
+def check_carga_em_execucao():
+    engine = create_engine(f"mssql+pymssql://{prod01sql['UID']}:{prod01sql['PWD']}@{prod01sql['SERVER']}:{prod01sql['PORT']}/{prod01sql['DATABASE']}")
+    con = engine.connect().execution_options(stream_results=True)
+    df = pd.read_sql("SELECT carga from systax_app.snowflake.vw_carga_em_andamento", con)
+    carga = ''
+    for index,row in df.iterrows():
+        carga = row['carga']
+    return "inicia_carga_full" if carga == 'F' else "skip_execution"
 
 with DAG(
     'carga_inicial_full',
@@ -41,6 +61,32 @@ with DAG(
     
     start_task = DummyOperator(
         task_id='start',
+    )
+
+    end_task = DummyOperator(
+        task_id='end',
+        trigger_rule=TriggerRule.NONE_FAILED,
+    )
+
+    skip_execution = DummyOperator(
+        task_id='skip_execution',
+    )
+
+    branching = BranchPythonOperator(
+        task_id='branching',
+        python_callable=check_carga_em_execucao,
+    )
+
+    inicia_carga_full = BashOperator(
+        task_id="inicia_carga_full",
+        bash_command="python "+dag.params['scripts']+"update_prod01sql.py '"+dag.params['tipoCarga']+"'"+" 0 1",
+        #bash_command="echo 'carga_inicial_truncate'",
+    )
+
+    finaliza_carga_full = BashOperator(
+        task_id="finaliza_carga_full",
+        bash_command="python "+dag.params['scripts']+"update_prod01sql.py '"+dag.params['tipoCarga']+"'"+" 1 100",
+        #bash_command="echo 'carga_inicial_truncate'",
     )
 
     with TaskGroup(
@@ -94,6 +140,31 @@ with DAG(
             bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py '"+dag.params['tipoCarga']+"' 'tributos_internos_cache'",
             #bash_command="echo 'carga_chunk_tributos_internos_cache'",
         )
+        carga_chunk_usuarios = BashOperator(
+            task_id="carga_chunk_usuarios",
+            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py '"+dag.params['tipoCarga']+"' 'usuarios'",
+            #bash_command="echo 'carga_chunk_usuarios'",
+        )
+        carga_chunk_usuario_clientes = BashOperator(
+            task_id="carga_chunk_usuario_clientes",
+            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py '"+dag.params['tipoCarga']+"' 'usuario_clientes'",
+            #bash_command="echo 'carga_chunk_usuarios'",
+        )
+        carga_chunk_licencas_controle = BashOperator(
+            task_id="carga_chunk_licencas_controle",
+            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py '"+dag.params['tipoCarga']+"' 'licencas_controle'",
+            #bash_command="echo 'carga_chunk_licencas_controle'",
+        )
+        carga_chunk_custom_prod_rel_cigarros = BashOperator(
+            task_id="carga_chunk_custom_prod_rel_cigarros",
+            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py '"+dag.params['tipoCarga']+"' 'custom_prod_rel_cigarros'",
+            #bash_command="echo 'carga_chunk_custom_prod_rel_cigarros'",
+        )        
+        carga_chunk_custom_prod_figuras_fiscais = BashOperator(
+            task_id="carga_chunk_custom_prod_figuras_fiscais",
+            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql_chunks.py '"+dag.params['tipoCarga']+"' 'custom_prod_figuras_fiscais'",
+            #bash_command="echo 'carga_chunk_custom_prod_figuras_fiscais'",
+        )                
         chain(
             carga_chunk_clientes,
             carga_chunk_grupo,
@@ -102,6 +173,11 @@ with DAG(
             carga_chunk_tributos_internos_cache_config,            
             carga_chunk_tributos_internos_cache_st,
             carga_chunk_custom_prod,
+            carga_chunk_custom_prod_rel_cigarros,
+            carga_chunk_custom_prod_figuras_fiscais,
+            carga_chunk_usuarios,
+            carga_chunk_usuario_clientes,
+            carga_chunk_licencas_controle,
             carga_chunk_grupo_custom_prod,
             carga_chunk_tributos_internos_cache
         )
@@ -121,6 +197,16 @@ with DAG(
             task_id="carga_custom_prod",
             bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_custom_prod' '"+dag.params['tipoCarga']+"'",
             #bash_command="echo 'carga_custom_prod'",
+        )
+        carga_custom_prod_rel_cigarros = BashOperator(
+            task_id="carga_custom_prod_rel_cigarros",
+            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_custom_prod_rel_cigarros' '"+dag.params['tipoCarga']+"'",
+            #bash_command="echo 'carga_custom_prod_rel_cigarros'",
+        )
+        carga_custom_prod_figuras_fiscais = BashOperator(
+            task_id="carga_custom_prod_figuras_fiscais",
+            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_custom_prod_figuras_fiscais' '"+dag.params['tipoCarga']+"'",
+            #bash_command="echo 'carga_custom_prod_figuras_fiscais'",
         )
         carga_cean_relacionado = BashOperator(
             task_id="carga_cean_relacionado",
@@ -147,6 +233,21 @@ with DAG(
             bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_clientes' '"+dag.params['tipoCarga']+"'",
             #bash_command="echo 'carga_clientes'",
         )
+        carga_usuarios = BashOperator(
+            task_id="carga_usuarios",
+            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_usuarios' '"+dag.params['tipoCarga']+"'",
+            #bash_command="echo 'carga_usuarios'",
+        )        
+        carga_usuario_clientes = BashOperator(
+            task_id="carga_usuario_clientes",
+            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_usuario_clientes' '"+dag.params['tipoCarga']+"'",
+            #bash_command="echo 'carga_usuario_clientes'",
+        )                
+        carga_licencas_controle = BashOperator(
+            task_id="carga_licencas_controle",
+            bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_licencas_controle' '"+dag.params['tipoCarga']+"'",
+            #bash_command="echo 'carga_licencas_controle'",
+        )        
         carga_tributos_internos_cache_st = BashOperator(
             task_id="carga_tributos_internos_cache_st",
             bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_preparar_carga_tributos_internos_cache_st' '"+dag.params['tipoCarga']+"'",
@@ -173,6 +274,11 @@ with DAG(
             carga_grupo,
             carga_grupo_config,
             carga_clientes,
+            carga_usuarios,
+            carga_usuario_clientes,
+            carga_custom_prod_figuras_fiscais,
+            carga_custom_prod_rel_cigarros,
+            carga_licencas_controle,
             carga_tributos_internos_cache_config,
             carga_grupo_custom_prod,
             carga_tributos_internos_cache_st,
@@ -196,6 +302,26 @@ with DAG(
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py clientes "+dag.params['tipoCarga'],
             #bash_command="echo 'parquet_clientes'",
         )
+        parquet_usuarios = BashOperator(
+            task_id="parquet_usuarios",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py usuarios "+dag.params['tipoCarga'],
+            #bash_command="echo 'parquet_usuarios'",
+        )        
+        parquet_usuario_clientes = BashOperator(
+            task_id="parquet_usuario_clientes",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py usuario_clientes "+dag.params['tipoCarga'],
+            #bash_command="echo 'parquet_usuario_clientes'",
+        )                
+        parquet_custom_prod_rel_cigarros = BashOperator(
+            task_id="parquet_custom_prod_rel_cigarros",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod_rel_cigarros "+dag.params['tipoCarga'],
+            #bash_command="echo 'parquet_custom_prod_rel_cigarros'",
+        )                        
+        parquet_licencas_controle = BashOperator(
+            task_id="parquet_licencas_controle",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py licencas_controle "+dag.params['tipoCarga'],
+            #bash_command="echo 'parquet_licencas_controle'",
+        )                        
         parquet_grupo_config = BashOperator(
             task_id="parquet_grupo_config",
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py grupo_config "+dag.params['tipoCarga'],
@@ -229,6 +355,10 @@ with DAG(
         chain(parquet_clientes, 
               parquet_grupo_config, 
               parquet_cean_relacionado,
+              parquet_custom_prod_rel_cigarros,
+              parquet_usuarios,
+              parquet_usuario_clientes,
+              parquet_licencas_controle,
               parquet_agrupamento_produtos, 
               parquet_ex_origem_cache_familia, 
               parquet_ts_diario, 
@@ -266,6 +396,31 @@ with DAG(
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod "+dag.params['tipoCarga']+" 41 50",
             #bash_command="echo 'parquet_custom_prod_005'",
         )
+        parquet_custom_prod_figuras_fiscais_001 = BashOperator(
+            task_id="parquet_custom_prod_figuras_fiscais_001",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod_figuras_fiscais "+dag.params['tipoCarga']+" 1 10",
+            #bash_command="echo 'parquet_custom_prod_figuras_fiscais_001'",
+        )
+        parquet_custom_prod_figuras_fiscais_002 = BashOperator(
+            task_id="parquet_custom_prod_figuras_fiscais_002",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod_figuras_fiscais "+dag.params['tipoCarga']+" 11 20",
+            #bash_command="echo 'parquet_custom_prod_figuras_fiscais_002'",
+        )
+        parquet_custom_prod_figuras_fiscais_003 = BashOperator(
+            task_id="parquet_custom_prod_figuras_fiscais_003",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod_figuras_fiscais "+dag.params['tipoCarga']+" 21 30",
+            #bash_command="echo 'parquet_custom_prod_figuras_fiscais_003'",
+        )
+        parquet_custom_prod_figuras_fiscais_004 = BashOperator(
+            task_id="parquet_custom_prod_figuras_fiscais_004",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod_figuras_fiscais "+dag.params['tipoCarga']+" 31 40",
+            #bash_command="echo 'parquet_custom_prod_figuras_fiscais_004'",
+        )
+        parquet_custom_prod_figuras_fiscais_005 = BashOperator(
+            task_id="parquet_custom_prod_figuras_fiscais_005",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod_figuras_fiscais "+dag.params['tipoCarga']+" 41 50",
+            #bash_command="echo 'parquet_custom_prod_figuras_fiscais_005'",
+        )
         parquet_grupo_custom_prod_001 = BashOperator(
             task_id="parquet_grupo_custom_prod_001",
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py grupo_custom_prod "+dag.params['tipoCarga']+" 1 10",
@@ -299,6 +454,13 @@ with DAG(
                 parquet_custom_prod_004, 
                 parquet_custom_prod_005
             ],
+            [ 
+                parquet_custom_prod_figuras_fiscais_001,
+                parquet_custom_prod_figuras_fiscais_002, 
+                parquet_custom_prod_figuras_fiscais_003, 
+                parquet_custom_prod_figuras_fiscais_004, 
+                parquet_custom_prod_figuras_fiscais_005
+            ],            
             [
                 parquet_grupo_custom_prod_001, 
                 parquet_grupo_custom_prod_002, 
@@ -402,6 +564,11 @@ with DAG(
             bash_command="python "+dag.params['scripts']+"upload_snowflake.py custom_prod "+dag.params['tipoCarga'],
             #bash_command="echo 'envia_parquet_custom_prod'",
         )
+        envia_parquet_custom_prod_figuras_fiscais = BashOperator(
+            task_id="envia_parquet_custom_prod_figuras_fiscais",
+            bash_command="python "+dag.params['scripts']+"upload_snowflake.py custom_prod_figuras_fiscais "+dag.params['tipoCarga'],
+            #bash_command="echo 'envia_parquet_custom_prod_figuras_fiscais'",
+        )        
         envia_parquet_grupo_custom_prod = BashOperator(
             task_id="envia_parquet_grupo_custom_prod",
             bash_command="python "+dag.params['scripts']+"upload_snowflake.py grupo_custom_prod "+dag.params['tipoCarga'],
@@ -458,12 +625,10 @@ with DAG(
             #bash_command="echo 'carrega_csv_tabelao_prod01sql'",
     )
 
-    end_task = DummyOperator(
-        task_id='end',
-    )
-
     chain(
         start_task, 
+        branching,
+        inicia_carga_full,
         carrega_ids, 
         limpa_stage, 
         gera_envia_parquet, 
@@ -477,8 +642,16 @@ with DAG(
         envia_tabelao_s3,
         download_csvs_tabelao,
         carrega_csv_tabelao_prod01sql,
+        finaliza_carga_full,
         end_task
     )
+
+    chain(
+        start_task, 
+        branching,
+        skip_execution,
+        end_task
+    )    
 ### teste de sobe um restore do DBCarrefourAtualizacao
 ### mudanca para o DBControle do 379 e 380
 ### change 263 para change normal 

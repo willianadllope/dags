@@ -111,7 +111,7 @@ def main():
         cons = consulta.consulta.replace('[SNOWFLAKE]','snowflake_'+tipoExecucao.lower())
         if(posicao==1):
           delete_files_directory(tipoExecucao, consulta.tabela)
-        if(consulta.tabela in ('tributos_internos_cache', 'tributos_internos_cache_st', 'custom_prod', 'grupo_custom_prod') ):
+        if(consulta.tabela in ('tributos_internos_cache', 'tributos_internos_cache_st', 'custom_prod', 'grupo_custom_prod','custom_prod_figuras_fiscais') ):
           while posicao<=posicao_final:
             stringposicao = str(posicao)
             if(posicao < 10):

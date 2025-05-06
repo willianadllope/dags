@@ -29,6 +29,41 @@ sql_queries =   [
                   limite=100000
                 ),
         Consultas(consulta="""
+                SELECT id, id_cliente, cod_prod_systax, cod_prod_cliente, menorts, convert(bigint,ts) as ts
+                    FROM systax_app.dbo.custom_prod_figuras_fiscais a(NOLOCK)
+                    WHERE exists(SELECT TOP 1 1 FROM systax_app.[SNOWFLAKE].enviar_custom_prod_figuras_fiscais ecp (NOLOCK) WHERE ecp.id = a.id and ecp.posicao = [POSICAO] );
+                  """,
+                  tabela='custom_prod_figuras_fiscais',
+                  limite=1000000),   
+        Consultas(consulta="""
+                  SELECT id, id_cliente, cod_produto, id_produto_configuracao, origem_produto, id_trib_cigarro, dt_cadastro 
+                    FROM systax_app.dbo.custom_prod_rel_cigarros (NOLOCK);
+                  """, 
+                  tabela='custom_prod_rel_cigarros',
+                  limite=100000
+                ),
+        Consultas(consulta="""
+                  SELECT id, id_cliente, cod_produto, id_produto_configuracao, origem_produto, id_trib_cigarro, dt_cadastro 
+                    FROM systax_app.dbo.usuarios (NOLOCK);
+                  """, 
+                  tabela='usuarios',
+                  limite=100000
+                ),
+        Consultas(consulta="""
+                  SELECT id, id_usuario, id_cliente
+                    FROM systax_app.dbo.usuario_clientes(NOLOCK);
+                  """, 
+                  tabela='usuario_clientes',
+                  limite=100000
+                ),                
+        Consultas(consulta="""
+                  SELECT id, id_servico, id_usuario, id_cliente, id_cliente_sistema, id_sistema, saldo_creditos, limite_alerta, limite_alerta_enviado, dt_expiracao, controle_creditos, ativo
+                    FROM systax_app.dbo.licencas_controle(NOLOCK);
+                  """, 
+                  tabela='licencas_controle',
+                  limite=100000
+                ),                                
+        Consultas(consulta="""
                 SELECT id,
                         id_cli,
                         cod_prod,
@@ -85,7 +120,7 @@ sql_queries =   [
                   tabela='custom_prod',
                   limite=1000000),
         Consultas(consulta="""
-                SELECT id, cean14_padrao, cean14_vinculado, convert(bigint,ts) as ts 
+                SELECT id, cean14_padrao, cean14_vinculado, convert(bigint,ts) as ts, descricao_original 
                     FROM systax_app.dbo.cean_relacionado a(NOLOCK)
                     WHERE exists(SELECT TOP 1 1 FROM systax_app.[SNOWFLAKE].enviar_cean_relacionado ecp (NOLOCK) WHERE ecp.id = a.id);
                   """,
@@ -170,6 +205,31 @@ sql_queries =   [
                   """,
                   tabela='apagar_cean_relacionado',
                   limite=1000000),
+        Consultas(consulta="""
+                    SELECT id FROM systax_app.snowflake.apagar_usuarios;
+                  """,
+                  tabela='apagar_usuarios',
+                  limite=1000000),                  
+        Consultas(consulta="""
+                    SELECT id FROM systax_app.snowflake.apagar_usuario_clientes;
+                  """,
+                  tabela='apagar_usuario_clientes',
+                  limite=1000000),                                    
+        Consultas(consulta="""
+                    SELECT id FROM systax_app.snowflake.apagar_licencas_controle;
+                  """,
+                  tabela='apagar_licencas_controle',
+                  limite=1000000),                                                      
+        Consultas(consulta="""
+                    SELECT id FROM systax_app.snowflake.apagar_custom_prod_rel_cigarros;
+                  """,
+                  tabela='apagar_custom_prod_rel_cigarros',
+                  limite=1000000),                                    
+        Consultas(consulta="""
+                    SELECT id FROM systax_app.snowflake.apagar_custom_prod_figuras_fiscais;
+                  """,
+                  tabela='apagar_custom_prod_figuras_fiscais',
+                  limite=1000000),                                                      
         Consultas(consulta="""
                     SELECT id FROM systax_app.snowflake.apagar_grupo_custom_prod;
                   """,
