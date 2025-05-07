@@ -631,7 +631,7 @@ with DAG(
         branching,
         ## inicia_carga_full,
         ## carrega_ids, 
-        ## limpa_stage, 
+        limpa_stage, 
         gera_envia_parquet, 
         gera_parquet_custom_prod,
         gera_parquet_caches, 
