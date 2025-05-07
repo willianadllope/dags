@@ -43,7 +43,25 @@ sql_queries =   [
                   limite=100000
                 ),
         Consultas(consulta="""
-                  SELECT id, id_cliente, cod_produto, id_produto_configuracao, origem_produto, id_trib_cigarro, dt_cadastro 
+                  SELECT id, 
+                      id_usuario_pai, 
+                      tipo, 
+                      nome, 
+                      ddd, 
+                      telefone, 
+                      ramal, 
+                      email, 
+                      username, 
+                      senha, 
+                      pre_credito, 
+                      notas, 
+                      ativo, 
+                      deletado, 
+                      nivel_admin, 
+                      nome_revisado, 
+                      flag_senha_primeiro_acesso, 
+                      flag_expira_senha, 
+                      data_expira_senha
                     FROM systax_app.dbo.usuarios (NOLOCK);
                   """, 
                   tabela='usuarios',

@@ -629,9 +629,9 @@ with DAG(
     chain(
         start_task, 
         branching,
-        inicia_carga_full,
-        carrega_ids, 
-        limpa_stage, 
+        ## inicia_carga_full,
+        ## carrega_ids, 
+        ## limpa_stage, 
         gera_envia_parquet, 
         gera_parquet_custom_prod,
         gera_parquet_caches, 
