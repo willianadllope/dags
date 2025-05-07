@@ -111,6 +111,26 @@ with DAG(
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py clientes "+dag.params['tipoCarga'],
             #bash_command="echo 'parquet_clientes'",
         )
+        parquet_usuarios = BashOperator(
+            task_id="parquet_usuarios",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py usuarios "+dag.params['tipoCarga'],
+            #bash_command="echo 'parquet_usuarios'",
+        )        
+        parquet_usuario_clientes = BashOperator(
+            task_id="parquet_usuario_clientes",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py usuario_clientes "+dag.params['tipoCarga'],
+            #bash_command="echo 'parquet_usuario_clientes'",
+        )                
+        parquet_custom_prod_rel_cigarros = BashOperator(
+            task_id="parquet_custom_prod_rel_cigarros",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod_rel_cigarros "+dag.params['tipoCarga'],
+            #bash_command="echo 'parquet_custom_prod_rel_cigarros'",
+        )                        
+        parquet_licencas_controle = BashOperator(
+            task_id="parquet_licencas_controle",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py licencas_controle "+dag.params['tipoCarga'],
+            #bash_command="echo 'parquet_licencas_controle'",
+        )                        
         parquet_grupo_config = BashOperator(
             task_id="parquet_grupo_config",
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py grupo_config "+dag.params['tipoCarga'],
@@ -142,6 +162,10 @@ with DAG(
             #bash_command="echo 'parquet_tributos_internos_cache_config'",
         )
         chain(parquet_clientes, 
+              parquet_usuarios,
+              parquet_usuario_clientes,
+              parquet_licencas_controle,
+              parquet_custom_prod_rel_cigarros,
               parquet_grupo_config, 
               parquet_cean_relacionado,
               parquet_agrupamento_produtos, 
@@ -181,6 +205,31 @@ with DAG(
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod "+dag.params['tipoCarga']+" 41 50",
             #bash_command="echo 'parquet_custom_prod_005'",
         )
+        parquet_custom_prod_figuras_fiscais_001 = BashOperator(
+            task_id="parquet_custom_prod_figuras_fiscais_001",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod_figuras_fiscais "+dag.params['tipoCarga']+" 1 10",
+            #bash_command="echo 'parquet_custom_prod_figuras_fiscais_001'",
+        )
+        parquet_custom_prod_figuras_fiscais_002 = BashOperator(
+            task_id="parquet_custom_prod_figuras_fiscais_002",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod_figuras_fiscais "+dag.params['tipoCarga']+" 11 20",
+            #bash_command="echo 'parquet_custom_prod_figuras_fiscais_002'",
+        )
+        parquet_custom_prod_figuras_fiscais_003 = BashOperator(
+            task_id="parquet_custom_prod_figuras_fiscais_003",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod_figuras_fiscais "+dag.params['tipoCarga']+" 21 30",
+            #bash_command="echo 'parquet_custom_prod_figuras_fiscais_003'",
+        )
+        parquet_custom_prod_figuras_fiscais_004 = BashOperator(
+            task_id="parquet_custom_prod_figuras_fiscais_004",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod_figuras_fiscais "+dag.params['tipoCarga']+" 31 40",
+            #bash_command="echo 'parquet_custom_prod_figuras_fiscais_004'",
+        )
+        parquet_custom_prod_figuras_fiscais_005 = BashOperator(
+            task_id="parquet_custom_prod_figuras_fiscais_005",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py custom_prod_figuras_fiscais "+dag.params['tipoCarga']+" 41 50",
+            #bash_command="echo 'parquet_custom_prod_figuras_fiscais_005'",
+        )
         parquet_grupo_custom_prod_001 = BashOperator(
             task_id="parquet_grupo_custom_prod_001",
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py grupo_custom_prod "+dag.params['tipoCarga']+" 1 10",
@@ -213,6 +262,13 @@ with DAG(
                 parquet_custom_prod_003, 
                 parquet_custom_prod_004, 
                 parquet_custom_prod_005
+            ],
+            [ 
+                parquet_custom_prod_figuras_fiscais_001,
+                parquet_custom_prod_figuras_fiscais_002, 
+                parquet_custom_prod_figuras_fiscais_003, 
+                parquet_custom_prod_figuras_fiscais_004, 
+                parquet_custom_prod_figuras_fiscais_005
             ],
             [
                 parquet_grupo_custom_prod_001, 
@@ -317,6 +373,11 @@ with DAG(
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py apagar_custom_prod "+dag.params['tipoCarga'],
             #bash_command="echo 'apagar_custom_prod'",
         )
+        apagar_custom_prod_figuras_fiscais = BashOperator(
+            task_id="apagar_custom_prod_figuras_fiscais",
+            bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py apagar_custom_prod_figuras_fiscais "+dag.params['tipoCarga'],
+            #bash_command="echo 'apagar_custom_prod'",
+        )
         apagar_grupo_custom_prod = BashOperator(
             task_id="apagar_grupo_custom_prod",
             bash_command="python "+dag.params['scripts']+"parquet_geracao_envio.py apagar_grupo_custom_prod "+dag.params['tipoCarga'],
@@ -368,6 +429,11 @@ with DAG(
             bash_command="python "+dag.params['scripts']+"upload_snowflake.py tributos_internos_cache_st "+dag.params['tipoCarga'],
             #bash_command="echo 'envia_parquet_tributos_internos_cache_st'",
         )
+        envia_parquet_custom_prod_figuras_fiscais = BashOperator(
+            task_id="envia_parquet_custom_prod_figuras_fiscais",
+            bash_command="python "+dag.params['scripts']+"upload_snowflake.py custom_prod_figuras_fiscais "+dag.params['tipoCarga'],
+            #bash_command="echo 'envia_parquet_custom_prod_figuras_fiscais'",
+        ) 
         envia_parquet_custom_prod = BashOperator(
             task_id="envia_parquet_custom_prod",
             bash_command="python "+dag.params['scripts']+"upload_snowflake.py custom_prod "+dag.params['tipoCarga'],
@@ -381,6 +447,7 @@ with DAG(
         chain(
             [ 
                 envia_parquet_custom_prod,
+                envia_parquet_custom_prod_figuras_fiscais,
                 envia_parquet_grupo_custom_prod,
                 envia_parquet_tributos_internos_cache,
                 envia_parquet_tributos_internos_cache_st
