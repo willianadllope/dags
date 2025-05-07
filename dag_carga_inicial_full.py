@@ -577,6 +577,7 @@ with DAG(
         chain(
             [ 
                 envia_parquet_custom_prod,
+                envia_parquet_custom_prod_figuras_fiscais,
                 envia_parquet_grupo_custom_prod,
                 envia_parquet_tributos_internos_cache,
                 envia_parquet_tributos_internos_cache_st
@@ -628,8 +629,8 @@ with DAG(
     chain(
         start_task, 
         branching,
-        inicia_carga_full,
-        carrega_ids, 
+       # inicia_carga_full,
+       # carrega_ids, 
         limpa_stage, 
         gera_envia_parquet, 
         gera_parquet_custom_prod,
