@@ -1,6 +1,6 @@
 import psycopg2
 
-connection = psycopg2.connect(database="systax", user="systax", password="SystX201406psql", host="dbcentralizada.cwvlwwjgliab.us-east-1.rds.amazonaws.com", port=5432)
+connection = psycopg2.connect(database="systax", user="systax", password="SystX201406@psql", host="dbcentralizada.cwvlwwjgliab.us-east-1.rds.amazonaws.com", port=5432)
 
 cursor = connection.cursor()
 
