@@ -52,5 +52,5 @@ def export_query_to_parquet(sql,pasta, fileprefix, limit):
 
 delete_files_directory(pastas['ajusteponteirords'])
 
-export_query_to_parquet("Select id_cliente, id_config, cod_prod, origem_produto, menorts from systax.[public].tabelao limit 1000000", "ajusteponteirords", "regrasponteiros",200000)
+export_query_to_parquet("Select id_cliente, id_config, cod_prod, origem_produto, menorts from public.tabelao limit 1000000", "ajusteponteirords", "regrasponteiros",200000)
 
