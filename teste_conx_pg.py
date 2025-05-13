@@ -1,6 +1,9 @@
 import psycopg2
 import pandas as pd
 import config
+import sys
+import os
+import shutil
 from time import time
 from datetime import datetime
 
@@ -9,6 +12,14 @@ pgentrega = config.pgentrega
 pastas = config.pastas 
 
 con = psycopg2.connect(database=pgentrega['DATABASE'], user=pgentrega['UID'], password=pgentrega['PWD'], host=pgentrega['SERVER'], port=pgentrega['PORT'])
+
+def delete_files_directory(directory_path):
+    if os.path.exists(directory_path):
+        shutil.rmtree(directory_path)
+        print(f"The directory {directory_path} has been deleted.")
+    else:
+        print(f"The directory {directory_path} does not exist.")     
+    os.makedirs(directory_path)
 
 def export_query_to_parquet(sql,pasta, fileprefix, limit):
     time_step = time()
@@ -39,5 +50,7 @@ def export_query_to_parquet(sql,pasta, fileprefix, limit):
 #    print("id_cliente = ",row['id_cliente'])
 #    print("id_config = ",row['id_config'])
 
-export_query_to_parquet("Select id_cliente, id_config from tabelao_futuro_copia limit 1000000", "ajusteponteirords", "regrasponteiros",100000)
+delete_files_directory(pastas['ajusteponteirords'])
+
+export_query_to_parquet("Select id_cliente, id_config, cod_prod, origem_produto, menorts from tabelao_futuro_copia limit 1000000", "ajusteponteirords", "regrasponteiros",100000)
 
