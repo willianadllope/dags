@@ -32,6 +32,5 @@ pastas = {
     'parquet':'/parquet2/tabelao/',
     'parquetfull':'/parquet2/tabelao/FULL/',
     'parquetincremental':'/parquet2/tabelao/INCREMENTAL/',
-    'ajusteponteirords':'/parquet2/tabelao/ajuste_ponteiro_rds/',
     'tipoCarga':''
 }

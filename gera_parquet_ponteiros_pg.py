@@ -7,7 +7,6 @@ import shutil
 from time import time
 from datetime import datetime
 
-
 pgentrega = config.pgentrega
 pastas = config.pastas 
 
@@ -50,7 +49,7 @@ def export_query_to_parquet(sql,pasta, fileprefix, limit):
 #    print("id_cliente = ",row['id_cliente'])
 #    print("id_config = ",row['id_config'])
 
-delete_files_directory(pastas['ajusteponteirords'])
+delete_files_directory(pastas['parquet']+'FULL/ajusteponteirords/')
 
-export_query_to_parquet("Select id_cliente, id_config, cod_prod, origem_produto, menorts from public.tabelao limit 1000000", "ajusteponteirords", "regrasponteiros",200000)
+export_query_to_parquet("Select id_cliente, id_config, cod_prod, origem_produto, menorts from public.tabelao limit 1000000", pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros",200000)
 
