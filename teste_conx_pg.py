@@ -9,7 +9,7 @@ con = psycopg2.connect(database="systax", user="systax", password="SystX201406@p
 # Fetch all rows from database
 # record = cursor.fetchall()
 
-print("Data from Database:- ", record)
+#print("Data from Database:- ", record)
 
 df = pd.read_sql("SELECT id_cliente, id_config from tabelao_futuro_copia limit 10", con)
 
