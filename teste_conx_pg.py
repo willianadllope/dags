@@ -1,9 +1,10 @@
 import psycopg2
 import pandas as pd
-import config as cfg
+import config
 
+pgentrega = config.pgentrega
 
-con = psycopg2.connect(database=cfg.pgentrega['DATABASE'], user=cfg.pgentrega['UID'], password=cfg.pgentrega['PWD'], host=cfg.pgentrega['SERVER'], port=cfg.pgentrega['PORT'])
+con = psycopg2.connect(database=pgentrega['DATABASE'], user=pgentrega['UID'], password=pgentrega['PWD'], host=pgentrega['SERVER'], port=pgentrega['PORT'])
 
 
 # cursor = connection.cursor()
