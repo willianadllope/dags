@@ -8,6 +8,14 @@ prod01sql = {
     'PWD': 'billpoker13!'
 }
 
+pgentrega = {
+    'SERVER': 'dbcentralizada.cwvlwwjgliab.us-east-1.rds.amazonaws.com',
+    'DATABASE': 'systax',
+    'PORT': '5432',
+    'UID': 'systax',
+    'PWD': 'SystX201406@psql'
+}
+
 snowtabelao = {
     'user':'SYSTAXSNOW24',
     'password':'Dkjj$@8$g@hgsgj!!',
@@ -23,6 +31,7 @@ pastas = {
     'parquet':'/parquet2/tabelao/',
     'parquetfull':'/parquet2/tabelao/FULL/',
     'parquetincremental':'/parquet2/tabelao/INCREMENTAL/',
+    'ajusteponteirords':'/parquet2/tabelao/ajuste_ponteiro_rds/',
     'tipoCarga':''
 }
 
