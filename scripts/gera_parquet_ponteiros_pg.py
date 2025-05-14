@@ -49,6 +49,32 @@ def export_query_to_parquet(sql,pasta, fileprefix, limit):
 #    print("id_cliente = ",row['id_cliente'])
 #    print("id_config = ",row['id_config'])
 
-delete_files_directory(pastas['parquet']+'FULL/ajusteponteirords/')
-export_query_to_parquet("Select id_cliente, id_config, cod_prod, origem_produto, menorts from public.tabelao_futuro where menorts > 500000000000 and cod_prod not ilike '%;%'", pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros",200000)
+
+
+criartabela = 0
+apagararquivos = 0
+inicio = 1
+fim = 1000000
+
+if len(sys.argv)  >= 2:
+    inicio = sys.argv[1]
+ 
+if len(sys.argv)  >= 3:
+    fim = sys.argv[2]
+
+if len(sys.argv)  >= 4:
+    criartabela = sys.argv[3]
+ 
+if len(sys.argv)  >= 5:
+    apagararquivos = sys.argv[4]
+
+if criartabela == 1:
+    cursor = con.cursor()
+    cursor.execute("select public.fc_gera_tabela_ponteiros();")
+
+if apagararquivos == 1:
+    delete_files_directory(pastas['parquet']+'FULL/ajusteponteirords/')
+
+comando = "Select id_cliente, id_config, cod_prod, origem_produto, menorts from public.tabelao_futuro where menorts > 500000000000 and cod_prod not ilike '%;%' and posicao >= "+inicio+" and posicao < "+fim+";"
+export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros",inicio, 200000)
 
