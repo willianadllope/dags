@@ -76,5 +76,5 @@ if apagararquivos == 1:
     delete_files_directory(pastas['parquet']+'FULL/ajusteponteirords/')
 
 comando = "Select id_cliente, id_config, cod_prod, origem_produto, menorts from public.tbl_ponteiros_rds where posicao >= "+str(inicio)+" and posicao < "+str(fim)
-export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros",inicio, 200000)
+export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", 200000)
 
