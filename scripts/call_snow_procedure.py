@@ -34,6 +34,7 @@ print(results)
 cs.close()
 
 #print('fechou')
-## 
+## python scripts/gera_parquet_ponteiros_pg.py
+## python scripts/upload_snowflake.py ajusteponteirords FULL
 ## python scripts/call_snow_procedure.py FULL PR_CARGA_INICIAL_AJUSTEPONTEIRORDS
 ## 
