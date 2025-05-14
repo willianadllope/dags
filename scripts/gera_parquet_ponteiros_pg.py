@@ -70,9 +70,10 @@ if len(sys.argv)  >= 5:
 
 print("Inicio: ",datetime.now())
 if criartabela == '1':
-    print("regerando tabela com ponteiros")
+    print("regerando tabela com ponteiros: ", datetime.now())
     cursor = con.cursor()
     cursor.execute("select public.fc_gera_tabela_ponteiros('FULL');")
+    print("fim da geração da tabela de ponteiros: ",datetime.now())
 
 if apagararquivos == '1':
     print("apagando arquivos no diretorio")
