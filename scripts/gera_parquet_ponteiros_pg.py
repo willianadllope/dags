@@ -68,14 +68,18 @@ if len(sys.argv)  >= 4:
 if len(sys.argv)  >= 5:
     apagararquivos = sys.argv[4]
 
+print("Inicio: ",datetime.now())
 if criartabela == '1':
+    print("regerando tabela com ponteiros")
     cursor = con.cursor()
     cursor.execute("select public.fc_gera_tabela_ponteiros('FULL');")
 
 if apagararquivos == '1':
+    print("apagando arquivos no diretorio")
     delete_files_directory(pastas['parquet']+'FULL/ajusteponteirords/')
 
 comando = "Select id_cliente, id_config, cod_prod, origem_produto, menorts from public.tbl_ponteiros_rds where posicao >= "+str(inicio)+" and posicao < "+str(fim)
 print(comando)
 export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", 200000)
 
+print("Fim: ",datetime.now())
