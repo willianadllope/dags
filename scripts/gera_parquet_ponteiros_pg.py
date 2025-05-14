@@ -70,7 +70,7 @@ if len(sys.argv)  >= 5:
 
 if criartabela == '1':
     cursor = con.cursor()
-    cursor.execute("select public.fc_gera_tabela_ponteiros();")
+    cursor.execute("select public.fc_gera_tabela_ponteiros('FULL');")
 
 if apagararquivos == '1':
     delete_files_directory(pastas['parquet']+'FULL/ajusteponteirords/')
