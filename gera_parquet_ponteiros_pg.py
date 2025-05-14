@@ -30,7 +30,7 @@ def export_query_to_parquet(sql,pasta, fileprefix, limit):
         t_step = time()
         current_date = datetime.now()
         formatted_previous_day = current_date.strftime("%Y%m%d%H%M%S")
-        file_name = pastas[pasta]+fileprefix+ '_'+str(i) +'_'+ formatted_previous_day+'.parquet'
+        file_name = pasta+fileprefix+ '_'+str(i) +'_'+ formatted_previous_day+'.parquet'
         df.to_parquet(file_name, index=False)
         lines += df.shape[0]
         print('  ', file_name, df.shape[0], f'lines ({round(time() - t_step, 2)}s)')
