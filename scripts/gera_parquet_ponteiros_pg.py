@@ -25,7 +25,7 @@ def export_query_to_parquet(sql,pasta, fileprefix, limit, nrinicial):
     print("Let's export", fileprefix)
     lines = 0
     print("SQL: "+sql)
-    lastID = 0
+    lastID = -1
     for i, df in enumerate(pd.read_sql(sql, con, chunksize=limit)):
 		# by chunk of 1M rows if needed
         t_step = time()
@@ -37,8 +37,8 @@ def export_query_to_parquet(sql,pasta, fileprefix, limit, nrinicial):
             formatted_previous_day = current_date.strftime("%Y%m%d%H%M%S")
             file_name = pasta+fileprefix+ '_'+str(nrinicial)+'_'+str(i) +'_'+ formatted_previous_day+'.parquet'
             df.to_parquet(file_name, index=False)
-        lines += df.shape[0]
-        print('  ', file_name, df.shape[0], f'lines ({round(time() - t_step, 2)}s)')
+            lines += df.shape[0]
+            print('  ', file_name, df.shape[0], f'lines ({round(time() - t_step, 2)}s)')
     if i>0:
         print("  ", lines, f"lines exported in {(i+1)} files' ({round(time() - time_step, 2)}s)")
     if lines < limit:
