@@ -20,24 +20,28 @@ def delete_files_directory(directory_path):
         print(f"The directory {directory_path} does not exist.")     
     os.makedirs(directory_path)
 
-def export_query_to_parquet(sql,pasta, fileprefix, limit):
+def export_query_to_parquet(sql,pasta, fileprefix, limit, nrinicial):
     time_step = time()
     print("Let's export", fileprefix)
     lines = 0
     print("SQL: "+sql)
+    lastID = 0
     for i, df in enumerate(pd.read_sql(sql, con, chunksize=limit)):
 		# by chunk of 1M rows if needed
         t_step = time()
         linhas=len(df)
         regID = df.loc[[(linhas-1)]].id
-        print("ID: ",regID[(linhas-1)])
+        lastID = regID[(linhas-1)]
         current_date = datetime.now()
         formatted_previous_day = current_date.strftime("%Y%m%d%H%M%S")
-        file_name = pasta+fileprefix+ '_'+str(i) +'_'+ formatted_previous_day+'.parquet'
+        file_name = pasta+fileprefix+ '_'+str(nrinicial)+'_'+str(i) +'_'+ formatted_previous_day+'.parquet'
         df.to_parquet(file_name, index=False)
         lines += df.shape[0]
         print('  ', file_name, df.shape[0], f'lines ({round(time() - t_step, 2)}s)')
     print("  ", lines, f"lines exported {'' if i==0 else f' in {i} files'} ({round(time() - time_step, 2)}s)")
+    if lines < limit:
+        lastID = -1
+    return lastID
 
 # cursor = connection.cursor()
 
@@ -83,8 +87,8 @@ if apagararquivos == '1':
     delete_files_directory(pastas['parquet']+'FULL/ajusteponteirords/')
 
 id = 0
-comando = "Select id, id_cliente, idconfigprod, menorts from public.tabelao where id > "+str(id)+" order by id limit 10000"
-print(comando)
-export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", 2000)
+while id >= 0 and id <= 100000000:
+    comando = "Select id, id_cliente, idconfigprod, menorts from public.tabelao where id > "+str(id)+" order by id limit 1000000"
+    id = export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", 100000, id)
 
 print("Fim: ",datetime.now())
