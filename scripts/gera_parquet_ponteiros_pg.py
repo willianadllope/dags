@@ -79,8 +79,8 @@ if apagararquivos == '1':
     print("apagando arquivos no diretorio")
     delete_files_directory(pastas['parquet']+'FULL/ajusteponteirords/')
 
-idconfigprod = ' '
-comando = "Select id_cliente, idconfigprod, menorts from public.tabelao where idconfigprod > '"+idconfigprod+"' order by idconfigprod limit 10"
+id = 0
+comando = "Select id_cliente, idconfigprod, menorts from public.tabelao where id > "+id+" order by id limit 10"
 print(comando)
 export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", 2)
 
