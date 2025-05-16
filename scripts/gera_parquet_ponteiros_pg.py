@@ -29,7 +29,8 @@ def export_query_to_parquet(sql,pasta, fileprefix, limit):
 		# by chunk of 1M rows if needed
         t_step = time()
         linhas=len(df)
-        print("ID: ",df.loc[[(linhas-1)]].id)
+        regID = df.loc[[(linhas-1)]].id
+        print("ID: ",regID[(linhas-1)])
         current_date = datetime.now()
         formatted_previous_day = current_date.strftime("%Y%m%d%H%M%S")
         file_name = pasta+fileprefix+ '_'+str(i) +'_'+ formatted_previous_day+'.parquet'
