@@ -29,6 +29,7 @@ def export_query_to_parquet(sql,pasta, fileprefix, limit):
 		# by chunk of 1M rows if needed
         t_step = time()
         current_date = datetime.now()
+        print(df)
         formatted_previous_day = current_date.strftime("%Y%m%d%H%M%S")
         file_name = pasta+fileprefix+ '_'+str(i) +'_'+ formatted_previous_day+'.parquet'
         df.to_parquet(file_name, index=False)
@@ -80,7 +81,7 @@ if apagararquivos == '1':
     delete_files_directory(pastas['parquet']+'FULL/ajusteponteirords/')
 
 id = 0
-comando = "Select id_cliente, idconfigprod, menorts from public.tabelao where id > "+str(id)+" order by id limit 10"
+comando = "Select id, id_cliente, idconfigprod, menorts from public.tabelao where id > "+str(id)+" order by id limit 10"
 print(comando)
 export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", 2)
 
