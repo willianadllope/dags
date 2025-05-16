@@ -87,8 +87,8 @@ if apagararquivos == '1':
     delete_files_directory(pastas['parquet']+'FULL/ajusteponteirords/')
 
 id = 0
-while id >= 0 and id <= 100000000:
-    comando = "Select id, id_cliente, idconfigprod, menorts from public.tabelao where id > "+str(id)+" order by id limit 1000000"
-    id = export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", 100000, id)
+while id >= 0:
+    comando = "Select id, id_cliente, idconfigprod, menorts from public.tabelao where id > "+str(id)+" order by id limit 10000000"
+    id = export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", 1000000, id)
 
 print("Fim: ",datetime.now())
