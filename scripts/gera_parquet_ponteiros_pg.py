@@ -101,7 +101,7 @@ while id >= 0:
 print("--------------------------------------------")
 print("atualiza carga atual para status=2: ", datetime.now())
 cursor = con.cursor()
-comando = "update controle_carga_ponteiros_snowflake set status = 2 where id = "+str(idponteiro)+";"
+comando = "update controle_carga_ponteiros_snowflake set status = 2 where status = 0 and id > "+str(idponteiro)+";"
 cursor.execute(comando)
 con.commit()
 cursor.close()
