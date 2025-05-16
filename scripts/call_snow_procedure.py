@@ -38,3 +38,4 @@ cs.close()
 ## python scripts/upload_snowflake.py ajusteponteirords FULL
 ## python scripts/call_snow_procedure.py FULL PR_CARGA_INICIAL_AJUSTEPONTEIRORDS
 ## 
+

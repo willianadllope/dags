@@ -1,42 +1,55 @@
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from datetime import datetime
+import scripts.config as cfg
 
-class MyDAG:
-    def __init__(self, dag_id, schedule_interval, start_date):
+
+class DAG_csv_to_rds:
+    def __init__(self, dag_id, schedule_interval, start_date, params):
         self.dag = DAG(
             dag_id=dag_id,
             schedule_interval=schedule_interval,
             start_date=start_date,
+            params=params,
             catchup=False,
         )
 
-    def task_1(self):
+    def delete_parquet(self):
         return BashOperator(
-            task_id='task_1',
-            bash_command='echo "Task 1"',
-            dag=self.dag,
-        )
+            task_id="delete_parquet",
+            bash_command="python "+dag.params['scripts']+"call_snow_procedure.py entrega pr_apaga_arquivos_ajusteponteirosrds",
+            #bash_command="echo 'envia_tabelao_s3' ",
+        )   
 
-    def task_2(self):
+    def get_parquet(self):
         return BashOperator(
-            task_id='task_2',
-            bash_command='echo "Task 2"',
+            task_id='get_parquet',
+            bash_command="python "+dag.params['scripts']+"gera_parquet_ponteiros_pg.py 0",
             dag=self.dag,
         )
     
+    def send_parquet(self):
+        return BashOperator(
+            task_id='send_parquet',
+            bash_command="python "+dag.params['scripts']+"upload_snowflake.py ajusteponteirords FULL",
+            dag=self.dag,
+        )    
+
+    
     def create_dag(self):
-      t1 = self.task_1()
-      t2 = self.task_2()
-      t1 >> t2
+      t0 = self.delete_parquet()
+      t1 = self.get_parquet()
+      t2 = self.send_parquet()
+      t0 >> t1 >> t2
       return self.dag
 
 # Instantiate the DAG class
-my_dag_instance = MyDAG(
-    dag_id='my_object_oriented_dag',
+dag_generation_csv_to_rds = DAG_csv_to_rds(
+    dag_id='dag_generation_csv_to_rds',
     schedule_interval=None,
     start_date=datetime(2023, 1, 1),
+    params=cfg.pastas
 )
 
 # Get the DAG object
-dag = my_dag_instance.create_dag()
+dag = dag_generation_csv_to_rds.create_dag()

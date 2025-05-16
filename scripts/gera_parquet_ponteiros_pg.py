@@ -46,7 +46,6 @@ def export_query_to_parquet(sql,pasta, fileprefix, limit, nrinicial):
     return lastID
 
 # cursor = connection.cursor()
-
 # cursor.execute("SELECT * from tabelao_futuro_copia limit 10;")
 # Fetch all rows from database
 # record = cursor.fetchall()
