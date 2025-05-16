@@ -59,26 +59,44 @@ def export_query_to_parquet(sql,pasta, fileprefix, limit, nrinicial):
 
 
 apagararquivos = 0
-corte = 10000000 #10M
-paginacao = 1000000 #1M
+corte = 5000000 #5Milhoes
+paginacao = 1000000 #1milhao
 
 if len(sys.argv)  >= 2:
     apagararquivos = sys.argv[1]
  
 print("Inicio: ",datetime.now())
-#if criartabela == '1':
-#    print("regerando tabela com ponteiros: ", datetime.now())
-#    cursor = con.cursor()
-#    cursor.execute("select public.fc_gera_tabela_ponteiros('FULL');")
-#    print("fim da geração da tabela de ponteiros: ",datetime.now())
+
+print("criacao de novo registro de controle de ponteiros: ", datetime.now())
+cursor = con.cursor()
+cursor.execute("insert into controle_carga_ponteiros_snowflake (ponteiro, status) select max(menorts), 0 from tabelao;")
+con.commit()
+cursor.close()
+
+print("captura do ultimo ponteiro: ", datetime.now())
+df = pd.read_sql("select id, ponteiro from controle_carga_ponteiros_snowflake where status = 2 order by datahora desc limit 1", con)
+for index,row in df.iterrows():
+    idponteiro = row['id']
+    ponteiro = row['ponteiro']
+    print("id = ",idponteiro)
+    print("nome = ",ponteiro)
 
 if apagararquivos == '1':
-    print("apagando arquivos no diretorio")
+    print("apagando arquivos no diretorio", datetime.now())
     delete_files_directory(pastas['parquet']+'FULL/ajusteponteirords/')
 
+print("download dos ponteiros", datetime.now())
 id = 0
 while id >= 0:
-    comando = "Select id, id_cliente, idconfigprod, menorts from public.tabelao where id > "+str(id)+" order by id limit "+str(corte)
+    comando = "Select id, id_cliente, idconfigprod, menorts from public.tabelao where id > "+str(id)+" and menorts > "+str(ponteiro)+" id < 20000000 order by id limit "+str(corte)
     id = export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", paginacao, id)
+
+
+print("atualiza carga atual para status=2: ", datetime.now())
+cursor = con.cursor()
+comando = "update controle_carga_ponteiros_snowflake set status = 2 where id = "+str(idponteiro)+";"
+cursor.execute(comando)
+con.commit()
+cursor.close()
 
 print("Fim: ",datetime.now())
