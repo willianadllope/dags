@@ -61,8 +61,8 @@ def export_query_to_parquet(sql,pasta, fileprefix, limit, nrinicial):
 
 
 apagararquivos = 0
-corte = 5000000 #5Milhoes
-paginacao = 1000000 #1milhao
+corte = 20000000 #20Milhoes
+paginacao = 5000000 #5milhoes
 
 if len(sys.argv)  >= 2:
     apagararquivos = sys.argv[1]
