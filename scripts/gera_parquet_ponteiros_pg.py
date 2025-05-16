@@ -83,8 +83,8 @@ if apagararquivos == '1':
     delete_files_directory(pastas['parquet']+'FULL/ajusteponteirords/')
 
 id = 0
-comando = "Select id, id_cliente, idconfigprod, menorts from public.tabelao where id > "+str(id)+" order by id limit 10"
+comando = "Select id, id_cliente, idconfigprod, menorts from public.tabelao where id > "+str(id)+" order by id limit 10000"
 print(comando)
-export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", 2)
+export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", 2000)
 
 print("Fim: ",datetime.now())
