@@ -94,14 +94,14 @@ print("--------------------------------------------")
 print("download dos ponteiros", datetime.now())
 id = 0
 while id >= 0:
-    comando = "Select id, id_cliente, idconfigprod, menorts from public.tabelao where id > "+str(id)+" and menorts > "+str(ponteiro)+" and id < 10000000 order by id limit "+str(corte)
+    comando = "Select id, id_cliente, idconfigprod, menorts from public.tabelao where id > "+str(id)+" and menorts > "+str(ponteiro)+" order by id limit "+str(corte)
     id = export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", paginacao, id)
 
 
 print("--------------------------------------------")
 print("atualiza carga atual para status=2: ", datetime.now())
 cursor = con.cursor()
-comando = "update controle_carga_ponteiros_snowflake set status = 2 where status = 0 and id > "+str(idponteiro)+";"
+comando = "update controle_carga_ponteiros_snowflake set status = 2, datahora_atualizacao=now() where status = 0 and id > "+str(idponteiro)+";"
 cursor.execute(comando)
 con.commit()
 cursor.close()
