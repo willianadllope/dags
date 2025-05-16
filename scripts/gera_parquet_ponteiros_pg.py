@@ -69,18 +69,19 @@ if len(sys.argv)  >= 5:
     apagararquivos = sys.argv[4]
 
 print("Inicio: ",datetime.now())
-if criartabela == '1':
-    print("regerando tabela com ponteiros: ", datetime.now())
-    cursor = con.cursor()
-    cursor.execute("select public.fc_gera_tabela_ponteiros('FULL');")
-    print("fim da geração da tabela de ponteiros: ",datetime.now())
+#if criartabela == '1':
+#    print("regerando tabela com ponteiros: ", datetime.now())
+#    cursor = con.cursor()
+#    cursor.execute("select public.fc_gera_tabela_ponteiros('FULL');")
+#    print("fim da geração da tabela de ponteiros: ",datetime.now())
 
 if apagararquivos == '1':
     print("apagando arquivos no diretorio")
     delete_files_directory(pastas['parquet']+'FULL/ajusteponteirords/')
 
-comando = "Select id_cliente, idconfigprod, menorts from public.tbl_ponteiros_rds where posicao >= "+str(inicio)+" and posicao < "+str(fim)
+idconfigprod = ''
+comando = "Select id_cliente, idconfigprod, menorts from public.tabelao where idconfigprod > "+idconfigprod+" order by idconfigprod limit 10"
 print(comando)
-export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", 200000)
+export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", 2)
 
 print("Fim: ",datetime.now())
