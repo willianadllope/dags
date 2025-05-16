@@ -17,7 +17,7 @@ class DAG_csv_to_rds:
     def delete_parquet(self):
         return BashOperator(
             task_id="delete_parquet",
-            bash_command="python "+dag.params['scripts']+"call_snow_procedure.py entrega pr_apaga_arquivos_ajusteponteirosrds",
+            bash_command="python "+self.dag.params['scripts']+"call_snow_procedure.py entrega pr_apaga_arquivos_ajusteponteirosrds",
             dag=self.dag,
             #bash_command="echo 'envia_tabelao_s3' ",
         )   
@@ -25,14 +25,14 @@ class DAG_csv_to_rds:
     def get_parquet(self):
         return BashOperator(
             task_id='get_parquet',
-            bash_command="python "+dag.params['scripts']+"gera_parquet_ponteiros_pg.py 0",
+            bash_command="python "+self.dag.params['scripts']+"gera_parquet_ponteiros_pg.py 0",
             dag=self.dag,
         )
     
     def send_parquet(self):
         return BashOperator(
             task_id='send_parquet',
-            bash_command="python "+dag.params['scripts']+"upload_snowflake.py ajusteponteirords FULL",
+            bash_command="python "+self.dag.params['scripts']+"upload_snowflake.py ajusteponteirords FULL",
             dag=self.dag,
         )    
 
