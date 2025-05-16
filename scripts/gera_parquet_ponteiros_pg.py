@@ -38,7 +38,7 @@ def export_query_to_parquet(sql,pasta, fileprefix, limit, nrinicial):
         df.to_parquet(file_name, index=False)
         lines += df.shape[0]
         print('  ', file_name, df.shape[0], f'lines ({round(time() - t_step, 2)}s)')
-    print("  ", lines, f"lines exported {'' if i==0 else f' in {i} files'} ({round(time() - time_step, 2)}s)")
+    print("  ", lines, f"lines exported {'' if i==0 else f' in {(i+1)} files'} ({round(time() - time_step, 2)}s)")
     if lines < limit:
         lastID = -1
     return lastID
@@ -58,23 +58,13 @@ def export_query_to_parquet(sql,pasta, fileprefix, limit, nrinicial):
 
 
 
-criartabela = 0
 apagararquivos = 0
-inicio = 1
-fim = 1000000
+corte = 10000000 #10M
+paginacao = 1000000 #1M
 
 if len(sys.argv)  >= 2:
-    inicio = sys.argv[1]
+    apagararquivos = sys.argv[1]
  
-if len(sys.argv)  >= 3:
-    fim = sys.argv[2]
-
-if len(sys.argv)  >= 4:
-    criartabela = sys.argv[3]
- 
-if len(sys.argv)  >= 5:
-    apagararquivos = sys.argv[4]
-
 print("Inicio: ",datetime.now())
 #if criartabela == '1':
 #    print("regerando tabela com ponteiros: ", datetime.now())
@@ -88,7 +78,7 @@ if apagararquivos == '1':
 
 id = 0
 while id >= 0:
-    comando = "Select id, id_cliente, idconfigprod, menorts from public.tabelao where id > "+str(id)+" order by id limit 10000000"
-    id = export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", 1000000, id)
+    comando = "Select id, id_cliente, idconfigprod, menorts from public.tabelao where id > "+str(id)+" order by id limit "+str(corte)
+    id = export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", paginacao, id)
 
 print("Fim: ",datetime.now())
