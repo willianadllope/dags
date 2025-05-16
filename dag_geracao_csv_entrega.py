@@ -18,6 +18,7 @@ class DAG_csv_to_rds:
         return BashOperator(
             task_id="delete_parquet",
             bash_command="python "+dag.params['scripts']+"call_snow_procedure.py entrega pr_apaga_arquivos_ajusteponteirosrds",
+            dag=self.dag,
             #bash_command="echo 'envia_tabelao_s3' ",
         )   
 
