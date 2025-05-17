@@ -49,7 +49,7 @@ class DAG_csv_to_rds:
       t1 = self.get_parquet()
       t2 = self.send_parquet()
       t3 = self.carga_ajuste_ponteiro_rds()
-      t0 >> t1 >> t2
+      t0 >> t1 >> t2 >> t3
       return self.dag
 
 # Instantiate the DAG class
