@@ -25,7 +25,7 @@ class DAG_csv_to_rds:
     def get_parquet(self):
         return BashOperator(
             task_id='get_parquet',
-            bash_command="python "+self.dag.params['scripts']+"gera_parquet_ponteiros_pg.py 0",
+            bash_command="python "+self.dag.params['scripts']+"gera_parquet_ponteiros_pg.py 1",
             dag=self.dag,
         )
     
