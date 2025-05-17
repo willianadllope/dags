@@ -17,9 +17,9 @@ class DAG_csv_to_rds:
     def delete_parquet(self):
         return BashOperator(
             task_id="delete_parquet",
-            #bash_command="python "+self.dag.params['scripts']+"call_snow_procedure.py entrega pr_apaga_arquivos_ajusteponteirosrds",
+            bash_command="python "+self.dag.params['scripts']+"call_snow_procedure.py entrega pr_apaga_arquivos_ajusteponteirosrds",
             dag=self.dag,
-            bash_command="echo 'delete_parquet' ",
+            #bash_command="echo 'delete_parquet' ",
         )   
 
     def get_parquet(self):
