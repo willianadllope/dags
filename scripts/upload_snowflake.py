@@ -9,7 +9,6 @@ from datetime import datetime
 cfg = config.snowtabelao
 pastas = config.pastas
 reverse = 0
-apagar = 0
 
 if len(sys.argv)  >= 2:
     tabela = sys.argv[1]
@@ -18,9 +17,6 @@ if len(sys.argv)  >= 3:
 tipoExecucao = tipoExecucao.upper()
 if len(sys.argv) >= 4:
     reverse = sys.argv[3]
-
-if len(sys.argv) >= 5:
-    apagar = sys.argv[4]    
 
 conn = sf.connector.connect(
     user=cfg['user'],
@@ -35,8 +31,6 @@ conn = sf.connector.connect(
 file_name =tipoExecucao+'/'+tabela+'/*'
 stage_name = 'DB_TABELAO.'+tipoExecucao+'.STAGE_FILES_TABELAO/tabelao/'+tabela+'/'
 print('stage: ' +stage_name)
-
-if apagar=='1':
     
 cs = conn.cursor()
 #print('cursor aberto')
