@@ -93,7 +93,7 @@ print("--------------------------------------------")
 print("download dos ponteiros", datetime.now())
 id = 0
 while id >= 0:
-    comando = "Select id, id_cliente, idconfigprod, menorts from public.tabelao where id > "+str(id)+" and menorts > "+str(ponteiro)+" order by id limit "+str(corte)
+    comando = "Select id, id_cliente, id_config, cod_prod, origem_produto, idconfigprod, menorts from public.tabelao where id > "+str(id)+" and menorts > "+str(ponteiro)+" order by id limit "+str(corte)
     id = export_query_to_parquet(comando, pastas['parquet']+'FULL/ajusteponteirords/', "regrasponteiros", paginacao, id)
 
 
