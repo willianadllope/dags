@@ -22,11 +22,11 @@ sql_queries =   [
                   limite=100000
                 ),
         Consultas(consulta="""
-                  SELECT id, flag_setor, situacao, deletado, flag_retorno_ipi 
-                    FROM systax_app.dbo.clientes (NOLOCK);
+                  SELECT id, id_emp_responsavel, tipo, entidade, assdigital, tratamento, nome, ddd, telefone, ramal, email, situacao, observacao, tipo_cobranca, filtro_prod_uf, filtro_prod_dest, filtro_prod_orig, alerta_custom, users_alerta_custom, notas, ativo, deletado, consulta_liberada, dt_registro, copy_custom, id_UsuarioCriador, flag_origem_cliente, flag_setor, filtro_prod_pis_cofins, flag_cean_incorreto, flag_show_coluna, flag_piscofigns_cumulativo, codacesso, sla_cadastro_fiscal, exOrigPadrao, exDestPadrao, natOpPadrao, finalidadePadrao, flag_nao_integrar, flag_nao_tem_cfm, cenario_padrao, flag_ecommerce, flag_alerta_criacao, flag_agrupamento_produto, regime_tributacao, data_agrupamento, flag_cst_entrada_60, flag_cad_produto_orig_dif, flag_cfm_ncm_igual, flag_igualar_codigual_origdif, flag_sem_tratamento_origem, limite_cadastro_produtos, cnpj, flag_cockipt, criacao_automatica_cenario_base, flag_mva_ajustado, flag_medicamento, flag_apaga_produto_site, flag_carga_expressa, flag_force_carga_expressa, flag_dfe, flag_exclusao_icms_ipi_cofins, flag_desativar_todas_origens, flag_agrupamento_semelhante, justifica_agrup_semelhante, flag_retorno_ipi, justifica_retorno_ipi, flag_cad_prod_sem_cest, flag_carga_expressa_cenario, flag_force_carga_expressa_cenario, flag_copy_servico_emp_filhas
+                    FROM systax_app.dbo.clientes (NOLOCK) order by id;
                   """, 
                   tabela='clientes',
-                  limite=100000
+                  limite=1000000
                 ),
         Consultas(consulta="""
                 SELECT id, id_cliente, cod_prod_systax, cod_prod_cliente, menorts, convert(bigint,ts) as ts
@@ -61,7 +61,7 @@ sql_queries =   [
                       nome_revisado, 
                       flag_senha_primeiro_acesso, 
                       flag_expira_senha, 
-                      data_expira_senha
+                      convert(varchar(10),data_expira_senha,120) as data_expira_senha
                     FROM systax_app.dbo.usuarios (NOLOCK);
                   """, 
                   tabela='usuarios',
