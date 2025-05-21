@@ -8,7 +8,7 @@ awss3_secret = os.environ.get('secret_secret')
 
 session = boto3.Session( aws_access_key_id=awss3_key, aws_secret_access_key=awss3_secret)
 s3 = session.resource('s3')
-
+print(s3)
 def list_files_in_s3_bucket(bucket_name, prefix=''):
     s3_client = boto3.client('s3')
     try:
@@ -23,7 +23,7 @@ def list_files_in_s3_bucket(bucket_name, prefix=''):
 
 # Example usage:
 bucket_name = 'systaxbackuprds'  # Replace with your bucket name
-list_files_in_s3_bucket(bucket_name)
+#list_files_in_s3_bucket(bucket_name)
 
 # To list files with a specific prefix (e.g., in a folder):
 prefix = 'pgentreganew/tabelao'  # Replace with your prefix
