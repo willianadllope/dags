@@ -3,7 +3,7 @@ import config as cfg
 import os
 
 awss3_key = os.environ.get('access_key')
-awss3_secret = os.environ.get('access_secret')
+awss3_secret = os.environ.get('secret_secret')
 
 print(awss3_key)
 #session = boto3.Session( aws_access_key_id=awss3_key, aws_secret_access_key=awss3_secret)
