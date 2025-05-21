@@ -2,12 +2,8 @@ import boto3
 import config as cfg
 import os
 
-awss3_key = os.environ.get('access_key')
-awss3_secret = os.environ.get('secret_secret')
-
-
-session = boto3.Session( aws_access_key_id=awss3_key, aws_secret_access_key=awss3_secret)
-s3 = session.resource('s3')
+#awss3_key = os.environ.get('access_key')
+#awss3_secret = os.environ.get('secret_secret')
 
 def list_files_in_s3_bucket(bucket_name, prefix=''):
     s3_client = boto3.client('s3')
@@ -22,12 +18,8 @@ def list_files_in_s3_bucket(bucket_name, prefix=''):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-# Example usage:
-bucket_name = 'systaxbackuprds'  # Replace with your bucket name
-list_files_in_s3_bucket(bucket_name)
-
-# To list files with a specific prefix (e.g., in a folder):
+bucket_name = 'systaxbackuprds'  
 prefix = 'pgentreganew/tabelao'  # Replace with your prefix
-#list_files_in_s3_bucket(bucket_name, prefix)
+list_files_in_s3_bucket(bucket_name, prefix)
 
 
