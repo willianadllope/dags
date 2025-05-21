@@ -22,7 +22,7 @@ def list_files_in_s3_bucket(bucket_name, prefix=''):
         print(f"An error occurred: {e}")
 
 # Example usage:
-bucket_name = 'systaxbackuprds/'  # Replace with your bucket name
+bucket_name = 'systaxbackuprds'  # Replace with your bucket name
 list_files_in_s3_bucket(bucket_name)
 
 # To list files with a specific prefix (e.g., in a folder):
