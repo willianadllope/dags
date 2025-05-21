@@ -7,12 +7,13 @@ import os
 
 def list_files_in_s3_bucket(bucket_name, prefix=''):
     s3_client = boto3.client('s3')
-    print(s3_client)
+    files = []
     try:
         response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
         if 'Contents' in response:
             for obj in response['Contents']:
-                print(obj['Key'])
+                files.append(obj['Key'])
+            return files
         else:
             print(f"No files found in bucket '{bucket_name}' with prefix '{prefix}'.")
     except Exception as e:
@@ -20,6 +21,15 @@ def list_files_in_s3_bucket(bucket_name, prefix=''):
 
 bucket_name = 'systaxbackuprds'  
 prefix = 'pgentreganew/tabelao'  # Replace with your prefix
-list_files_in_s3_bucket(bucket_name, prefix)
+bucket_files = list_files_in_s3_bucket(bucket_name, prefix)
+
+index = 0
+for file in bucket_files:
+    if index==0:
+        print("primeiro arquivo:", file)
+    else:
+        print(file)
+    index = index + 1
+
 
 
