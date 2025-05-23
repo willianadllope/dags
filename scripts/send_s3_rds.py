@@ -35,7 +35,7 @@ print("Inicio: ",datetime.now())
 
 # pasta_dentro_do_bucket : tabela_no_rds
 buckets_tables_csv =	{
-  "cache_condensado": "cache_condensado",
+  #"cache_condensado": "cache_condensado",
   "cean_relacionado": "cean_relacionado",
   "clientes": "clientes",
   "config_super_condensado": "config_super_condensado",
@@ -62,6 +62,7 @@ for buckets in buckets_tables_csv:
 
         cursor = con.cursor()
         comando = "select public.fc_carrega_csv('"+buckets_tables_csv[buckets]+"','"+buckets+"','"+file+"',"+(index==0 and "0" or "1")+"::int);"
+        print(comando)
         cursor.execute(comando)
         con.commit()
         cursor.close()
