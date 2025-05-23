@@ -35,19 +35,17 @@ print("Inicio: ",datetime.now())
 
 # pasta_dentro_do_bucket : tabela_no_rds
 buckets_tables_csv =	{
-  #"cean_relacionado": "cean_relacionado",
-  #"clientes": "clientes",
-  #"config_super_condensado": "config_super_condensado",
-  #"config": "config",
-  
-  #  COPY custom_prod_rel_cigarros, line 1, column dt_cadastro: "1144101641-03-12 11:06:40.000"
-  #"custom_prod_rel_cigarros": "custom_prod_rel_cigarros",
+  "cean_relacionado": "cean_relacionado",
+  "clientes": "clientes",
+  "config_super_condensado": "config_super_condensado",
+  "config": "config",
+  "custom_prod_rel_cigarros": "custom_prod_rel_cigarros",
   "licencas_controle": "licencas_controle",
   "usuario_clientes": "usuario_clientes",
   "usuarios": "usuarios",
-  #"cache_condensado": "cache_condensado",
-  #"tabelao": "tabelao",
-  "custom_prod": "custom_prod"
+  "custom_prod": "custom_prod",
+  "tabelao": "tabelao",
+  "cache_condensado": "cache_condensado",
 }
 bucket_name = 'systaxbackuprds'
 for buckets in buckets_tables_csv:
