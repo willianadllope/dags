@@ -31,27 +31,27 @@ def list_files_in_s3_bucket(bucket_name, prefix=''):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+print("Inicio: ",datetime.now())
+
+
+
 bucket_name = 'systaxbackuprds'  
 prefix = 'pgentreganew/usuarios'  # Replace with your prefix
 bucket_files = list_files_in_s3_bucket(bucket_name, prefix)
 
 index = 0
-
-
-print("Inicio: ",datetime.now())
-
-
 for file in bucket_files:
     if index==0:
         print("primeiro arquivo:", file)
-        cursor = con.cursor()
-        comando = "select public.fc_carrega_csv('usuarios','usuarios','"+file+"',1::int);"
-        cursor.execute(comando)
-        con.commit()
-        cursor.close()
-        print("--------------------------------------------")
     else:
         print(file)
+
+    cursor = con.cursor()
+    comando = "select public.fc_carrega_csv('usuarios','usuarios','"+file+"',"+(index==0 and 0 or 1)+"::int);"
+    cursor.execute(comando)
+    con.commit()
+    cursor.close()
+
     index = index + 1
 
 
