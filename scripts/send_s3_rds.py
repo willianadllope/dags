@@ -23,7 +23,7 @@ def list_files_in_s3_bucket(bucket_name, prefix=''):
         response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
         if 'Contents' in response:
             for obj in response['Contents']:
-                f=obj['Key'].replace(prefix+'/','')
+                f=obj['Key'].replace(prefix,'')
                 files.append(f)
             return files
         else:
