@@ -68,7 +68,7 @@ for buckets in buckets_tables_csv:
         cursor.close()
 
         index = index + 1
-
+    del bucket_files
 
 
 print(" ")
