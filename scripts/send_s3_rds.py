@@ -8,8 +8,8 @@ import shutil
 from time import time
 from datetime import datetime
 
-pgentrega = config.pgentrega
-pastas = config.pastas 
+pgentrega = cfg.pgentrega
+pastas = cfg.pastas 
 
 con = psycopg2.connect(database=pgentrega['DATABASE'], user=pgentrega['UID'], password=pgentrega['PWD'], host=pgentrega['SERVER'], port=pgentrega['PORT'])
 
