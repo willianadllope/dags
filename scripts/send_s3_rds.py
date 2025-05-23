@@ -31,7 +31,7 @@ def list_files_in_s3_bucket(bucket_name, prefix=''):
         print(f"An error occurred: {e}")
 
 bucket_name = 'systaxbackuprds'  
-prefix = 'pgentreganew/tabelao'  # Replace with your prefix
+prefix = 'pgentreganew/usuarios'  # Replace with your prefix
 bucket_files = list_files_in_s3_bucket(bucket_name, prefix)
 
 index = 0
