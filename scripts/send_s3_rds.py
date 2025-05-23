@@ -31,6 +31,11 @@ def list_files_in_s3_bucket(bucket_name, prefix=''):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+filtrar = ""
+if len(sys.argv)  >= 2:
+    filtrar = sys.argv[1]
+
+
 print("Inicio: ",datetime.now())
 
 # pasta_dentro_do_bucket : tabela_no_rds
@@ -49,6 +54,8 @@ buckets_tables_csv =	{
 }
 bucket_name = 'systaxbackuprds'
 for buckets in buckets_tables_csv:
+    if filtrar != "" and buckets!=filtrar:
+        continue
     print("-----------------------------")
     print("Diretorio: ",buckets)
     prefix = 'pgentreganew/'+buckets+'/'  # Replace with your prefix
