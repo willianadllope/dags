@@ -33,26 +33,40 @@ def list_files_in_s3_bucket(bucket_name, prefix=''):
 
 print("Inicio: ",datetime.now())
 
+# pasta_dentro_do_bucket : tabela_no_rds
+buckets_tables_csv =	{
+  "cache_condensado": "cache_condensado",
+  "cean_relacionado": "cean_relacionado",
+  "clientes": "clientes",
+  "config_super_condensado": "config_super_condensado",
+  "config": "config",
+  "custom_prod_rel_cigarros": "custom_prod_rel_cigarros",
+  "custom_prod": "custom_prod",
+  "licencas_controle": "licencas_controle",
+  "tabelao": "tabelao",
+  "usuario_clientes": "usuario_clientes",
+  "usuarios": "usuarios"
+}
+bucket_name = 'systaxbackuprds'
+for buckets in buckets_tables_csv:
+    print("-----------------------------")
+    print("Diretorio: ",buckets)
+    prefix = 'pgentreganew/'+buckets  # Replace with your prefix
+    bucket_files = list_files_in_s3_bucket(bucket_name, prefix)
+    index = 0
+    for file in bucket_files:
+        if index==0:
+            print("primeiro arquivo: ", file)
+        else:
+            print(file)
 
+        cursor = con.cursor()
+        comando = "select public.fc_carrega_csv('"+buckets_tables_csv[buckets]+"','"+buckets+"','"+file+"',"+(index==0 and "0" or "1")+"::int);"
+        cursor.execute(comando)
+        con.commit()
+        cursor.close()
 
-bucket_name = 'systaxbackuprds'  
-prefix = 'pgentreganew/usuarios'  # Replace with your prefix
-bucket_files = list_files_in_s3_bucket(bucket_name, prefix)
-
-index = 0
-for file in bucket_files:
-    if index==0:
-        print("primeiro arquivo:", file)
-    else:
-        print(file)
-
-    cursor = con.cursor()
-    comando = "select public.fc_carrega_csv('usuarios','usuarios','"+file+"',"+(index==0 and "0" or "1")+"::int);"
-    cursor.execute(comando)
-    con.commit()
-    cursor.close()
-
-    index = index + 1
+        index = index + 1
 
 
 
