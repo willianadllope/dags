@@ -23,7 +23,8 @@ def list_files_in_s3_bucket(bucket_name, prefix=''):
         response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
         if 'Contents' in response:
             for obj in response['Contents']:
-                files.append(obj['Key'])
+                f=obj['Key'].replace(prefix+'/','')
+                files.append(f)
             return files
         else:
             print(f"No files found in bucket '{bucket_name}' with prefix '{prefix}'.")
