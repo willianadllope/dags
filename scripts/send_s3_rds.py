@@ -61,7 +61,7 @@ for buckets in buckets_tables_csv:
             print(file)
 
         cursor = con.cursor()
-        comando = "select public.fc_carrega_csv('"+buckets_tables_csv[buckets]+"','"+buckets+"','"+file+"',"+(index==0 and "0" or "1")+"::int);"
+        comando = "select public.fc_carrega_csv('"+buckets_tables_csv[buckets]+"','"+buckets+"','"+file+"',"+(index==0 and "1" or "0")+"::int);"
         print(comando)
         cursor.execute(comando)
         con.commit()
