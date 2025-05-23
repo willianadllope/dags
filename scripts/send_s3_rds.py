@@ -47,7 +47,7 @@ for file in bucket_files:
         print(file)
 
     cursor = con.cursor()
-    comando = "select public.fc_carrega_csv('usuarios','usuarios','"+file+"',"+(index==0 and 0 or 1)+"::int);"
+    comando = "select public.fc_carrega_csv('usuarios','usuarios','"+file+"',"+(index==0 and "0" or "1")+"::int);"
     cursor.execute(comando)
     con.commit()
     cursor.close()
