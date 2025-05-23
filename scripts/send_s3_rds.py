@@ -11,7 +11,7 @@ from datetime import datetime
 pgentrega = cfg.pgentrega
 pastas = cfg.pastas 
 
-con = psycopg2.connect(database=pgentrega['DATABASE'], user=pgentrega['UID'], password=pgentrega['PWD'], host=pgentrega['SERVER'], port=pgentrega['PORT'])
+con = psycopg2.connect(database='snowflake', user=pgentrega['UID'], password=pgentrega['PWD'], host=pgentrega['SERVER'], port=pgentrega['PORT'])
 
 #awss3_key = os.environ.get('access_key')
 #awss3_secret = os.environ.get('secret_secret')
@@ -44,7 +44,7 @@ for file in bucket_files:
     if index==0:
         print("primeiro arquivo:", file)
         cursor = con.cursor()
-        comando = "select fc_carrega_csv('usuarios','usuarios','"+file+"',1::int);"
+        comando = "select public.fc_carrega_csv('usuarios','usuarios','"+file+"',1::int);"
         cursor.execute(comando)
         con.commit()
         cursor.close()
