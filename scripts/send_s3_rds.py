@@ -40,9 +40,9 @@ buckets_tables_csv =	{
   "config_super_condensado": "config_super_condensado",
   "config": "config",
   "custom_prod_rel_cigarros": "custom_prod_rel_cigarros",
-  "custom_prod": "custom_prod",
   "licencas_controle": "licencas_controle",
   "usuario_clientes": "usuario_clientes",
+  "custom_prod": "custom_prod",  
   #"cache_condensado": "cache_condensado",
   #"tabelao": "tabelao",
   "usuarios": "usuarios"
