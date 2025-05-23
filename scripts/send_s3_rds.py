@@ -35,7 +35,6 @@ print("Inicio: ",datetime.now())
 
 # pasta_dentro_do_bucket : tabela_no_rds
 buckets_tables_csv =	{
-  #"cache_condensado": "cache_condensado",
   "cean_relacionado": "cean_relacionado",
   "clientes": "clientes",
   "config_super_condensado": "config_super_condensado",
@@ -43,8 +42,9 @@ buckets_tables_csv =	{
   "custom_prod_rel_cigarros": "custom_prod_rel_cigarros",
   "custom_prod": "custom_prod",
   "licencas_controle": "licencas_controle",
-  "tabelao": "tabelao",
   "usuario_clientes": "usuario_clientes",
+  #"cache_condensado": "cache_condensado",
+  #"tabelao": "tabelao",
   "usuarios": "usuarios"
 }
 bucket_name = 'systaxbackuprds'
