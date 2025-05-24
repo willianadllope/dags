@@ -60,6 +60,7 @@ for buckets in buckets_tables_csv:
     print("Diretorio: ",buckets)
     prefix = 'pgentreganew/'+buckets+'/'  # Replace with your prefix
     bucket_files = list_files_in_s3_bucket(bucket_name, prefix)
+    
     index = 0
     for file in bucket_files:
         if index==0:
