@@ -1,6 +1,8 @@
 import boto3
 import os
 import sys
+from time import time
+from datetime import datetime
 
 def baixar_arquivos_do_bucket(bucket_name, destino_local, prefixo=''):
     # Inicializa o cliente do S3
@@ -52,6 +54,7 @@ def converter_diretorio_utf8_para_win1252(diretorio_entrada, diretorio_saida, ex
             except Exception as e:
                 print(f"Erro ao converter {nome_arquivo}: {e}")
 
+print("Inicio: ",datetime.now())
 # Exemplo de uso
 tabela = ""
 if len(sys.argv)  >= 2:
@@ -62,6 +65,9 @@ diretorio_local = '/parquet2/csv/'+tabela+'/'
 diretorio_saida = '/parquet2/convertido/'+tabela+'/'
 prefixo_opcional = 'pgentreganew/'+tabela+'/'
 
-baixar_arquivos_do_bucket(bucket, diretorio_local, prefixo_opcional)
 
+print("Baixando: ",datetime.now())
+baixar_arquivos_do_bucket(bucket, diretorio_local, prefixo_opcional)
+print("Convertendo: ",datetime.now())
 converter_diretorio_utf8_para_win1252(diretorio_local, diretorio_saida)
+print("Fim: ",datetime.now())
