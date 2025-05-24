@@ -50,7 +50,7 @@ buckets_tables_csv =	{
   "usuarios": "usuarios",
   "custom_prod": "custom_prod",
   "tabelao": "tabelao",
-  "cache_condensado": "cache_condensado",
+  "cache_condensado2": "cache_condensado",
 }
 bucket_name = 'systaxbackuprds'
 for buckets in buckets_tables_csv:
