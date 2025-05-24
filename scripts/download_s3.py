@@ -14,7 +14,7 @@ def baixar_arquivos_do_bucket(bucket_name, destino_local, prefixo=''):
 
     for obj in resposta['Contents']:
         chave = obj['Key']
-        arquivo = chave.replace(destino_local,'')
+        arquivo = chave.replace(prefixo,'')
         print("Chave:",chave)
         print("Destino_local:",destino_local)
         print("Arquivo:",arquivo)
@@ -24,7 +24,7 @@ def baixar_arquivos_do_bucket(bucket_name, destino_local, prefixo=''):
         # Baixa o arquivo
         destino_local = destino_local+arquivo
         print(f"Baixando {chave} para {destino_local}...")
-        #s3.download_file(bucket_name, chave, destino_local)
+        s3.download_file(bucket_name, chave, destino_local)
 
     print("Download concluído.")
 
