@@ -14,11 +14,12 @@ def baixar_arquivos_do_bucket(bucket_name, destino_local, prefixo=''):
 
     for obj in resposta['Contents']:
         chave = obj['Key']
-
+        arquivo = chave.replace(destino_local,'')
         # Cria diretórios intermediários se necessário
         os.makedirs(os.path.dirname(destino_local), exist_ok=True)
 
         # Baixa o arquivo
+        destino_local = destino_local+arquivo
         print(f"Baixando {chave} para {destino_local}...")
         s3.download_file(bucket_name, chave, destino_local)
 
@@ -26,7 +27,7 @@ def baixar_arquivos_do_bucket(bucket_name, destino_local, prefixo=''):
 
 # Exemplo de uso
 bucket = 'systaxbackuprds'
-diretorio_destino = '/parquet2/csv/'
+diretorio_destino = '/parquet2/csv/usuarios/'
 prefixo_opcional = 'pgentreganew/usuarios/'
 
 baixar_arquivos_do_bucket(bucket, diretorio_destino, prefixo_opcional)
