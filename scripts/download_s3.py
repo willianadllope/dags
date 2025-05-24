@@ -1,5 +1,6 @@
 import boto3
 import os
+import sys
 
 def baixar_arquivos_do_bucket(bucket_name, destino_local, prefixo=''):
     # Inicializa o cliente do S3
@@ -52,10 +53,14 @@ def converter_diretorio_utf8_para_win1252(diretorio_entrada, diretorio_saida, ex
                 print(f"Erro ao converter {nome_arquivo}: {e}")
 
 # Exemplo de uso
+tabela = ""
+if len(sys.argv)  >= 2:
+    tabela = sys.argv[1]
+
 bucket = 'systaxbackuprds'
-diretorio_local = '/parquet2/csv/usuarios/'
-diretorio_saida = '/parquet2/convertido/usuarios/'
-prefixo_opcional = 'pgentreganew/usuarios/'
+diretorio_local = '/parquet2/csv/'+tabela+'/'
+diretorio_saida = '/parquet2/convertido/'+tabela+'/'
+prefixo_opcional = 'pgentreganew/'+tabela+'/'
 
 baixar_arquivos_do_bucket(bucket, diretorio_local, prefixo_opcional)
 
