@@ -28,9 +28,35 @@ def baixar_arquivos_do_bucket(bucket_name, destino_local, prefixo=''):
 
     print("Download concluído.")
 
+import os
+
+def converter_diretorio_utf8_para_win1252(diretorio_entrada, diretorio_saida, extensao='.csv'):
+    # Cria o diretório de saída se não existir
+    os.makedirs(diretorio_saida, exist_ok=True)
+
+    # Percorre os arquivos do diretório
+    for nome_arquivo in os.listdir(diretorio_entrada):
+        if nome_arquivo.endswith(extensao):
+            caminho_entrada = os.path.join(diretorio_entrada, nome_arquivo)
+            caminho_saida = os.path.join(diretorio_saida, nome_arquivo)
+
+            try:
+                with open(caminho_entrada, 'r', encoding='utf-8') as f_in:
+                    conteudo = f_in.read()
+
+                with open(caminho_saida, 'w', encoding='windows-1252', errors='replace') as f_out:
+                    f_out.write(conteudo)
+
+                print(f"Convertido: {nome_arquivo}")
+            except Exception as e:
+                print(f"Erro ao converter {nome_arquivo}: {e}")
+
 # Exemplo de uso
 bucket = 'systaxbackuprds'
-diretorio_destino = '/parquet2/csv/usuarios/'
+diretorio_local = '/parquet2/csv/usuarios/'
+diretorio_saida = '/parquet2/convertido/usuarios/'
 prefixo_opcional = 'pgentreganew/usuarios/'
 
-baixar_arquivos_do_bucket(bucket, diretorio_destino, prefixo_opcional)
+baixar_arquivos_do_bucket(bucket, diretorio_local, prefixo_opcional)
+
+converter_diretorio_utf8_para_win1252(diretorio_local, diretorio_saida)
