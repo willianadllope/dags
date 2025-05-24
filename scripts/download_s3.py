@@ -14,20 +14,19 @@ def baixar_arquivos_do_bucket(bucket_name, destino_local, prefixo=''):
 
     for obj in resposta['Contents']:
         chave = obj['Key']
-        caminho_destino = os.path.join(destino_local, chave)
 
         # Cria diretórios intermediários se necessário
-        os.makedirs(os.path.dirname(caminho_destino), exist_ok=True)
+        os.makedirs(os.path.dirname(destino_local), exist_ok=True)
 
         # Baixa o arquivo
-        print(f"Baixando {chave} para {caminho_destino}...")
-        s3.download_file(bucket_name, chave, caminho_destino)
+        print(f"Baixando {chave} para {destino_local}...")
+        s3.download_file(bucket_name, chave, destino_local)
 
     print("Download concluído.")
 
 # Exemplo de uso
 bucket = 'systaxbackuprds'
-diretorio_destino = '/parquet2/csv/usuarios/'
+diretorio_destino = '/parquet2/csv/'
 prefixo_opcional = 'pgentreganew/usuarios/'
 
 baixar_arquivos_do_bucket(bucket, diretorio_destino, prefixo_opcional)
