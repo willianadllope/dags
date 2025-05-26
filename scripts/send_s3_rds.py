@@ -39,14 +39,14 @@ if len(sys.argv)  >= 2:
 print("Inicio: ",datetime.now())
 
 # pasta_dentro_do_bucket : tabela_no_rds
-buckets_tables_csv =	{
-  "usuarios": "usuarios",
-  "clientes": "clientes",
-  "config": "config",
-  "licencas_controle": "licencas_controle",
-  "usuario_clientes": "usuario_clientes",
-  "cean_relacionado": "cean_relacionado",
-  "custom_prod": "custom_prod",
+buckets_tables_csv =	{    
+  ##"usuarios": "usuarios",
+  ##"clientes": "clientes",
+  ##"config": "config",
+  ##"licencas_controle": "licencas_controle",
+  ##"usuario_clientes": "usuario_clientes",
+  ##"cean_relacionado": "cean_relacionado",
+  ##"custom_prod": "custom_prod",
   "custom_prod_rel_cigarros": "custom_prod_rel_cigarros",
   "config_super_condensado": "config_super_condensado",
   "tabelao": "tabelao",
