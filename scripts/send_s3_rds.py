@@ -11,7 +11,7 @@ from datetime import datetime
 pgentrega = cfg.pgentrega
 pastas = cfg.pastas 
 
-con = psycopg2.connect(database='snowflake', user=pgentrega['UID'], password=pgentrega['PWD'], host=pgentrega['SERVER'], port=pgentrega['PORT'])
+con = psycopg2.connect(database='systax', user=pgentrega['UID'], password=pgentrega['PWD'], host=pgentrega['SERVER'], port=pgentrega['PORT'])
 
 #awss3_key = os.environ.get('access_key')
 #awss3_secret = os.environ.get('secret_secret')
@@ -50,7 +50,7 @@ buckets_tables_csv =	{
   "usuarios": "usuarios",
   "custom_prod": "custom_prod",
   "tabelao": "tabelao",
-  "cache_condensado2": "cache_condensado",
+  "cache_condensado": "cache_condensado",
 }
 bucket_name = 'systaxbackuprds'
 for buckets in buckets_tables_csv:
@@ -69,7 +69,8 @@ for buckets in buckets_tables_csv:
             print(file)
 
         cursor = con.cursor()
-        comando = "select public.fc_carrega_csv('"+buckets_tables_csv[buckets]+"','"+buckets+"','"+file+"',"+(index==0 and "1" or "0")+"::int);"
+        ## comando = "select public.fc_carrega_csv_new(buckets_tables_csv[buckets],'"+buckets+"','"+file+"',"+(index==0 and "1" or "0")+"::int);"
+        comando = "select public.fc_carrega_csv_new('teste_"+buckets_tables_csv[buckets]+"_copia','"+file+"',"+(index==0 and "1" or "0")+"::int,'"+bucket_name+"','pgentreganew/"+buckets+"','us-east-1');"
         print(comando)
         cursor.execute(comando)
         con.commit()
