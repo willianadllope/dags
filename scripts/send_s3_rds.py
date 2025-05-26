@@ -40,15 +40,15 @@ print("Inicio: ",datetime.now())
 
 # pasta_dentro_do_bucket : tabela_no_rds
 buckets_tables_csv =	{
-  "cean_relacionado": "cean_relacionado",
+  "usuarios": "usuarios",
   "clientes": "clientes",
-  "config_super_condensado": "config_super_condensado",
   "config": "config",
-  "custom_prod_rel_cigarros": "custom_prod_rel_cigarros",
   "licencas_controle": "licencas_controle",
   "usuario_clientes": "usuario_clientes",
-  "usuarios": "usuarios",
+  "cean_relacionado": "cean_relacionado",
   "custom_prod": "custom_prod",
+  "custom_prod_rel_cigarros": "custom_prod_rel_cigarros",
+  "config_super_condensado": "config_super_condensado",
   "tabelao": "tabelao",
   "cache_condensado": "cache_condensado",
 }
