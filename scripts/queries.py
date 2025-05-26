@@ -36,7 +36,7 @@ sql_queries =   [
                   tabela='custom_prod_figuras_fiscais',
                   limite=1000000),   
         Consultas(consulta="""
-                  SELECT id, id_cliente, cod_produto, id_produto_configuracao, origem_produto, id_trib_cigarro, dt_cadastro 
+                  SELECT id, id_cliente, cod_produto, id_produto_configuracao, origem_produto, id_trib_cigarro, convert(varchar(10),dt_cadastro,120) as dt_cadastro 
                     FROM systax_app.dbo.custom_prod_rel_cigarros (NOLOCK);
                   """, 
                   tabela='custom_prod_rel_cigarros',
