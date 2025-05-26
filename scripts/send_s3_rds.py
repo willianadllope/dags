@@ -57,13 +57,14 @@ for buckets in buckets_tables_csv:
     if filtrar != "" and buckets!=filtrar:
         continue
     print("-----------------------------")
-    print("=====",datetime.now())
+    print("inicio tabela =====",datetime.now())
     print("Diretorio: ",buckets)
     prefix = 'pgentreganew/'+buckets+'/'  # Replace with your prefix
     bucket_files = list_files_in_s3_bucket(bucket_name, prefix)
     
     index = 0
     for file in bucket_files:
+        print("inicio carregamento =====",datetime.now())
         if index==0:
             print("primeiro arquivo: ", file)
         else:
@@ -78,8 +79,9 @@ for buckets in buckets_tables_csv:
         cursor.close()
 
         index = index + 1
+        print("fim carregamento =====",datetime.now())
     del bucket_files
-    print("=====",datetime.now())
+    print("fim tabela =====",datetime.now())
 
 
 print(" ")
