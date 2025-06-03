@@ -48,15 +48,24 @@ class DAG_csv_to_rds:
             task_id="send_s3_rds",
             bash_command="python "+self.dag.params['scripts']+"send_s3_rds.py",
             dag=self.dag,
-        )   
-    
+        )
+       
+    def task_preparar_enviar_csv(self):
+        return BashOperator(
+        task_id="task_preparar_enviar_csv",
+        bash_command="python "+self.dag.params['scripts']+"exec_snow_task.py ENTREGA TASK_PREPARAR_ENVIO_RDS TASK_PREPARAR_ENVIO_RDS",
+        dag=self.dag,
+        #bash_command="echo 'task_gera_tabelao' ",
+    )   
+   
     def create_dag(self):
       t0 = self.delete_parquet()
       t1 = self.get_parquet()
       t2 = self.send_parquet()
       t3 = self.carga_ajuste_ponteiro_rds()
-      t4 = self.send_s3_rds()
-      t0 >> t1 >> t2 >> t3 >> t4
+      t4 = self.task_preparar_enviar_csv()
+      t5 = self.send_s3_rds()
+      t0 >> t1 >> t2 >> t3 >> t4 >> t5
       return self.dag
 
 # Instantiate the DAG class
