@@ -630,7 +630,7 @@ with DAG(
     acionar_dag_generation_csv_to_rds = TriggerDagRunOperator(
         task_id="acionar_dag_generation_csv_to_rds",
         trigger_dag_id="dag_generation_csv_to_rds",  # ID da DAG a ser acionada
-        wait_for_completion=False,  # Se True, espera a DAG terminar
+        wait_for_completion=True,  # Se True, espera a DAG terminar
         reset_dag_run=True,         # Se True, reinicia uma execução se já existir
     )
 
@@ -652,6 +652,7 @@ with DAG(
         download_csvs_tabelao,
         carrega_csv_tabelao_prod01sql,
         finaliza_carga_full,
+        acionar_dag_generation_csv_to_rds,
         end_task
     )
 
