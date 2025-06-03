@@ -40,13 +40,13 @@ print("Inicio: ",datetime.now())
 
 # pasta_dentro_do_bucket : tabela_no_rds
 buckets_tables_csv =	{    
-  ##"usuarios": "usuarios",
-  ##"clientes": "clientes",
-  ##"config": "config",
-  ##"licencas_controle": "licencas_controle",
-  ##"usuario_clientes": "usuario_clientes",
-  ##"cean_relacionado": "cean_relacionado",
-  ##"custom_prod": "custom_prod",
+  "usuarios": "usuarios",
+  "clientes": "clientes",
+  "config": "config",
+  "licencas_controle": "licencas_controle",
+  "usuario_clientes": "usuario_clientes",
+  "cean_relacionado": "cean_relacionado",
+  "custom_prod": "custom_prod",
   "custom_prod_rel_cigarros": "custom_prod_rel_cigarros",
   "config_super_condensado": "config_super_condensado",
   "tabelao": "tabelao",
@@ -72,7 +72,7 @@ for buckets in buckets_tables_csv:
 
         cursor = con.cursor()
         ## comando = "select public.fc_carrega_csv_new(buckets_tables_csv[buckets],'"+buckets+"','"+file+"',"+(index==0 and "1" or "0")+"::int);"
-        comando = "select public.fc_carrega_csv_new('teste_"+buckets_tables_csv[buckets]+"_copia','"+file+"',"+(index==0 and "1" or "0")+"::int,'"+bucket_name+"','pgentreganew/"+buckets+"','us-east-1');"
+        comando = "select public.fc_carrega_csv_new('"+buckets_tables_csv[buckets]+"_copia','"+file+"',"+(index==0 and "1" or "0")+"::int,'"+bucket_name+"','pgentreganew/"+buckets+"','us-east-1');"
         print(comando)
         cursor.execute(comando)
         con.commit()

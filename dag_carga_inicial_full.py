@@ -22,6 +22,7 @@ from airflow.utils.dates import days_ago
 
 from airflow.utils.task_group import TaskGroup
 from airflow.decorators import dag, task_group, task
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 
 default_args = {
     'owner': 'airflow',
@@ -624,6 +625,13 @@ with DAG(
             task_id="carrega_csv_tabelao_prod01sql",
             bash_command="python "+dag.params['scripts']+"call_procedure_prod01sql.py 'pr_carrega_tabelao' '"+dag.params['tipoCarga']+"'",
             #bash_command="echo 'carrega_csv_tabelao_prod01sql'",
+    )
+    
+    acionar_dag_generation_csv_to_rds = TriggerDagRunOperator(
+        task_id="acionar_dag_generation_csv_to_rds",
+        trigger_dag_id="dag_generation_csv_to_rds",  # ID da DAG a ser acionada
+        wait_for_completion=False,  # Se True, espera a DAG terminar
+        reset_dag_run=True,         # Se True, reinicia uma execução se já existir
     )
 
     chain(

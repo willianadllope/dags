@@ -63,7 +63,6 @@ sql_queries =   [
                       flag_expira_senha, 
                       convert(varchar(10),data_expira_senha,120) as data_expira_senha
                     FROM systax_app.dbo.usuarios (NOLOCK)
-                  where id = 6040
                   ;
                   """, 
                   tabela='usuarios',
