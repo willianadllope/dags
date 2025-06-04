@@ -634,6 +634,13 @@ with DAG(
         reset_dag_run=True,         # Se True, reinicia uma execução se já existir
     )
 
+    acionar_dag_send_tabelao_prod01 = TriggerDagRunOperator(
+        task_id="acionar_dag_send_tabelao_prod01",
+        trigger_dag_id="dag_send_tabelao_prod01",  # ID da DAG a ser acionada
+        wait_for_completion=True,  # Se True, espera a DAG terminar
+        reset_dag_run=True,         # Se True, reinicia uma execução se já existir
+    )
+
     chain(
         start_task, 
         branching,
@@ -651,7 +658,7 @@ with DAG(
         envia_tabelao_s3,
         download_csvs_tabelao,
         carrega_csv_tabelao_prod01sql,
-        finaliza_carga_full,
+        acionar_dag_send_tabelao_prod01,
         acionar_dag_generation_csv_to_rds,
         end_task
     )
