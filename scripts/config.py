@@ -31,27 +31,19 @@ diretorios = {
     'parquet':'/parquet2/tabelao/',
     'parquetfull':'/parquet2/tabelao/FULL/',
     'parquetincremental':'/parquet2/tabelao/INCREMENTAL/',
-    'ajusteponteirords':'/parquet2/tabelao/ajuste_ponteiro_rds/',
+    'ajusteponteirords':'/parquet2/tabelao/ajuste_ponteiro_rds/'
 }
 
 files_python = {
     ## script que chama procedure na prod01sql para quebrar os ids em chunks e facilitar o load das tabelas
     'task_call_procedure_prod01sql_chunks':diretorios['tasks']+'task_call_procedure_prod01sql_chunks.py',
-
     'task_call_procedure_prod01sql':diretorios['tasks']+'task_call_procedure_prod01sql.py',
-
     'task_limpa_stage_snowflake':diretorios['tasks']+'task_limpa_stage_snowflake.py',
-
     'task_inicia_carga_updt_prod01sql':diretorios['tasks']+'task_inicia_carga_updt_prod01sql.py',    
-
     'task_parquet_geracao_envio_prod01sql_snowflake': diretorios['tasks']+'task_parquet_geracao_envio_prod01sql_snowflake.py',    
-
     'task_upload_snowflake': diretorios['tasks']+'task_upload_snowflake.py',    
-
     'task_execute_snowflake': diretorios['tasks']+'task_execute_snowflake.py',    
-
-    'task_call_procedure_snowflake.py': diretorios['tasks']+'task_call_procedure_snowflake.py',    
-
+    'task_call_procedure_snowflake.py': diretorios['tasks']+'task_call_procedure_snowflake.py'
 }
 
 scripts = {
@@ -72,7 +64,7 @@ scripts = {
     'task_carrega_carga':files_python['task_call_procedure_prod01sql'], 
     'task_carrega_csv_tabelao_prod01sql':files_python['task_call_procedure_prod01sql'], 
     'task_download_csvs_tabelao':files_python['task_call_procedure_prod01sql'], 
-    'task_envia_tabelao_s3':files_python['task_call_procedure_snowflake'], 
+    'task_envia_tabelao_s3':files_python['task_call_procedure_snowflake']
  }
 
 configs = {
