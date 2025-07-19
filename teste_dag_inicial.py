@@ -33,7 +33,7 @@ default_args = {
     'retry_delay': timedelta(minutes=1),
 }
 
-pastas = scripts.config.diretorios;
+pastas = scripts.config.configs;
 
 pastas['tipoCarga'] = 'incremental';
 

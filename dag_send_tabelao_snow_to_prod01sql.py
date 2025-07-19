@@ -5,7 +5,7 @@ from airflow.operators.dummy import DummyOperator
 from datetime import datetime
 import scripts.config as cfg
 
-cfg.pastas['tipoCarga'] = 'FULL'
+cfg.diretorios['tipoCarga'] = 'FULL'
 
 class DAG_send_tabelao_prod01sql:
     def __init__(self, dag_id, schedule_interval, start_date, params):
@@ -54,7 +54,7 @@ dag_send_tabelao_prod01 = DAG_send_tabelao_prod01sql(
     dag_id='dag_send_tabelao_prod01',
     schedule_interval=None,
     start_date=datetime(2023, 1, 1),
-    params=cfg.pastas
+    params=cfg.diretorios
 )
 
 # Get the DAG object
