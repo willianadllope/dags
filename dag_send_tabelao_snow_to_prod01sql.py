@@ -5,9 +5,6 @@ from airflow.operators.dummy import DummyOperator
 from datetime import datetime
 import scripts.config as cfg
 
-
-cfg.configs['tipoCarga'] = 'FULL'
-
 class DAG_send_tabelao_prod01sql:
     def __init__(self, dag_id, schedule_interval, start_date, params):
         self.dag = DAG(
@@ -32,12 +29,12 @@ class DAG_send_tabelao_prod01sql:
 
     def start_task(self):
         return DummyOperator(
-            task_id='start',
+            task_id='start_task',
         )
 
     def end_task(self):
         return DummyOperator(
-            task_id='end',
+            task_id='end_task',
         )
    
     def create_dag(self):
@@ -47,6 +44,8 @@ class DAG_send_tabelao_prod01sql:
       t3 = self.end_task()
       t0 >> t1 >> t2 >> t3
       return self.dag
+
+cfg.configs['tipoCarga'] = 'FULL'
 
 # Instantiate the DAG class
 dag_send_tabelao_prod01 = DAG_send_tabelao_prod01sql(
