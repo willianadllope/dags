@@ -5,6 +5,7 @@ from airflow.operators.dummy import DummyOperator
 from datetime import datetime
 import scripts.config as cfg
 
+
 cfg.configs['tipoCarga'] = 'FULL'
 
 class DAG_send_tabelao_prod01sql:

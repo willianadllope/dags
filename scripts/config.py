@@ -44,8 +44,8 @@ files_python = {
     'upload_snowflake': diretorios['tasks']+'task_upload_snowflake.py',    
     'execute_snowflake': diretorios['tasks']+'task_execute_snowflake.py',    
     'call_procedure_snowflake': diretorios['tasks']+'task_call_procedure_snowflake.py',
-    'update_prod01sql': diretorios['tasks']+'task_update_prod01sql.py',
     'ponteiros_pg':diretorios['tasks']+'task_ponteiros_pg.py',
+    'update_prod01sql': diretorios['tasks']+'task_update_prod01sql.py',
     'send_s3_rds':diretorios['tasks']+'task_send_s3_rds.py'
 }
 

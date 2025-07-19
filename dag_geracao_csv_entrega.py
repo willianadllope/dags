@@ -3,7 +3,6 @@ from airflow.operators.bash_operator import BashOperator
 from datetime import datetime
 import scripts.config as cfg
 
-
 class DAG_csv_to_rds:
     def __init__(self, dag_id, schedule_interval, start_date, params):
         self.dag = DAG(
