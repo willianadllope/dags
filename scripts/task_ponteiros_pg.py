@@ -8,7 +8,7 @@ from time import time
 from datetime import datetime
 
 pgentrega = config.pgentrega
-pastas = config.pastas 
+pastas = config.diretorios
 
 con = psycopg2.connect(database=pgentrega['DATABASE'], user=pgentrega['UID'], password=pgentrega['PWD'], host=pgentrega['SERVER'], port=pgentrega['PORT'])
 

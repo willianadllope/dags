@@ -9,7 +9,6 @@ from time import time
 from datetime import datetime
 
 pgentrega = cfg.pgentrega
-pastas = cfg.pastas 
 
 con = psycopg2.connect(database='systax', user=pgentrega['UID'], password=pgentrega['PWD'], host=pgentrega['SERVER'], port=pgentrega['PORT'])
 
