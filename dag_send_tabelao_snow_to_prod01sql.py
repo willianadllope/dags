@@ -18,22 +18,26 @@ class DAG_send_tabelao_prod01sql:
         return BashOperator(
             task_id="carrega_csv_tabelao_prod01sql",
             bash_command="python "+self.dag.params['scripts']['task_carrega_csv_tabelao_prod01sql']+" 'pr_carrega_tabelao' '"+self.dag.params['tipoCarga']+"'",
+            dag=self.dag,
         )
 
     def finaliza_carga_full(self):
         return BashOperator(
             task_id="finaliza_carga_full",
             bash_command="python "+self.dag.params['scripts']['task_finaliza_carga_full']+" '"+self.dag.params['tipoCarga']+"'"+" 1 100",
+            dag=self.dag,
         )
 
     def start_task(self):
         return EmptyOperator(
             task_id='start',
+            dag=self.dag,
         )
 
     def end_task(self):
         return EmptyOperator(
             task_id='end',
+            dag=self.dag,
         )
    
     def create_dag(self):
