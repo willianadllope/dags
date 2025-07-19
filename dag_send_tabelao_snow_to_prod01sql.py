@@ -47,6 +47,7 @@ class DAG_send_tabelao_prod01sql:
 
 cfg.configs['tipoCarga'] = 'FULL'
 
+
 # Instantiate the DAG class
 dag_send_tabelao_prod01 = DAG_send_tabelao_prod01sql(
     dag_id='dag_send_tabelao_prod01',
