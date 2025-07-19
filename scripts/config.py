@@ -71,8 +71,8 @@ scripts = {
     'task_carrega_csv_tabelao_prod01sql':files_python['call_procedure_prod01sql'],
     'task_finaliza_carga_full':files_python['update_prod01sql'],
     'task_delete_parquet': files_python['call_procedure_snowflake'],
-    'tast_get_parquet':files_python['ponteiros_pg'],
-    'tast_send_parquet':files_python['upload_snowflake'],
+    'task_get_parquet':files_python['ponteiros_pg'],
+    'task_send_parquet':files_python['upload_snowflake'],
     'task_carga_ajuste_ponteiro_rds':files_python['call_procedure_snowflake'],
     'task_preparar_enviar_csv':files_python['execute_snowflake'],
     'task_send_s3_rds':files_python['send_s3_rds']
