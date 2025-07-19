@@ -17,7 +17,6 @@ from airflow.operators.bash import BashOperator
 from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import BranchPythonOperator
 from airflow.utils.trigger_rule import TriggerRule
-
 from airflow.utils.dates import days_ago
 
 from airflow.utils.task_group import TaskGroup
@@ -81,12 +80,6 @@ with DAG(
     inicia_carga_full = BashOperator(
         task_id="inicia_carga_full",
         bash_command="python "+dag.params['scripts']+"update_prod01sql.py '"+dag.params['tipoCarga']+"'"+" 0 1",
-        #bash_command="echo 'carga_inicial_truncate'",
-    )
-
-    finaliza_carga_full = BashOperator(
-        task_id="finaliza_carga_full",
-        bash_command="python "+dag.params['scripts']+"update_prod01sql.py '"+dag.params['tipoCarga']+"'"+" 1 100",
         #bash_command="echo 'carga_inicial_truncate'",
     )
 
