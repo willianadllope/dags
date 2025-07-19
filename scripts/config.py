@@ -43,7 +43,7 @@ files_python = {
     'task_parquet_geracao_envio_prod01sql_snowflake': diretorios['tasks']+'task_parquet_geracao_envio_prod01sql_snowflake.py',    
     'task_upload_snowflake': diretorios['tasks']+'task_upload_snowflake.py',    
     'task_execute_snowflake': diretorios['tasks']+'task_execute_snowflake.py',    
-    'task_call_procedure_snowflake.py': diretorios['tasks']+'task_call_procedure_snowflake.py'
+    'task_call_procedure_snowflake': diretorios['tasks']+'task_call_procedure_snowflake.py'
 }
 
 scripts = {
