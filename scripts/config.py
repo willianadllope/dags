@@ -43,7 +43,8 @@ files_python = {
     'task_parquet_geracao_envio_prod01sql_snowflake': diretorios['tasks']+'task_parquet_geracao_envio_prod01sql_snowflake.py',    
     'task_upload_snowflake': diretorios['tasks']+'task_upload_snowflake.py',    
     'task_execute_snowflake': diretorios['tasks']+'task_execute_snowflake.py',    
-    'task_call_procedure_snowflake': diretorios['tasks']+'task_call_procedure_snowflake.py'
+    'task_call_procedure_snowflake': diretorios['tasks']+'task_call_procedure_snowflake.py',
+    'task_update_prod01sql': diretorios['tasks']+'update_prod01sql.py'
 }
 
 scripts = {
@@ -64,7 +65,9 @@ scripts = {
     'task_carrega_carga':files_python['task_call_procedure_prod01sql'], 
     'task_carrega_csv_tabelao_prod01sql':files_python['task_call_procedure_prod01sql'], 
     'task_download_csvs_tabelao':files_python['task_call_procedure_prod01sql'], 
-    'task_envia_tabelao_s3':files_python['task_call_procedure_snowflake']
+    'task_envia_tabelao_s3':files_python['task_call_procedure_snowflake'],
+    'task_carrega_csv_tabelao_prod01sql':files_python['task_call_procedure_prod01sql'],
+    'task_finaliza_carga_full':files_python['task_update_prod01sql']
  }
 
 configs = {

@@ -5,7 +5,7 @@ from airflow.operators.dummy import DummyOperator
 from datetime import datetime
 import scripts.config as cfg
 
-cfg.diretorios['tipoCarga'] = 'FULL'
+cfg.configs['tipoCarga'] = 'FULL'
 
 class DAG_send_tabelao_prod01sql:
     def __init__(self, dag_id, schedule_interval, start_date, params):
@@ -20,15 +20,13 @@ class DAG_send_tabelao_prod01sql:
     def carrega_csv_tabelao_prod01sql(self):
         return BashOperator(
             task_id="carrega_csv_tabelao_prod01sql",
-            bash_command="python "+self.dag.params['scripts']+"call_procedure_prod01sql.py 'pr_carrega_tabelao' '"+self.dag.params['tipoCarga']+"'",
-            #bash_command="echo 'carrega_csv_tabelao_prod01sql'",
+            bash_command="python "+self.dag.params['scripts']['task_carrega_csv_tabelao_prod01sql']+" 'pr_carrega_tabelao' '"+self.dag.params['tipoCarga']+"'",
         )
 
     def finaliza_carga_full(self):
         return BashOperator(
             task_id="finaliza_carga_full",
-            bash_command="python "+self.dag.params['scripts']+"update_prod01sql.py '"+self.dag.params['tipoCarga']+"'"+" 1 100",
-            #bash_command="echo 'carga_inicial_truncate'",
+            bash_command="python "+self.dag.params['scripts']['task_finaliza_carga_full']+" '"+self.dag.params['tipoCarga']+"'"+" 1 100",
         )
 
     def start_task(self):
@@ -54,7 +52,7 @@ dag_send_tabelao_prod01 = DAG_send_tabelao_prod01sql(
     dag_id='dag_send_tabelao_prod01',
     schedule_interval=None,
     start_date=datetime(2023, 1, 1),
-    params=cfg.diretorios
+    params=cfg.configs
 )
 
 # Get the DAG object
