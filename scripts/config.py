@@ -80,7 +80,7 @@ scripts = {
 
 configs = {
     'diretorios':diretorios,
-    'tipoCarga':'full',
+    'tipoCarga':'FULL',
     'scripts': scripts
 }
 
