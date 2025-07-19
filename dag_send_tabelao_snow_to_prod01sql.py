@@ -1,6 +1,6 @@
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
-from airflow.operators.dummy import DummyOperator
+from airflow.operators.empty import EmptyOperator
 from datetime import datetime
 import scripts.config as cfg
 
@@ -27,13 +27,13 @@ class DAG_send_tabelao_prod01sql:
         )
 
     def start_task(self):
-        return DummyOperator(
-            task_id='start_task',
+        return EmptyOperator(
+            task_id='start',
         )
 
     def end_task(self):
-        return DummyOperator(
-            task_id='end_task',
+        return EmptyOperator(
+            task_id='end',
         )
    
     def create_dag(self):
