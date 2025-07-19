@@ -1,5 +1,0 @@
-teste no novo repositorio
-linha nova no novo teste
-vamos ver como fica o merge
-[root@orquestrador-dados airflow]# crontab -l
-*/2 * * * * /root/airflow/updatedags.sh >> /root/sirflow/logupdates.out &
