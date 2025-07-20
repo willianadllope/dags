@@ -54,12 +54,12 @@ def check_carga_em_execucao():
 with DAG(
     'carga_regras',
     #schedule="@daily",
-    schedule_interval=None,
+    schedule=None,
     default_args=default_args,
     start_date=datetime(2025, 1, 21),
     tags=['cargacsv'],
     params=configs,
-    concurrency=3,
+    max_active_tasks=3,
     catchup=False,
 ) as dag:
     
