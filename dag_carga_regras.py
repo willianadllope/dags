@@ -14,7 +14,7 @@ from airflow.models.baseoperator import chain
 
 # Operators; we need this to operate!
 from airflow.operators.bash import BashOperator
-from airflow.operators.dummy import DummyOperator
+from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import BranchPythonOperator
 from airflow.utils.trigger_rule import TriggerRule
 from airflow.utils.dates import days_ago
@@ -63,16 +63,16 @@ with DAG(
     catchup=False,
 ) as dag:
     
-    start_task = DummyOperator(
+    start_task = EmptyOperator(
         task_id='start',
     )
 
-    end_task = DummyOperator(
+    end_task = EmptyOperator(
         task_id='end',
         trigger_rule=TriggerRule.NONE_FAILED,
     )
 
-    skip_execution = DummyOperator(
+    skip_execution = EmptyOperator(
         task_id='skip_execution',
     )
 
