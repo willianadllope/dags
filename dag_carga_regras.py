@@ -48,6 +48,7 @@ def check_carga_em_execucao():
     carga = ''
     for index,row in df.iterrows():
         carga = row['carga'].upper()
+    print("Carga:",carga)
     return "group_carrega_carga_full" if carga == 'F' else "carrega_carga"
 
 with DAG(
