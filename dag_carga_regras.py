@@ -48,7 +48,7 @@ def check_carga_em_execucao():
     carga = ''
     for index,row in df.iterrows():
         carga = row['carga']
-    return "group_carrega_carga_full" if carga == 'F' else "carrega_carga_incremental"
+    return "group_carrega_carga_full" if carga == 'F' else "carrega_carga"
 
 with DAG(
     'carga_regras',
