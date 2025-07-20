@@ -47,7 +47,7 @@ def check_carga_em_execucao():
     df = pd.read_sql("SELECT carga from systax_app.snowflake.vw_carga_em_andamento", con)
     carga = ''
     for index,row in df.iterrows():
-        carga = row['carga']
+        carga = row['carga'].upper()
     return "group_carrega_carga_full" if carga == 'F' else "carrega_carga"
 
 with DAG(
