@@ -620,7 +620,7 @@ with DAG(
     chain(
         start_task, 
         inicia_carga,
-        branching,
+        ##branching,
         group_carrega_carga_full, 
         limpa_stage, 
         group_gera_envia_parquet, 
@@ -639,24 +639,4 @@ with DAG(
         end_task
     )
     ### cadeia de eventos da carga incremental
-    chain(
-        start_task, 
-        branching,
-        carrega_carga,
-        limpa_stage, 
-        group_gera_envia_parquet, 
-        group_apaga_parquet, 
-        group_gera_parquet,
-        group_gera_parquet_caches,
-        group_envia_parquet, 
-        task_snowflake_carga, 
-        task_snowflake_gera_tabelao, 
-        task_snowflake_tabelao_apaga_indevidos, 
-        task_apaga_csv_s3_tabelao,
-        task_envia_tabelao_s3,
-        task_download_csvs_tabelao,
-        task_carrega_csv_tabelao_prod01sql,
-        acionar_dag_send_tabelao_prod01,
-        acionar_dag_generation_csv_to_rds,
-        end_task
-    )    
+
