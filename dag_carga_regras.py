@@ -36,7 +36,7 @@ default_args = {
 configs = scripts.config.configs
 
 ## full || incremental || test(nao executa nada dentro dos scripts)
-configs['tipoCarga'] = 'full'
+configs['tipoCarga'] = 'FULL'
 
 prod01sql = scripts.config.prod01sql
 
@@ -176,7 +176,7 @@ with DAG(
         )
 
     with TaskGroup(
-            group_id="task_group_carga_full_id_tabelas",
+            group_id="group_carrega_carga_full",
             ui_color="blue", 
             ui_fgcolor="green",
             tooltip="Carrega as tabelas de controle de ID do que sera enviado para o Snowflake",
