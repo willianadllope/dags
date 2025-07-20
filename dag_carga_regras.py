@@ -76,10 +76,10 @@ with DAG(
         task_id='skip_execution',
     )
 
-    branching = BranchPythonOperator(
-        task_id='branching',
-        python_callable=check_carga_em_execucao,
-    )
+    #branching = BranchPythonOperator(
+    #    task_id='branching',
+    #    python_callable=check_carga_em_execucao,
+    #)
 
     inicia_carga = BashOperator(
         task_id="inicia_carga",
@@ -87,10 +87,10 @@ with DAG(
     )
 
     ## chamar somente no incremental
-    carrega_carga = BashOperator(
-        task_id="carrega_carga",
-        bash_command="python "+dag.params['scripts']['task_carrega_carga']+" 'pr_preparar_atualizacao' '"+dag.params['tipoCarga']+"'",
-    )
+    #carrega_carga = BashOperator(
+    #    task_id="carrega_carga",
+    #    bash_command="python "+dag.params['scripts']['task_carrega_carga']+" 'pr_preparar_atualizacao' '"+dag.params['tipoCarga']+"'",
+    #)
 
     limpa_stage = BashOperator(
         task_id="limpa_stage",
