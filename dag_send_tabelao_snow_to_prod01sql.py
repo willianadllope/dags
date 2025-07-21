@@ -5,10 +5,10 @@ from datetime import datetime
 import scripts.config as cfg
 
 class DAG_send_tabelao_prod01sql:
-    def __init__(self, dag_id, schedule_interval, start_date, params):
+    def __init__(self, dag_id, schedule, start_date, params):
         self.dag = DAG(
             dag_id=dag_id,
-            schedule_interval=schedule_interval,
+            schedule=schedule,
             start_date=start_date,
             params=params,
             catchup=False,
@@ -51,7 +51,7 @@ class DAG_send_tabelao_prod01sql:
 # Instantiate the DAG class
 dag_send_tabelao_prod01 = DAG_send_tabelao_prod01sql(
     dag_id='dag_send_tabelao_prod01',
-    schedule_interval=None,
+    schedule=None,
     start_date=datetime(2023, 1, 1),
     params=cfg.configs
 )

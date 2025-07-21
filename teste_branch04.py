@@ -49,8 +49,11 @@ with DAG(
 
     do_y = DummyOperator(task_id="do_y")
 
+    do_z = DummyOperator(task_id="do_z")
 
-    run_this_first >> branching >> branch_a >> complete
+    do_t = DummyOperator(task_id="do_t")
+
+    run_this_first >> branching >> branch_a >> do_z >> do_t >> complete
     run_this_first >> branching >> branch_b >> do_x >> do_y >> complete
     
 
