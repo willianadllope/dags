@@ -3,7 +3,6 @@
 from airflow.models.dag import DAG
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import BranchPythonOperator
-from airflow.operators.dummy import DummyOperator
 from airflow.utils.edgemodifier import Label
 from airflow.utils.trigger_rule import TriggerRule
 
@@ -45,13 +44,13 @@ with DAG(
             task_id="branch_b",
     )
 
-    do_x = DummyOperator(task_id="do_x")
+    do_x = EmptyOperator(task_id="do_x")
 
-    do_y = DummyOperator(task_id="do_y")
+    do_y = EmptyOperator(task_id="do_y")
 
-    do_z = DummyOperator(task_id="do_z")
+    do_z = EmptyOperator(task_id="do_z")
 
-    do_t = DummyOperator(task_id="do_t")
+    do_t = EmptyOperator(task_id="do_t")
 
     run_this_first >> branching >> branch_a >> do_z >> do_t >> complete
     run_this_first >> branching >> branch_b >> do_x >> do_y >> complete
