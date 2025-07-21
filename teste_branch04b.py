@@ -1,6 +1,7 @@
 """Example DAG demonstrating the usage of the BranchPythonOperator."""
 
 from airflow.models.dag import DAG
+from airflow.models.baseoperator import chain
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import BranchPythonOperator
 from airflow.utils.edgemodifier import Label
@@ -16,7 +17,7 @@ def random_branch():
     return "branch_a" if randint(1, 2) == 1 else "branch_b"
 
 with DAG(
-    dag_id='teste_branch04b',
+    'teste_branch04b',
     start_date=datetime(2023, 1, 1),
     catchup=False,
     schedule=None
@@ -52,8 +53,8 @@ with DAG(
 
     do_t = EmptyOperator(task_id="do_t")
 
-    run_this_first >> branching >> branch_a >> do_z >> do_t >> complete
-    run_this_first >> branching >> branch_b >> do_x >> do_y >> complete
+    chain(run_this_first, branching, branch_a, do_z, do_t, complete)
+    chain(run_this_first, branching, branch_b, do_x, do_y, complete)
     
 
         
