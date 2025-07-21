@@ -26,7 +26,7 @@ with DAG(
         task_id='run_this_first',
     )
 
-    complete = DummyOperator(
+    complete = EmptyOperator(
         task_id="complete", 
         trigger_rule=TriggerRule.NONE_FAILED,
     )
