@@ -2,6 +2,7 @@
 
 from airflow.models.dag import DAG
 from airflow.operators.empty import EmptyOperator
+from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import BranchPythonOperator
 from airflow.utils.edgemodifier import Label
 from airflow.utils.trigger_rule import TriggerRule
@@ -22,11 +23,11 @@ with DAG(
     schedule=None
 ) as dag:
 
-    run_this_first = EmptyOperator(
+    run_this_first = DummyOperator(
         task_id='run_this_first',
     )
 
-    complete = EmptyOperator(
+    complete = DummyOperator(
         task_id="complete", 
         trigger_rule=TriggerRule.NONE_FAILED,
     )
@@ -36,21 +37,21 @@ with DAG(
         python_callable=random_branch,
     )
 
-    branch_a = EmptyOperator(
+    branch_a = DummyOperator(
             task_id="branch_a",
         )
     
-    branch_b = EmptyOperator(
+    branch_b = DummyOperator(
             task_id="branch_b",
     )
 
-    do_x = EmptyOperator(task_id="do_x")
+    do_x = DummyOperator(task_id="do_x")
 
-    do_y = EmptyOperator(task_id="do_y")
+    do_y = DummyOperator(task_id="do_y")
 
-    do_z = EmptyOperator(task_id="do_z")
+    do_z = DummyOperator(task_id="do_z")
 
-    do_t = EmptyOperator(task_id="do_t")
+    do_t = DummyOperator(task_id="do_t")
 
     run_this_first >> branching >> branch_a >> do_z >> do_t >> complete
     run_this_first >> branching >> branch_b >> do_x >> do_y >> complete
