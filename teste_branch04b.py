@@ -16,7 +16,7 @@ def random_branch():
     return "branch_a" if randint(1, 2) == 1 else "branch_b"
 
 with DAG(
-    dag_id='teste_branch04',
+    dag_id='teste_branch04b',
     start_date=datetime(2023, 1, 1),
     catchup=False,
     schedule="@daily"
