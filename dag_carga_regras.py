@@ -87,10 +87,10 @@ with DAG(
     )
 
     ## chamar somente no incremental
-    #carrega_carga = BashOperator(
-    #    task_id="carrega_carga",
-    #    bash_command="python "+dag.params['scripts']['task_carrega_carga']+" 'pr_preparar_atualizacao' '"+dag.params['tipoCarga']+"'",
-    #)
+    carrega_carga = BashOperator(
+        task_id="carrega_carga",
+        bash_command="python "+dag.params['scripts']['task_carrega_carga']+" 'pr_preparar_atualizacao' '"+dag.params['tipoCarga']+"'",
+    )
 
     limpa_stage = BashOperator(
         task_id="limpa_stage",
@@ -602,25 +602,25 @@ with DAG(
             bash_command="python "+dag.params['scripts']['task_carrega_csv_tabelao_prod01sql']+" 'pr_carrega_tabelao' '"+dag.params['tipoCarga']+"'",
     )
     
-    acionar_dag_generation_csv_to_rds = TriggerDagRunOperator(
-        task_id="acionar_dag_generation_csv_to_rds",
-        trigger_dag_id="dag_generation_csv_to_rds",  # ID da DAG a ser acionada
-        wait_for_completion=True,  # Se True, espera a DAG terminar
-        reset_dag_run=True,         # Se True, reinicia uma execução se já existir
-    )
+    #acionar_dag_generation_csv_to_rds = TriggerDagRunOperator(
+    #    task_id="acionar_dag_generation_csv_to_rds",
+    #    trigger_dag_id="dag_generation_csv_to_rds",  # ID da DAG a ser acionada
+    #    wait_for_completion=True,  # Se True, espera a DAG terminar
+    #    reset_dag_run=True,         # Se True, reinicia uma execução se já existir
+    #)
 
-    acionar_dag_send_tabelao_prod01 = TriggerDagRunOperator(
-        task_id="acionar_dag_send_tabelao_prod01",
-        trigger_dag_id="dag_send_tabelao_prod01",  # ID da DAG a ser acionada
-        wait_for_completion=True,  # Se True, espera a DAG terminar
-        reset_dag_run=True,         # Se True, reinicia uma execução se já existir
-    )
+    #acionar_dag_send_tabelao_prod01 = TriggerDagRunOperator(
+    #    task_id="acionar_dag_send_tabelao_prod01",
+    #    trigger_dag_id="dag_send_tabelao_prod01",  # ID da DAG a ser acionada
+    #    wait_for_completion=True,  # Se True, espera a DAG terminar
+    #    reset_dag_run=True,         # Se True, reinicia uma execução se já existir
+    #)
 
     ### cadeia de eventos da carga full
     chain(
         start_task, 
         inicia_carga,
-        ##branching,
+        carrega_carga,
         group_carrega_carga_full, 
         limpa_stage, 
         group_gera_envia_parquet, 
@@ -634,8 +634,8 @@ with DAG(
         task_envia_tabelao_s3,
         task_download_csvs_tabelao,
         task_carrega_csv_tabelao_prod01sql,
-        acionar_dag_send_tabelao_prod01,
-        acionar_dag_generation_csv_to_rds,
+        #acionar_dag_send_tabelao_prod01,
+        #acionar_dag_generation_csv_to_rds,
         end_task
     )
     ### cadeia de eventos da carga incremental

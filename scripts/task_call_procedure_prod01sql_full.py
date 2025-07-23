@@ -23,6 +23,10 @@ if len(sys.argv)  >= 2:
 if len(sys.argv)  >= 3:
     tipo = sys.argv[2]
 
+
+if tipo != 'FULL':
+    sys.exit(0)
+
 engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
 
 conx = engine.raw_connection()

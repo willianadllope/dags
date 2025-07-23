@@ -38,6 +38,8 @@ files_python = {
     ## script que chama procedure na prod01sql para quebrar os ids em chunks e facilitar o load das tabelas
     'call_procedure_prod01sql_chunks':diretorios['tasks']+'task_call_procedure_prod01sql_chunks.py',
     'call_procedure_prod01sql':diretorios['tasks']+'task_call_procedure_prod01sql.py',
+    'call_procedure_prod01sql_full':diretorios['tasks']+'task_call_procedure_prod01sql_full.py',
+    'call_procedure_prod01sql_incremental':diretorios['tasks']+'task_call_procedure_prod01sql_incremental.py',
     'limpa_stage_snowflake':diretorios['tasks']+'task_limpa_stage_snowflake.py',
     'inicia_carga_updt_prod01sql':diretorios['tasks']+'task_inicia_carga_updt_prod01sql.py',    
     'parquet_geracao_envio_prod01sql_snowflake': diretorios['tasks']+'task_parquet_geracao_envio_prod01sql_snowflake.py',    
@@ -52,9 +54,9 @@ files_python = {
 scripts = {
     'task_inicia_carga':files_python['inicia_carga_updt_prod01sql'],
     'task_limpa_stage':files_python['limpa_stage_snowflake'],
-    'task_carrega_carga':files_python['call_procedure_prod01sql'], 
+    'task_carrega_carga':files_python['call_procedure_prod01sql_incremental'], 
     'task_group_chunks':files_python['call_procedure_prod01sql_chunks'], 
-    'task_group_carrega_carga_full':files_python['call_procedure_prod01sql'], 
+    'task_group_carrega_carga_full':files_python['call_procedure_prod01sql_full'], 
     'task_group_gera_envia_parquet':files_python['parquet_geracao_envio_prod01sql_snowflake'],
     'task_group_gera_parquet':files_python['parquet_geracao_envio_prod01sql_snowflake'],
     'task_group_gera_parquet_caches':files_python['parquet_geracao_envio_prod01sql_snowflake'],
