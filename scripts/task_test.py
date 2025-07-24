@@ -26,10 +26,11 @@ if len(sys.argv)  >= 3:
     tipo = sys.argv[2]
 
 print("Executando numero "+numero)
+print("Executando tipo "+tipo)
 
 
 if numero == '2' and tipo == 'FULL':
-    print("EXIT")
+    print("SAIU")
     sys.exit(0)
 
 
