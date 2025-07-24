@@ -50,10 +50,10 @@ def check_carga_em_execucao():
     for index,row in df.iterrows():
         carga = row['carga'].upper()
     print("Carga:",carga)
-    return carga
+    return "FULL" if carga == 'F' else "INCREMENTAL"
 
 ## full || incremental || test(nao executa nada dentro dos scripts)
-configs['tipoCarga'] = 'FULL'
+configs['tipoCarga'] = check_carga_em_execucao()
 
 
 
