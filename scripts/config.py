@@ -79,7 +79,7 @@ scripts = {
     'task_carga_ajuste_ponteiro_rds':files_python['call_procedure_snowflake'],
     'task_preparar_enviar_csv':files_python['execute_snowflake'],
     'task_send_s3_rds':files_python['send_s3_rds'],
-    'tastteste':files_python['taskteste']
+    'taskteste':files_python['taskteste']
 }
 
 configs = {
