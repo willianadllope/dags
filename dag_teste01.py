@@ -39,9 +39,9 @@ prod01sql = scripts.config.prod01sql
 
 
 def check_necessidade_execucao():
-    #return "iniciar_carga"
-    return "skip_execution"
-
+    #return "skip_execution"
+    return "iniciar_carga"
+    
 def check_carga_em_execucao():
     engine = create_engine(f"mssql+pymssql://{prod01sql['UID']}:{prod01sql['PWD']}@{prod01sql['SERVER']}:{prod01sql['PORT']}/{prod01sql['DATABASE']}")
     con = engine.connect().execution_options(stream_results=True)
