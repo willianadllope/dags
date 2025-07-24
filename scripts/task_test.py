@@ -31,7 +31,7 @@ print("Executando tipo "+tipo)
 
 if numero == '2' and tipo == 'FULL':
     print("SAIU")
-    sys.exit(0)
+    sys.exit()
 
 
 print("FIM")
