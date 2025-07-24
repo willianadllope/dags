@@ -11,7 +11,9 @@ import pandas as pd
 import urllib as ul
 
 db = config.prod01sql
+configs = config.configs
 
+print("Task Test:"+configs['scripts']['taskteste'])
 ## ex: python call_procedure_prod01sql.py pr_preparar_carga_custom_prod full
 
 numero = ''
