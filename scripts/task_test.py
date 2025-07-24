@@ -14,18 +14,21 @@ db = config.prod01sql
 
 ## ex: python call_procedure_prod01sql.py pr_preparar_carga_custom_prod full
 
-procedure = ''
+numero = ''
 tipo = ''
 
 if len(sys.argv)  >= 2:
-    procedure = sys.argv[1]
+    numero = sys.argv[1]
 
 if len(sys.argv)  >= 3:
     tipo = sys.argv[2]
 
+print("Executando numero "+numero)
 
-if tipo != 'FULL':
+
+if numero == '2' and tipo == 'FULL':
+    print("EXIT")
     sys.exit(0)
 
 
-print("fim")
+print("FIM")
