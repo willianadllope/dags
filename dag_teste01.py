@@ -94,19 +94,19 @@ with DAG(
     ## chamar somente no incremental
     task01 = BashOperator(
         task_id="task01",
-        bash_command="python "+dag.params['scripts']['taskteste']+" '1', '"+dag.params['tipoCarga']+"'",
+        bash_command="python "+dag.params['scripts']['taskteste']+" '1' '"+dag.params['tipoCarga']+"'",
         #bash_command='echo "task01" ',
     )
 
     task02 = BashOperator(
         task_id="task02",
-        bash_command="python "+dag.params['scripts']['taskteste']+" '2', '"+dag.params['tipoCarga']+"'",
+        bash_command="python "+dag.params['scripts']['taskteste']+" '2' '"+dag.params['tipoCarga']+"'",
         #bash_command='echo "task02" ',
     )   
 
     task03 = BashOperator(
         task_id="task03",
-        bash_command="python "+dag.params['scripts']['taskteste']+" '3', '"+dag.params['tipoCarga']+"'",
+        bash_command="python "+dag.params['scripts']['taskteste']+" '3' '"+dag.params['tipoCarga']+"'",
         #bash_command='echo "task03" ',
     )   
 
