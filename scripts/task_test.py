@@ -29,7 +29,7 @@ print("Executando numero "+numero)
 print("Executando tipo "+tipo)
 
 
-if numero == '2' and tipo == 'FULL':
+if numero.strip() == '2' and tipo == 'FULL':
     print("SAIU")
     sys.exit()
 
