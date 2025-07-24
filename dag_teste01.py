@@ -53,7 +53,7 @@ def check_carga_em_execucao():
     return carga
 
 ## full || incremental || test(nao executa nada dentro dos scripts)
-configs['tipoCarga'] = check_carga_em_execucao()
+configs['tipoCarga'] = 'FULL'
 
 
 
