@@ -49,7 +49,7 @@ files_python = {
     'ponteiros_pg':diretorios['tasks']+'task_ponteiros_pg.py',
     'update_prod01sql': diretorios['tasks']+'task_update_prod01sql.py',
     'send_s3_rds':diretorios['tasks']+'task_send_s3_rds.py',
-    'task_test':diretorios['tasks']+'task_test.py'
+    'taskteste':diretorios['tasks']+'task_test.py'
 }
 
 scripts = {
@@ -79,7 +79,7 @@ scripts = {
     'task_carga_ajuste_ponteiro_rds':files_python['call_procedure_snowflake'],
     'task_preparar_enviar_csv':files_python['execute_snowflake'],
     'task_send_s3_rds':files_python['send_s3_rds'],
-    'tast_test':files_python['task_test']
+    'tastteste':files_python['taskteste']
 }
 
 configs = {
