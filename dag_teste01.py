@@ -1,7 +1,7 @@
 import sys
 import os
 import shutil
-from time import time
+import time
 from datetime import timedelta, datetime
 from sqlalchemy import create_engine
 import pandas as pd
