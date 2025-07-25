@@ -157,6 +157,7 @@ with DAG(
         task02,
         task03,
         task_execute_job_prod01sql,
+        task04,
         acionar_dag_send_tabelao_prod01,
         end_task
     )
