@@ -14,6 +14,13 @@ class DAG_send_tabelao_prod01sql:
             catchup=False,
         )
 
+    def download_csvs_tabelao(self):
+        return BashOperator(
+            task_id="task_download_csvs_tabelao",
+            bash_command="python "+self.dag.params['scripts']['task_download_csvs_tabelao']+" 'pr_download_csvs_tabelao' '"+self.dag.params['tipoCarga']+"'",
+            dag=self.dag,
+    )
+
     def carrega_csv_tabelao_prod01sql(self):
         return BashOperator(
             task_id="carrega_csv_tabelao_prod01sql",
@@ -42,10 +49,11 @@ class DAG_send_tabelao_prod01sql:
    
     def create_dag(self):
       t0 = self.start_task()
-      t1 = self.carrega_csv_tabelao_prod01sql()
-      t2 = self.finaliza_carga_full()
-      t3 = self.end_task()
-      t0 >> t1 >> t2 >> t3
+      t1 = self.download_csvs_tabelao()
+      t2 = self.carrega_csv_tabelao_prod01sql()
+      t3 = self.finaliza_carga_full()
+      t4 = self.end_task()
+      t0 >> t1 >> t2 >> t3 >> t4
       return self.dag
 
 # Instantiate the DAG class

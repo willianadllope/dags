@@ -109,7 +109,26 @@ with DAG(
         bash_command="python "+dag.params['scripts']['taskteste']+" '3' '"+dag.params['tipoCarga']+"'",
         #bash_command='echo "task03" ',
     )   
+    
+    #acionar_dag_generation_csv_to_rds = TriggerDagRunOperator(
+    #    task_id="acionar_dag_generation_csv_to_rds",
+    #    trigger_dag_id="dag_generation_csv_to_rds",  # ID da DAG a ser acionada
+    #    wait_for_completion=False,  # Se True, espera a DAG terminar
+    #    reset_dag_run=False,         # Se True, reinicia uma execução se já existir
+    #)
 
+    #acionar_dag_send_tabelao_prod01 = TriggerDagRunOperator(
+    #    task_id="acionar_dag_send_tabelao_prod01",
+    #    trigger_dag_id="dag_send_tabelao_prod01",  # ID da DAG a ser acionada
+    #    wait_for_completion=False,  # Se True, espera a DAG terminar
+    #    reset_dag_run=False,         # Se True, reinicia uma execução se já existir
+    #)
+    
+    task_execute_job_prod01sql = BashOperator(
+            task_id="task_execute_job_prod01sql",
+            bash_command="python "+dag.params['scripts']['task_execute_job_prod01sql']+" 'pr_execute_job_carga_tabelao' '"+dag.params['tipoCarga']+"'",
+    )
+    
     chain(
         start_task, 
         branching,
@@ -117,6 +136,7 @@ with DAG(
         task01,
         task02,
         task03,
+        task_execute_job_prod01sql,
         end_task
     )
     chain(

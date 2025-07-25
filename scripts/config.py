@@ -68,7 +68,6 @@ scripts = {
     'task_snowflake_tabelao_apaga_indevidos':files_python['execute_snowflake'],
     'task_apaga_csv_s3_tabelao':files_python['call_procedure_prod01sql'], 
     'task_carrega_carga':files_python['call_procedure_prod01sql'], 
-    'task_carrega_csv_tabelao_prod01sql':files_python['call_procedure_prod01sql'], 
     'task_download_csvs_tabelao':files_python['call_procedure_prod01sql'], 
     'task_envia_tabelao_s3':files_python['call_procedure_snowflake'],
     'task_carrega_csv_tabelao_prod01sql':files_python['call_procedure_prod01sql'],
@@ -79,6 +78,7 @@ scripts = {
     'task_carga_ajuste_ponteiro_rds':files_python['call_procedure_snowflake'],
     'task_preparar_enviar_csv':files_python['execute_snowflake'],
     'task_send_s3_rds':files_python['send_s3_rds'],
+    'task_execute_job_prod01sql':files_python['call_procedure_prod01sql'],
     'taskteste':files_python['taskteste']
 }
 
