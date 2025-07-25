@@ -42,12 +42,14 @@ def pause_script(**kwargs):
     """
     A simple Python callable that receives Airflow context.
     """
+    time.sleep(5)
     task_instance = kwargs.get('ti')
     execution_date = kwargs.get('ds')
     print(f"Executing task on {execution_date}")
     print(f"Task instance: {task_instance}")
     return "Function executed successfully!"
-    time.sleep(5)
+    
+
     
 
 def check_necessidade_execucao():
@@ -156,7 +158,7 @@ with DAG(
         task01,
         task02,
         task03,
-        task_execute_job_prod01sql,
+        #task_execute_job_prod01sql,
         task04,
         acionar_dag_send_tabelao_prod01,
         end_task
