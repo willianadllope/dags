@@ -16,6 +16,7 @@ from airflow.models.baseoperator import chain
 from airflow.operators.bash import BashOperator
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import BranchPythonOperator
+from airflow.operators.python import PythonOperator
 from airflow.utils.trigger_rule import TriggerRule
 from airflow.utils.dates import days_ago
 
@@ -37,9 +38,18 @@ configs = scripts.config.configs
 
 prod01sql = scripts.config.prod01sql
 
-def pause_script():
+def pause_script(**kwargs):
+    """
+    A simple Python callable that receives Airflow context.
+    """
+    task_instance = kwargs.get('ti')
+    execution_date = kwargs.get('ds')
+    print(f"Executing task on {execution_date}")
+    print(f"Task instance: {task_instance}")
+    return "Function executed successfully!"
     time.sleep(5)
     
+
 def check_necessidade_execucao():
     #return "skip_execution"
     return "iniciar_carga"
@@ -112,9 +122,11 @@ with DAG(
         #bash_command='echo "task03" ',
     )   
     
-    task04 = BashOperator(
+    task04 = PythonOperator(
         task_id="task04",
         python_callable=pause_script,
+        provide_context=True,
+        op_kwargs={'custom_argumento':'bill'}
         #bash_command='echo "task03" ',
     )   
     
