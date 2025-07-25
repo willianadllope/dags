@@ -37,7 +37,9 @@ configs = scripts.config.configs
 
 prod01sql = scripts.config.prod01sql
 
-
+def pause_script():
+    time.sleep(5)
+    
 def check_necessidade_execucao():
     #return "skip_execution"
     return "iniciar_carga"
@@ -110,6 +112,12 @@ with DAG(
         #bash_command='echo "task03" ',
     )   
     
+    task04 = BashOperator(
+        task_id="task04",
+        python_callable=pause_script,
+        #bash_command='echo "task03" ',
+    )   
+    
     #acionar_dag_generation_csv_to_rds = TriggerDagRunOperator(
     #    task_id="acionar_dag_generation_csv_to_rds",
     #    trigger_dag_id="dag_generation_csv_to_rds",  # ID da DAG a ser acionada
@@ -117,12 +125,12 @@ with DAG(
     #    reset_dag_run=False,         # Se True, reinicia uma execução se já existir
     #)
 
-    #acionar_dag_send_tabelao_prod01 = TriggerDagRunOperator(
-    #    task_id="acionar_dag_send_tabelao_prod01",
-    #    trigger_dag_id="dag_send_tabelao_prod01",  # ID da DAG a ser acionada
-    #    wait_for_completion=False,  # Se True, espera a DAG terminar
-    #    reset_dag_run=False,         # Se True, reinicia uma execução se já existir
-    #)
+    acionar_dag_send_tabelao_prod01 = TriggerDagRunOperator(
+        task_id="acionar_dag_send_tabelao_prod01",
+        trigger_dag_id="dag_send_tabelao_prod01",  # ID da DAG a ser acionada
+        wait_for_completion=False,  # Se True, espera a DAG terminar
+        reset_dag_run=False,         # Se True, reinicia uma execução se já existir
+    )
     
     task_execute_job_prod01sql = BashOperator(
             task_id="task_execute_job_prod01sql",
@@ -137,6 +145,7 @@ with DAG(
         task02,
         task03,
         task_execute_job_prod01sql,
+        acionar_dag_send_tabelao_prod01,
         end_task
     )
     chain(
