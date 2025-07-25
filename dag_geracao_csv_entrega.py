@@ -13,6 +13,7 @@ class DAG_csv_to_rds:
             catchup=False,
         )
 
+    ## apaga os arquivos parquet do snowflake
     def delete_parquet(self):
         return BashOperator(
             task_id="delete_parquet",
@@ -20,6 +21,7 @@ class DAG_csv_to_rds:
             dag=self.dag,
         )   
 
+    ## acessa o RDS para buscar os ultimos ponteiros do tabelao a partir da ultima replicacao
     def get_parquet(self):
         return BashOperator(
             task_id='get_parquet',
@@ -27,27 +29,23 @@ class DAG_csv_to_rds:
             dag=self.dag,
         )
     
+    ## sobe arquivos parquet para o Snowflake
     def send_parquet(self):
         return BashOperator(
             task_id='send_parquet',
             bash_command="python "+self.dag.params['scripts']['task_send_parquet']+" ajusteponteirords FULL",
             dag=self.dag,
         )    
-
+    
+    ## atualiza a tabela de ajuste de ponteiros no Snowflake, fazendo a carga com os novos registros desde a ultima replicacao
     def carga_ajuste_ponteiro_rds(self):
         return BashOperator(
             task_id="carga_ajuste_ponteiro_rds",
             bash_command="python "+self.dag.params['scripts']['task_carga_ajuste_ponteiro_rds']+" full PR_CARGA_AJUSTE_PONTEIRO_RDS",
             dag=self.dag,
         )   
-
-    def send_s3_rds(self):
-        return BashOperator(
-            task_id="send_s3_rds",
-            bash_command="python "+self.dag.params['scripts']['task_send_s3_rds'],
-            dag=self.dag,
-        )
-       
+    
+    ## executa uma TASK no Snowflake
     def preparar_enviar_csv(self):
         return BashOperator(
         task_id="preparar_enviar_csv",
@@ -55,7 +53,16 @@ class DAG_csv_to_rds:
         dag=self.dag,
         #bash_command="echo 'task_gera_tabelao' ",
     )   
-   
+
+    ## chama procedure no RDS passando como parametro a tabela de _Copia que sera carregada e o arquivo do S3
+    ## fc_carrega_csv_from_snowflake
+    def send_s3_rds(self):
+        return BashOperator(
+            task_id="send_s3_rds",
+            bash_command="python "+self.dag.params['scripts']['task_send_s3_rds'],
+            dag=self.dag,
+        )
+      
     def create_dag(self):
       t0 = self.delete_parquet()
       t1 = self.get_parquet()

@@ -146,11 +146,6 @@ with DAG(
         reset_dag_run=False,         # Se True, reinicia uma execução se já existir
     )
     
-    task_execute_job_prod01sql = BashOperator(
-            task_id="task_execute_job_prod01sql",
-            bash_command="python "+dag.params['scripts']['task_execute_job_prod01sql']+" 'pr_execute_job_carga_tabelao' '"+dag.params['tipoCarga']+"'",
-    )
-    
     chain(
         start_task, 
         branching,
@@ -158,7 +153,6 @@ with DAG(
         task01,
         task02,
         task03,
-        #task_execute_job_prod01sql,
         task04,
         acionar_dag_send_tabelao_prod01,
         end_task

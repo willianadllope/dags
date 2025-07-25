@@ -71,7 +71,7 @@ for buckets in buckets_tables_csv:
 
         cursor = con.cursor()
         ## comando = "select public.fc_carrega_csv_new(buckets_tables_csv[buckets],'"+buckets+"','"+file+"',"+(index==0 and "1" or "0")+"::int);"
-        comando = "select public.fc_carrega_csv_new('"+buckets_tables_csv[buckets]+"_copia','"+file+"',"+(index==0 and "1" or "0")+"::int,'"+bucket_name+"','pgentreganew/"+buckets+"','us-east-1');"
+        comando = "select public.fc_carrega_csv_from_snowflake('"+buckets_tables_csv[buckets]+"_copia','"+file+"',"+(index==0 and "1" or "0")+"::int,'"+bucket_name+"','pgentreganew/"+buckets+"','us-east-1');"
         print(comando)
         ##cursor.execute(comando)
         ##con.commit()

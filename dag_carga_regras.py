@@ -592,6 +592,11 @@ with DAG(
         bash_command="python "+dag.params['scripts']['task_envia_tabelao_s3']+" dbo pr_envia_tabelao_s3",
     )   
 
+    task_execute_job_prod01sql = BashOperator(
+            task_id="task_execute_job_prod01sql",
+            bash_command="python "+dag.params['scripts']['task_execute_job_prod01sql']+" 'pr_execute_job_carga_tabelao' '"+dag.params['tipoCarga']+"'",
+    )
+
     #task_download_csvs_tabelao = BashOperator(
     #        task_id="task_download_csvs_tabelao",
     #        bash_command="python "+dag.params['scripts']['task_download_csvs_tabelao']+" 'pr_download_csvs_tabelao' '"+dag.params['tipoCarga']+"'",
@@ -601,7 +606,7 @@ with DAG(
     #        task_id="task_carrega_csv_tabelao_prod01sql",
     #        bash_command="python "+dag.params['scripts']['task_carrega_csv_tabelao_prod01sql']+" 'pr_carrega_tabelao' '"+dag.params['tipoCarga']+"'",
     #)
-    
+
     #acionar_dag_generation_csv_to_rds = TriggerDagRunOperator(
     #    task_id="acionar_dag_generation_csv_to_rds",
     #    trigger_dag_id="dag_generation_csv_to_rds",  # ID da DAG a ser acionada
@@ -632,6 +637,7 @@ with DAG(
         task_snowflake_tabelao_apaga_indevidos, 
         task_apaga_csv_s3_tabelao,
         task_envia_tabelao_s3,
+        task_execute_job_prod01sql,
         #task_download_csvs_tabelao,
         #task_carrega_csv_tabelao_prod01sql,
         #acionar_dag_send_tabelao_prod01,
