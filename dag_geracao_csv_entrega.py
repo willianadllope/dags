@@ -62,15 +62,31 @@ class DAG_csv_to_rds:
             bash_command="python "+self.dag.params['scripts']['task_send_s3_rds'],
             dag=self.dag,
         )
+    
+    def start_task(self):
+        return DummyOperator(
+            task_id='start_task',
+            dag=self.dag,
+        )
+
+    def end_task(self):
+        return DummyOperator(
+            task_id='end_task',
+            dag=self.dag,
+        )    
       
     def create_dag(self):
-      t0 = self.delete_parquet()
-      t1 = self.get_parquet()
-      t2 = self.send_parquet()
-      t3 = self.carga_ajuste_ponteiro_rds()
-      t4 = self.preparar_enviar_csv()
-      t5 = self.send_s3_rds()
-      t0 >> t1 >> t2 >> t3 >> t4 >> t5
+      #t0 = self.delete_parquet()
+      #t1 = self.get_parquet()
+      #t2 = self.send_parquet()
+      #t3 = self.carga_ajuste_ponteiro_rds()
+      #t4 = self.preparar_enviar_csv()
+      #t5 = self.send_s3_rds()
+      #t0 >> t1 >> t2 >> t3 >> t4 >> t5
+      t0 >> self.start_task()
+      t1 >> self.send_s3_rds()
+      t2 >> self.end_task()
+      t0 >> t1 >> t2
       return self.dag
 
 # Instantiate the DAG class
