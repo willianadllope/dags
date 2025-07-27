@@ -41,7 +41,7 @@ print("Inicio: ",datetime.now())
 buckets_tables_csv =	{    
   "usuarios": "usuarios",
   "clientes": "clientes",
-  "config": "config",
+  ##"config": "config",
   "licencas_controle": "licencas_controle",
   "usuario_clientes": "usuario_clientes",
   "cean_relacionado": "cean_relacionado",
