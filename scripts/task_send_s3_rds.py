@@ -41,7 +41,6 @@ print("Inicio: ",datetime.now())
 buckets_tables_csv =	{    
   "usuarios": "usuarios",
   "clientes": "clientes",
-  ##"config": "config",
   "licencas_controle": "licencas_controle",
   "usuario_clientes": "usuario_clientes",
   "cean_relacionado": "cean_relacionado",
@@ -50,6 +49,7 @@ buckets_tables_csv =	{
   "config_super_condensado": "config_super_condensado",
   "tabelao": "tabelao",
   "cache_condensado": "cache_condensado",
+  "config": "config",
 }
 bucket_name = 'systaxbackuprds'
 for buckets in buckets_tables_csv:
