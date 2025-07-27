@@ -1,5 +1,6 @@
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
+from airflow.operators.empty import EmptyOperator
 from datetime import datetime
 import scripts.config as cfg
 
@@ -64,13 +65,13 @@ class DAG_csv_to_rds:
         )
     
     def start_task(self):
-        return DummyOperator(
+        return EmptyOperator(
             task_id='start_task',
             dag=self.dag,
         )
 
     def end_task(self):
-        return DummyOperator(
+        return EmptyOperator(
             task_id='end_task',
             dag=self.dag,
         )    
@@ -82,10 +83,10 @@ class DAG_csv_to_rds:
       #t4 = self.preparar_enviar_csv()
       #t5 = self.send_s3_rds()
       #t0 >> t1 >> t2 >> t3 >> t4 >> t5
-    def create_dag(self):      
-        t0 >> self.start_task()
-        t1 >> self.send_s3_rds()
-        t2 >> self.end_task()
+    def create_dag(self):
+        t0 = self.start_task()
+        t1 = self.send_s3_rds()
+        t2 = self.end_task()
         t0 >> t1 >> t2
         return self.dag
 
