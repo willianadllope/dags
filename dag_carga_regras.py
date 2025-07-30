@@ -607,12 +607,12 @@ with DAG(
     #        bash_command="python "+dag.params['scripts']['task_carrega_csv_tabelao_prod01sql']+" 'pr_carrega_tabelao' '"+dag.params['tipoCarga']+"'",
     #)
 
-    #acionar_dag_generation_csv_to_rds = TriggerDagRunOperator(
-    #    task_id="acionar_dag_generation_csv_to_rds",
-    #    trigger_dag_id="dag_generation_csv_to_rds",  # ID da DAG a ser acionada
-    #    wait_for_completion=False,  # Se True, espera a DAG terminar
-    #    reset_dag_run=False,         # Se True, reinicia uma execução se já existir
-    #)
+    acionar_dag_generation_csv_to_rds = TriggerDagRunOperator(
+        task_id="acionar_dag_generation_csv_to_rds",
+        trigger_dag_id="dag_generation_csv_to_rds",  # ID da DAG a ser acionada
+        wait_for_completion=False,  # Se True, espera a DAG terminar
+        reset_dag_run=False,         # Se True, reinicia uma execução se já existir
+    )
 
     #acionar_dag_send_tabelao_prod01 = TriggerDagRunOperator(
     #    task_id="acionar_dag_send_tabelao_prod01",
@@ -641,7 +641,7 @@ with DAG(
         #task_download_csvs_tabelao,
         #task_carrega_csv_tabelao_prod01sql,
         #acionar_dag_send_tabelao_prod01,
-        #acionar_dag_generation_csv_to_rds,
+        acionar_dag_generation_csv_to_rds,
         end_task
     )
     ### cadeia de eventos da carga incremental

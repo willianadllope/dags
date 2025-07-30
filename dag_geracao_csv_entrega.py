@@ -76,18 +76,16 @@ class DAG_csv_to_rds:
             dag=self.dag,
         )    
 
-      #t0 = self.delete_parquet()
-      #t1 = self.get_parquet()
-      #t2 = self.send_parquet()
-      #t3 = self.carga_ajuste_ponteiro_rds()
-      #t4 = self.preparar_enviar_csv()
-      #t5 = self.send_s3_rds()
-      #t0 >> t1 >> t2 >> t3 >> t4 >> t5
     def create_dag(self):
         t0 = self.start_task()
-        t1 = self.send_s3_rds()
-        t2 = self.end_task()
-        t0 >> t1 >> t2
+        t1 = self.delete_parquet()
+        t2 = self.get_parquet()
+        t3 = self.send_parquet()
+        t4 = self.carga_ajuste_ponteiro_rds()
+        t5 = self.preparar_enviar_csv()
+        t6 = self.send_s3_rds()
+        t7 = self.end_task()
+        t0 >> t1 >> t2 >> t3 >> t4 >> t5 >> t6 >> t7
         return self.dag
 
 # Instantiate the DAG class
