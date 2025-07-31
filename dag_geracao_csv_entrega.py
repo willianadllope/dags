@@ -107,7 +107,7 @@ class DAG_csv_to_rds:
         t3 = self.send_parquet()
         t4 = self.carga_ajuste_ponteiro_rds()
         t5 = self.preparar_enviar_csv()
-        t3 = self.send_s3_rds()
+        t6 = self.send_s3_rds()
         t7 = self.end_task()
         t0 >> t1 >> t2 >> t3 >> t4 >> t5 >> t6 >> t7
         return self.dag
