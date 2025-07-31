@@ -3,7 +3,7 @@ from airflow.operators.bash_operator import BashOperator
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 from datetime import datetime
-import time
+from time import time
 import scripts.config as cfg
 
 def sleep_function():
