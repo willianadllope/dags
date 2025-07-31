@@ -20,7 +20,14 @@ class DAG_csv_to_rds:
         return BashOperator(
             task_id="delete_parquet",
             bash_command="python "+self.dag.params['scripts']['task_delete_parquet']+" entrega pr_apaga_arquivos_ajusteponteirosrds",
-            doc_md=self.dag.params['scripts']['docs']+self.dag.dag_id+"/delete_parquet.md",
+            doc_md="""
+            ## Task Documentation
+            Essa task chama a procedure abaixo no Snowflake:
+            DB_TABELAO.ENTREGA.PR_APAGA_ARQUIVOS_AJUSTEPONTEIROSRDS()
+            Essa procedure apaga os arquivos parquet no storage do Snowflake, 
+            referentes a tabela que guarda os ponteiros do tabelao que estão no RDS.
+            Isso será usado para comparação e atualização dos ponteiros ANTES da virada.
+            """,
             dag=self.dag,
         )   
 
