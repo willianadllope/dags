@@ -11,7 +11,13 @@ class DAG_csv_to_rds:
             schedule=schedule,
             start_date=start_date,
             params=params,
-            doc_md=params['scripts']['docs']+dag_id+"/doc.md",
+            doc_md="""
+                Essa DAG envia os arquivos de ponteiro capturados do RDS de Entrega 
+                para o Snowflake, para realizar a atualização dos ponteiros "ANTES" 
+                da virada.
+                Também envia os arquivos CSV para o AWS S3 e, na sequencia,
+                chama as procedures do RDS para carregar esses arquivos.
+            """,
             catchup=False,
         )
 
@@ -21,7 +27,6 @@ class DAG_csv_to_rds:
             task_id="delete_parquet",
             bash_command="python "+self.dag.params['scripts']['task_delete_parquet']+" entrega pr_apaga_arquivos_ajusteponteirosrds",
             doc_md="""
-            ## Task Documentation
             Essa task chama a procedure abaixo no Snowflake:
             DB_TABELAO.ENTREGA.PR_APAGA_ARQUIVOS_AJUSTEPONTEIROSRDS()
             Essa procedure apaga os arquivos parquet no storage do Snowflake, 
