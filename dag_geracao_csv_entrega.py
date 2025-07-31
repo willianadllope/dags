@@ -6,6 +6,9 @@ from datetime import datetime
 import time
 import scripts.config as cfg
 
+def sleep_function():
+    time.sleep(300)
+
 class DAG_csv_to_rds:
     def __init__(self, dag_id, schedule, start_date, params):
         self.dag = DAG(
@@ -101,13 +104,10 @@ class DAG_csv_to_rds:
             dag=self.dag,
         )    
     
-    def sleep_function(self):
-        time.sleep(300)
-
     def wait_task(self):
         return PythonOperator(
             task_id='wait_task',
-            python_callable=self.sleep_function(),
+            python_callable=sleep_function(),
     )
 
     def create_dag(self):
