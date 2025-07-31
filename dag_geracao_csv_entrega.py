@@ -11,7 +11,7 @@ class DAG_csv_to_rds:
             schedule=schedule,
             start_date=start_date,
             params=params,
-            doc_md=params['scripts']['docs']+dag_id+'doc.md',
+            doc_md=params['scripts']['docs']+dag_id+"/doc.md",
             catchup=False,
         )
 
