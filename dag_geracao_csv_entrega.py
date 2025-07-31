@@ -101,7 +101,7 @@ class DAG_csv_to_rds:
             dag=self.dag,
         )    
     
-    def sleep_function():
+    def sleep_function(self):
         time.sleep(300)
 
     def wait_task(self):
