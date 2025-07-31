@@ -10,8 +10,6 @@ from datetime import datetime
 
 pgentrega = cfg.pgentrega
 
-## Aguardar 5min
-time.sleep(300)
 
 con = psycopg2.connect(database='systax', user=pgentrega['UID'], password=pgentrega['PWD'], host=pgentrega['SERVER'], port=pgentrega['PORT'])
 
