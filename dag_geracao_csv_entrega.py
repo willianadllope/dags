@@ -19,7 +19,7 @@ class DAG_csv_to_rds:
         return BashOperator(
             task_id="delete_parquet",
             bash_command="python "+self.dag.params['scripts']['task_delete_parquet']+" entrega pr_apaga_arquivos_ajusteponteirosrds",
-            doc_md=self.dag.params['scripts']['docs']+self.dag.dag_id+"delete_parquet.md",
+            doc_md=self.dag.params['scripts']['docs']+self.dag.dag_id+"/delete_parquet.md",
             dag=self.dag,
         )   
 
