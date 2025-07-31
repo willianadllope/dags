@@ -27,7 +27,8 @@ snowtabelao = {
 
 diretorios = {
     'dags':'/root/airflow/dags/',
-    'tasks':'/root/airflow/dags/scripts/',
+    'tasks':'/root/airflow/dags/doc/',
+    'docs':'/root/airflow/dags/scripts/',
     'parquet':'/parquet2/tabelao/',
     'parquetfull':'/parquet2/tabelao/FULL/',
     'parquetincremental':'/parquet2/tabelao/INCREMENTAL/',
@@ -49,7 +50,8 @@ files_python = {
     'ponteiros_pg':diretorios['tasks']+'task_ponteiros_pg.py',
     'update_prod01sql': diretorios['tasks']+'task_update_prod01sql.py',
     'send_s3_rds':diretorios['tasks']+'task_send_s3_rds.py',
-    'taskteste':diretorios['tasks']+'task_test.py'
+    'taskteste':diretorios['tasks']+'task_test.py',
+    'docs':diretorios['docs'],
 }
 
 scripts = {
@@ -79,7 +81,8 @@ scripts = {
     'task_preparar_enviar_csv':files_python['execute_snowflake'],
     'task_send_s3_rds':files_python['send_s3_rds'],
     'task_execute_job_prod01sql':files_python['call_procedure_prod01sql'],
-    'taskteste':files_python['taskteste']
+    'taskteste':files_python['taskteste'],
+    'docs':files_python['docs'],
 }
 
 configs = {

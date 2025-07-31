@@ -19,6 +19,7 @@ class DAG_csv_to_rds:
         return BashOperator(
             task_id="delete_parquet",
             bash_command="python "+self.dag.params['scripts']['task_delete_parquet']+" entrega pr_apaga_arquivos_ajusteponteirosrds",
+            doc_md=self.dag.params['scripts']['docs']+self.dag.dag_id+"delete_parquet.md",
             dag=self.dag,
         )   
 
@@ -27,6 +28,7 @@ class DAG_csv_to_rds:
         return BashOperator(
             task_id='get_parquet',
             bash_command="python "+self.dag.params['scripts']['task_get_parquet']+" 1",
+            doc_md=self.dag.params['scripts']['docs']+"csv_to_rds_get_parquet.md",
             dag=self.dag,
         )
     
@@ -35,6 +37,7 @@ class DAG_csv_to_rds:
         return BashOperator(
             task_id='send_parquet',
             bash_command="python "+self.dag.params['scripts']['task_send_parquet']+" ajusteponteirords FULL",
+            doc_md=self.dag.params['scripts']['docs']+"csv_to_rds_send_parquet.md",
             dag=self.dag,
         )    
     
@@ -43,6 +46,7 @@ class DAG_csv_to_rds:
         return BashOperator(
             task_id="carga_ajuste_ponteiro_rds",
             bash_command="python "+self.dag.params['scripts']['task_carga_ajuste_ponteiro_rds']+" full PR_CARGA_AJUSTE_PONTEIRO_RDS",
+            doc_md=self.dag.params['scripts']['docs']+"csv_to_rds_carga_ponteiro.md",
             dag=self.dag,
         )   
     
@@ -51,6 +55,7 @@ class DAG_csv_to_rds:
         return BashOperator(
         task_id="preparar_enviar_csv",
         bash_command="python "+self.dag.params['scripts']['task_preparar_enviar_csv']+" ENTREGA TASK_PREPARAR_ENVIO_RDS TASK_PREPARAR_ENVIO_RDS",
+        doc_md=self.dag.params['scripts']['docs']+"csv_to_rds_preparar_envio_csv.md",
         dag=self.dag,
         #bash_command="echo 'task_gera_tabelao' ",
     )   
@@ -61,6 +66,7 @@ class DAG_csv_to_rds:
         return BashOperator(
             task_id="send_s3_rds",
             bash_command="python "+self.dag.params['scripts']['task_send_s3_rds'],
+            doc_md=self.dag.params['scripts']['docs']+"csv_to_rds_send_s3_rds.md",
             dag=self.dag,
         )
     
