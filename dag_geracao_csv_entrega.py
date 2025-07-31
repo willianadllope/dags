@@ -3,11 +3,7 @@ from airflow.operators.bash_operator import BashOperator
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 from datetime import datetime
-from time import time
 import scripts.config as cfg
-
-def sleep_function():
-    time.sleep(300)
 
 class DAG_csv_to_rds:
     def __init__(self, dag_id, schedule, start_date, params):
@@ -104,12 +100,6 @@ class DAG_csv_to_rds:
             dag=self.dag,
         )    
     
-    def wait_task(self):
-        return PythonOperator(
-            task_id='wait_task',
-            python_callable=sleep_function(),
-    )
-
     def create_dag(self):
         t0 = self.start_task()
         t1 = self.delete_parquet()
@@ -117,10 +107,9 @@ class DAG_csv_to_rds:
         t3 = self.send_parquet()
         t4 = self.carga_ajuste_ponteiro_rds()
         t5 = self.preparar_enviar_csv()
-        t6 = self.wait_task()
-        t7 = self.send_s3_rds()
-        t8 = self.end_task()
-        t0 >> t1 >> t2 >> t3 >> t4 >> t5 >> t6 >> t7 >> t8
+        t3 = self.send_s3_rds()
+        t7 = self.end_task()
+        t0 >> t1 >> t2 >> t3 >> t4 >> t5 >> t6 >> t7
         return self.dag
 
 # Instantiate the DAG class
