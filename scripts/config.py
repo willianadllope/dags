@@ -27,8 +27,8 @@ snowtabelao = {
 
 diretorios = {
     'dags':'/root/airflow/dags/',
-    'tasks':'/root/airflow/dags/doc/',
-    'docs':'/root/airflow/dags/scripts/',
+    'tasks':'/root/airflow/dags/scripts/',
+    'docs':'/root/airflow/dags/doc/',
     'parquet':'/parquet2/tabelao/',
     'parquetfull':'/parquet2/tabelao/FULL/',
     'parquetincremental':'/parquet2/tabelao/INCREMENTAL/',
