@@ -25,7 +25,8 @@ class DAG_csv_to_rds:
     def delete_parquet(self):
         return BashOperator(
             task_id="delete_parquet",
-            bash_command="python "+self.dag.params['scripts']['task_delete_parquet']+" entrega pr_apaga_arquivos_ajusteponteirosrds",
+            #bash_command="python "+self.dag.params['scripts']['task_delete_parquet']+" entrega pr_apaga_arquivos_ajusteponteirosrds",
+            bash_command="echo 'ok'",
             doc_md="""
             Essa task chama a procedure abaixo no Snowflake:
             DB_TABELAO.ENTREGA.PR_APAGA_ARQUIVOS_AJUSTEPONTEIROSRDS()
@@ -40,8 +41,9 @@ class DAG_csv_to_rds:
     def get_parquet(self):
         return BashOperator(
             task_id='get_parquet',
-            bash_command="python "+self.dag.params['scripts']['task_get_parquet']+" 1",
-            doc_md=self.dag.params['scripts']['docs']+self.dag.dag_id+"/get_parquet.md",
+            #bash_command="python "+self.dag.params['scripts']['task_get_parquet']+" 1",
+            bash_command="echo 'ok'",
+            doc_md=""" """,
             dag=self.dag,
         )
     
@@ -49,8 +51,9 @@ class DAG_csv_to_rds:
     def send_parquet(self):
         return BashOperator(
             task_id='send_parquet',
-            bash_command="python "+self.dag.params['scripts']['task_send_parquet']+" ajusteponteirords FULL",
-            doc_md=self.dag.params['scripts']['docs']+self.dag.dag_id+"/send_parquet.md",
+            #bash_command="python "+self.dag.params['scripts']['task_send_parquet']+" ajusteponteirords FULL",
+            bash_command="echo 'ok'",
+            doc_md=""" """,
             dag=self.dag,
         )    
     
@@ -58,8 +61,9 @@ class DAG_csv_to_rds:
     def carga_ajuste_ponteiro_rds(self):
         return BashOperator(
             task_id="carga_ajuste_ponteiro_rds",
-            bash_command="python "+self.dag.params['scripts']['task_carga_ajuste_ponteiro_rds']+" full PR_CARGA_AJUSTE_PONTEIRO_RDS",
-            doc_md=self.dag.params['scripts']['docs']+self.dag.dag_id+"/carga_ajuste_ponteiro_rds.md",
+            #bash_command="python "+self.dag.params['scripts']['task_carga_ajuste_ponteiro_rds']+" full PR_CARGA_AJUSTE_PONTEIRO_RDS",
+            bash_command="echo 'ok'",
+            doc_md=""" """,
             dag=self.dag,
         )   
     
@@ -67,10 +71,10 @@ class DAG_csv_to_rds:
     def preparar_enviar_csv(self):
         return BashOperator(
         task_id="preparar_enviar_csv",
-        bash_command="python "+self.dag.params['scripts']['task_preparar_enviar_csv']+" ENTREGA TASK_PREPARAR_ENVIO_RDS TASK_PREPARAR_ENVIO_RDS",
-        doc_md=self.dag.params['scripts']['docs']+self.dag.dag_id+"/preparar_envio_csv.md",
+        #bash_command="python "+self.dag.params['scripts']['task_preparar_enviar_csv']+" ENTREGA TASK_PREPARAR_ENVIO_RDS TASK_PREPARAR_ENVIO_RDS",
+        bash_command="echo 'ok'",
+        doc_md=""" """,
         dag=self.dag,
-        #bash_command="echo 'task_gera_tabelao' ",
     )   
 
     ## chama procedure no RDS passando como parametro a tabela de _Copia que sera carregada e o arquivo do S3
@@ -79,7 +83,7 @@ class DAG_csv_to_rds:
         return BashOperator(
             task_id="send_s3_rds",
             bash_command="python "+self.dag.params['scripts']['task_send_s3_rds'],
-            doc_md=self.dag.params['scripts']['docs']+self.dag.dag_id+"/send_s3_rds.md",
+            doc_md=""" """,
             dag=self.dag,
         )
     
