@@ -88,6 +88,14 @@ class DAG_csv_to_rds:
             dag=self.dag,
         )
     
+    def wait_task(self):
+        return BashOperator(
+            task_id="wait_task",
+            bash_command="sleep 300",
+            doc_md=""" """,
+            dag=self.dag,
+        )
+    
     def start_task(self):
         return EmptyOperator(
             task_id='start_task',
@@ -107,9 +115,10 @@ class DAG_csv_to_rds:
         t3 = self.send_parquet()
         t4 = self.carga_ajuste_ponteiro_rds()
         t5 = self.preparar_enviar_csv()
+        tw = self.wait_task()
         t6 = self.send_s3_rds()
         t7 = self.end_task()
-        t0 >> t1 >> t2 >> t3 >> t4 >> t5 >> t6 >> t7
+        t0 >> t1 >> t2 >> t3 >> t4 >> t5 >> tw >> t6 >> t7
         return self.dag
 
 # Instantiate the DAG class

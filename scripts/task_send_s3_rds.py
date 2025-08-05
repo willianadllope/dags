@@ -10,11 +10,6 @@ from datetime import datetime
 
 pgentrega = cfg.pgentrega
 
-def sleep_function():
-    print("Starting sleep...")
-    time.sleep(300)  # Sleep for 300 seconds (5 minutes)
-    print("Sleep finished.")
-
 con = psycopg2.connect(database='systax', user=pgentrega['UID'], password=pgentrega['PWD'], host=pgentrega['SERVER'], port=pgentrega['PORT'])
 
 #awss3_key = os.environ.get('access_key')
@@ -41,8 +36,6 @@ if len(sys.argv)  >= 2:
 
 
 print("Inicio: ",datetime.now())
-
-sleep_function()
 
 # pasta_dentro_do_bucket : tabela_no_rds
 buckets_tables_csv =	{    
