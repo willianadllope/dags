@@ -69,7 +69,7 @@ def check_carga_em_execucao():
 ## full || incremental || test(nao executa nada dentro dos scripts)
 configs['tipoCarga'] = check_carga_em_execucao()
 
-
+## script de teste
 
 with DAG(
     'dag_teste01',
