@@ -8,6 +8,15 @@ prod01sql = {
     'PWD': 'billpoker13!'
 }
 
+prod01sqldev = {
+    'DRIVER': '{ODBC Driver 17 for SQL Server}',
+    'SERVER': 'prod01sqldev.systax.com.br',
+    'DATABASE': 'systax_app',
+    'PORT': '1433',
+    'UID': 'willian',
+    'PWD': 'billpoker13!'
+}
+
 pgentrega = {
     'SERVER': 'dbcentralizada.cwvlwwjgliab.us-east-1.rds.amazonaws.com',
     'DATABASE': 'systax',
