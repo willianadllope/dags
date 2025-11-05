@@ -39,8 +39,8 @@ snowibs = {
     'password':'Dkjj$@8$g@hgsgj!!',
     'account':'DJDYJNY-ZK69750',
     'warehouse':'COMPUTE_WH',
-    'database':'COCKPIT',
-    'schema':'STAGING'
+    'database':'DB_TABELAO',
+    'schema':'DBO'
 }
 
 diretorios = {
