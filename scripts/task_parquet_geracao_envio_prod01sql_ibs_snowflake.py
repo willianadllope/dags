@@ -24,15 +24,14 @@ props = ul.parse.quote_plus("DRIVER={SQL Server Native Client 11.0};"
                                 "Encrypt=yes;TrustServerCertificate=yes;")
 con = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
 
-
-connSnow = sf.connector.connect(
-    user=cfg['user'],
-    password=cfg['password'],
-    account=cfg['account'],
-    warehouse=cfg['warehouse'],
-    database=cfg['database'],
-    schema=cfg['schema']
-)
+#connSnow = sf.connector.connect(
+#    user=cfg['user'],
+#    password=cfg['password'],
+#    account=cfg['account'],
+#    warehouse=cfg['warehouse'],
+#    database=cfg['database'],
+#    schema=cfg['schema']
+#)
 
 def export_query_to_parquet(sql,tipo, fileprefix, limit, strposicao='001'):
     """ export data from given table to parquet """
@@ -69,13 +68,13 @@ def send_parquet_snowflake(tipo, tabela):
     if(tipo=='INCREMENTAL'):
         STAGE_SCHEMA = 'INCREMENTAL'
     stage_name = 'DB_TABELAO.'+STAGE_SCHEMA+'.STAGE_FILES_TABELAO/tabelao/'+tabela+'/'
-    cs = connSnow.cursor()
-    print('Enviando '+tabela)
-    try:
-        cs.execute(f"PUT file://{file_name} @{stage_name} auto_compress=false")
-        print(cs.fetchall())
-    finally:
-        cs.close()
+    #cs = connSnow.cursor()
+    #print('Enviando '+tabela)
+    #try:
+    #    cs.execute(f"PUT file://{file_name} @{stage_name} auto_compress=false")
+    #    print(cs.fetchall())
+    #finally:
+    #    cs.close()
     print('Enviado '+tabela)
 
 def main():
