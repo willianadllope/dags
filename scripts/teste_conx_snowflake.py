@@ -8,6 +8,7 @@ import time
 #print('iniciou')
 
 cfg = config.snowibs
+print(cfg['user'])
 
 conn = sf.connector.connect(
     user=cfg['user'],
@@ -17,7 +18,6 @@ conn = sf.connector.connect(
     database=cfg['database'],
     schema=cfg['schema']
 )
-print(cfg['user'])
 schema = 'STAGING'
 task = 'task_teste_inicio'
 filtro = 'task_teste'
