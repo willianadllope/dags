@@ -34,10 +34,22 @@ snowtabelao = {
     'schema':'DBO'
 }
 
+snowibs = {
+    'user':'SYSTAXSNOW24',
+    'password':'Dkjj$@8$g@hgsgj!!',
+    'account':'DJDYJNY-ZK69750',
+    'warehouse':'COMPUTE_WH',
+    'database':'COCKPIT',
+    'schema':'STAGING'
+}
+
 diretorios = {
     'dags':'/root/airflow/dags/',
     'tasks':'/root/airflow/dags/scripts/',
     'docs':'doc/',
+    'ibs':'/parquet2/ibs/',
+    'ibsfull':'/parquet2/ibs/FULL/',
+    'ibsincremental':'/parquet2/ibs/INCREMENTAL/',
     'parquet':'/parquet2/tabelao/',
     'parquetfull':'/parquet2/tabelao/FULL/',
     'parquetincremental':'/parquet2/tabelao/INCREMENTAL/',
@@ -61,6 +73,7 @@ files_python = {
     'send_s3_rds':diretorios['tasks']+'task_send_s3_rds.py',
     'taskteste':diretorios['tasks']+'task_test.py',
     'docs':diretorios['docs'],
+    'call_procedure_prod01sql_ibs':diretorios['tasks']+'task_call_procedure_prod01sql_ibs.py',
 }
 
 scripts = {
@@ -92,6 +105,7 @@ scripts = {
     'task_execute_job_prod01sql':files_python['call_procedure_prod01sql'],
     'taskteste':files_python['taskteste'],
     'docs':files_python['docs'],
+    'task_carga_tabelas_ibs':files_python['call_procedure_prod01sql_ibs'], 
 }
 
 configs = {
