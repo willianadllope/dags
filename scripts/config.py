@@ -35,7 +35,7 @@ snowtabelao = {
 }
 
 snowibs = {
-    'user':'COCKPIT',
+    'user':'cockpit',
     'password':'Mr@zSwnGnzgYx20251017!',
     'account':'DJDYJNY-ZK69750',
     'warehouse':'COMPUTE_WH',
