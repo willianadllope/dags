@@ -35,12 +35,12 @@ snowtabelao = {
 }
 
 snowibs = {
-    'user':'SYSTAXSNOW24',
-    'password':'Dkjj$@8$g@hgsgj!!',
+    'user':'COCKPIT',
+    'password':'Mr@zSwnGnzgYx20251017!',
     'account':'DJDYJNY-ZK69750',
     'warehouse':'COMPUTE_WH',
-    'database':'DB_TABELAO',
-    'schema':'DBO'
+    'database':'COCKPIT',
+    'schema':'STAGING'
 }
 
 diretorios = {
