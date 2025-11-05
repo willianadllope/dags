@@ -17,7 +17,7 @@ conn = sf.connector.connect(
     database=cfg['database'],
     schema=cfg['schema']
 )
-
+print(cfg['user'])
 schema = 'STAGING'
 task = 'task_teste_inicio'
 filtro = 'task_teste'
