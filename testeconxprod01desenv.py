@@ -5,9 +5,9 @@ from time import time
 from sqlalchemy import create_engine
 from datetime import datetime
 import pandas as pd
-import config
+import scripts.config
 
-db = config.prod01sqldev
+db = scripts.config.prod01sqldev
 
 engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
 con = engine.connect().execution_options(stream_results=True)
