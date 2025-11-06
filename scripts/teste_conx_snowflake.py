@@ -8,7 +8,7 @@ import time
 #print('iniciou')
 
 cfg = config.snowibs
-print(cfg['user'])
+#print(cfg['user'])
 
 conn = sf.connector.connect(
     user=cfg['user'],

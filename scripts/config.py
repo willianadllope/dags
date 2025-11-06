@@ -40,7 +40,8 @@ snowibs = {
     'account':'DJDYJNY-ZK69750',
     'warehouse':'COMPUTE_WH',
     'database':'COCKPIT',
-    'schema':'STAGING'
+    'schema':'STAGING',
+    'role':'ACCOUNTADMIN'
 }
 
 diretorios = {
