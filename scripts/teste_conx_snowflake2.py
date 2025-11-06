@@ -3,7 +3,7 @@ import os
 import config 
 
 # Caminho da sua chave privada
-private_key_path = os.path.expanduser("/keys/rsa_keyACCOUNTADMIN.p8")
+private_key_path = os.path.expanduser("/keys/rsa_key_cockpit_snowflake.p8")
 
 # Ler e converter a chave para formato DER
 with open(private_key_path, "rb") as key:
