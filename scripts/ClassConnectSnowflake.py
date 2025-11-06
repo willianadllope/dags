@@ -1,3 +1,4 @@
+import os
 import cryptography.hazmat.primitives.serialization as serialization
 from cryptography.hazmat.backends import default_backend
 # Converter para formato DER para uso no Snowflake
