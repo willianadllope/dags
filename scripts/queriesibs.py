@@ -20,5 +20,7 @@ sql_queries =   [
                     Consultas(consulta='SELECT id, id_ibs_mun, perfil_prestador, exclusao FROM systax_regras.dbo.ibs_mun_perfil_prestador;',  tabela='ibs_mun_perfil_prestador',limite=100000),
                     Consultas(consulta='SELECT id, id_ibs_mun, perfil_responsavel, exclusao FROM systax_regras.dbo.ibs_mun_perfil_responsavel;',  tabela='ibs_mun_perfil_responsavel',limite=100000),
                     Consultas(consulta='SELECT id, id_ibs_mun, perfil_tomador, exclusao FROM systax_regras.dbo.ibs_mun_perfil_tomador;',  tabela='ibs_mun_perfil_tomador',limite=100000),
-                    Consultas(consulta='SELECT id, id_ibs_mun, reducao_aliquota, exclusao FROM systax_regras.dbo.ibs_mun_reducao_aliquota;',  tabela='ibs_mun_reducao_aliquota',limite=100000)
+                    Consultas(consulta='SELECT id, id_ibs_mun, reducao_aliquota, exclusao FROM systax_regras.dbo.ibs_mun_reducao_aliquota;',  tabela='ibs_mun_reducao_aliquota',limite=100000),
+                    Consultas(consulta='SELECT id, id_pai, descricao, seleciona, nivel, importante, lista_cnae, ordem, ts, retencoes, divulgavel, utilizado_externamente, uso_interno FROM systax_regras.dbo.ex_origem;',  tabela='ex_origem',limite=100000),
+                    Consultas(consulta='SELECT id, id_pai, descricao, seleciona, nivel, importante, lista_cnae, ordem, ts, retencoes, correlacao_ex_origem, divulgavel, utilizado_externamente, uso_interno FROM systax_regras.dbo.ex_destinacao;',  tabela='ex_destinacao',limite=100000),
                 ]
