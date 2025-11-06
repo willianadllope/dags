@@ -36,7 +36,7 @@ snowtabelao = {
 
 snowibs = {
     'user':'cockpit',
-    'password':'Mr@zSwnGnzgYx20251017!',
+    'privatekey':'/keys/rsa_key_cockpit_snowflake.p8',
     'account':'DJDYJNY-ZK69750',
     'warehouse':'COMPUTE_WH',
     'database':'COCKPIT',
