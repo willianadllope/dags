@@ -1,3 +1,4 @@
+import snowflake as sf
 import snowflake.connector
 import os
 import config 
