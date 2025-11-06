@@ -11,7 +11,6 @@ private_key_bytes = connectSnowflake.get_value_key()
 
 conn = sf.connector.connect(
     user=cfg['user'],
-#    password=cfg['password'],
     account=cfg['account'],
     private_key=private_key_bytes,
     warehouse=cfg['warehouse'],
@@ -21,4 +20,4 @@ conn = sf.connector.connect(
 )
 
 
-print("✅ Conectado com sucesso!")
+print("Conectado com sucesso!")

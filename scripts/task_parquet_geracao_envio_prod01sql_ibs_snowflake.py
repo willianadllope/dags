@@ -10,7 +10,10 @@ from datetime import datetime
 import pandas as pd
 import urllib as ul
 import snowflake as sf
+
 from snowflake import connector
+import ClassConnectSnowflake as ConxSnow
+
 
 db = config.prod01sqldev
 cfg = config.snowibs
@@ -24,14 +27,18 @@ props = ul.parse.quote_plus("DRIVER={SQL Server Native Client 11.0};"
                                 "Encrypt=yes;TrustServerCertificate=yes;")
 con = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
 
-#connSnow = sf.connector.connect(
-#    user=cfg['user'],
-#    password=cfg['password'],
-#    account=cfg['account'],
-#    warehouse=cfg['warehouse'],
-#    database=cfg['database'],
-#    schema=cfg['schema']
-#)
+connectSnowflake = ConxSnow.ConnectSnowflake(cfg)
+private_key_bytes = connectSnowflake.get_value_key()
+
+connSnow = sf.connector.connect(
+    user=cfg['user'],
+    account=cfg['account'],
+    private_key=private_key_bytes,
+    warehouse=cfg['warehouse'],
+    database=cfg['database'],
+    schema=cfg['schema'],
+    role=cfg['role']
+)
 
 def export_query_to_parquet(sql,tipo, fileprefix, limit, strposicao='001'):
     """ export data from given table to parquet """
@@ -64,17 +71,18 @@ def delete_files_directory(tipo, diretorio):
 def send_parquet_snowflake(tipo, tabela):
     # populate the file_name and stage_name with the arguments
     file_name = pastas['ibs']+tipo+'/'+tabela+'/*'
-    STAGE_SCHEMA = 'FULL'
-    if(tipo=='INCREMENTAL'):
-        STAGE_SCHEMA = 'INCREMENTAL'
-    stage_name = 'DB_TABELAO.'+STAGE_SCHEMA+'.STAGE_FILES_TABELAO/tabelao/'+tabela+'/'
-    #cs = connSnow.cursor()
-    #print('Enviando '+tabela)
-    #try:
-    #    cs.execute(f"PUT file://{file_name} @{stage_name} auto_compress=false")
-    #    print(cs.fetchall())
-    #finally:
-    #    cs.close()
+    STAGE_SCHEMA = 'STAGING'
+    #STAGE_SCHEMA = 'FULL'
+    #if(tipo=='INCREMENTAL'):
+    #    STAGE_SCHEMA = 'INCREMENTAL'
+    stage_name = 'COCKPIT.'+STAGE_SCHEMA+'.STAGE_FILES_IBS/'+tabela+'/'
+    cs = connSnow.cursor()
+    print('Enviando '+tabela)
+    try:
+        cs.execute(f"PUT file://{file_name} @{stage_name} auto_compress=false")
+        print(cs.fetchall())
+    finally:
+        cs.close()
     print('Enviado '+tabela)
 
 def main():
