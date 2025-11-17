@@ -116,11 +116,9 @@ def main():
     print('TIPO: ' + tipoExecucao)
     for consulta in sqls:
         cons = consulta.consulta
-        if(posicao==1):
-          delete_files_directory(tipoExecucao, consulta.tabela)
-        else: ## nao eh tributos_internos_cache
-          export_query_to_parquet(cons, tipoExecucao, consulta.tabela, consulta.limite)
-          send_parquet_snowflake(tipoExecucao, consulta.tabela)
+        delete_files_directory(tipoExecucao, consulta.tabela)
+        export_query_to_parquet(cons, tipoExecucao, consulta.tabela, consulta.limite)
+        send_parquet_snowflake(tipoExecucao, consulta.tabela)
 ## exemplos:
 ## parquet_geracao_envio.py ALL FULL 1 500
 ## parquet_geracao_envio.py tributos_internos_cache incremental 1 500
