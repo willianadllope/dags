@@ -125,9 +125,14 @@ def main():
 ## parquet_geracao_envio.py tributos_internos_cache FULL 999  => somente envio da tributos_internos_cache
 ## parquet_geracao_envio.py tributos_internos_cache incremental 999  => somente envio da tributos_internos_cache
 
+### ANTES DA EXECUCAO, chamar:
+###  call staging.pr_carga_inicial_limpa_arquivos();
+
 if __name__ == "__main__":
     print('INICIO: '+datetime.now().strftime("%Y-%m-%d %H %M %S"))
     main()
     print('FIM: '+datetime.now().strftime("%Y-%m-%d %H %M %S"))
 
-    
+### APOS A EXECUCAO, chamar:
+###  call staging.pr_carregar_tabelas_ibs();
+###  call staging.pr_carregar_tabelas_ibs_producao();

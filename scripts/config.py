@@ -7,11 +7,11 @@ prod01sql = {
     'UID': 'willian',
     'PWD': 'billpoker13!'
 }
-
+##'SERVER': 'prod01sqldev.systax.com.br',
 prod01sqldev = {
     'DRIVER': '{ODBC Driver 17 for SQL Server}',
-    'SERVER': 'prod01sqldev.systax.com.br',
-    'DATABASE': 'systax_app',
+    'SERVER': 'adminsql.systax.com.br',
+    'DATABASE': 'systax_regras',
     'PORT': '1433',
     'UID': 'willian',
     'PWD': 'billpoker13!'
