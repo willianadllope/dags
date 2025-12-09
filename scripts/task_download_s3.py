@@ -1,18 +1,46 @@
+import sys
 import boto3
 import os
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError, ClientError
+import shutil
+from time import time
+from sqlalchemy import create_engine
+from datetime import datetime
+import pandas as pd
+import config
 
 # --- Configurações ---
 BUCKET_NAME = 'csvvertex'
 LOCAL_DIRECTORY = '/csvpautas'
 FILE_EXTENSION = '.csv'
+db = config.prod01sql
 
-def download_csv_files(bucket_name, local_dir, file_ext):
+engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DBPAUTAS']}")
+def get_file_csv_created():
+    con = engine.connect().execution_options(stream_results=True)
+    df = pd.read_sql("SELECT TOP 1 id, id_controle, arquivo FROM vertex_pauta.dbo.log_arquivo_csv_pautas (nolock) WHERE etapa='gerado' ORDER BY ID", con)
+    for index,row in df.iterrows():
+        arquivo = row['arquivo'];
+    print("arquivo:",arquivo)
+    return arquivo
+
+def set_file_downloaded(arquivo):
+    con = engine.connect()
+    cursor = con.cursor()
+    comando = f"UPDATE vertex_pauta.dbo.log_arquivo_csv_pautas SET etapa='downloaded' WHERE arquivo = '{arquivo}';"
+    cursor.execute(comando)
+    con.commit()
+    cursor.close()
+
+def download_single_file(bucket_name, file_key, local_dir):
     """
-    Baixa todos os arquivos com a extensão especificada de um bucket S3 
+    Baixa um único arquivo especificado (file_key) de um bucket S3 
     para um diretório local.
     """
-    print(f"Iniciando o download do bucket '{bucket_name}'...")
+    
+    local_file_path = os.path.join(local_dir, os.path.basename(file_key))
+    print(f"Tentando baixar o arquivo '{file_key}' do bucket '{bucket_name}'...")
+    print(f"Caminho local de destino: {local_file_path}")
     
     # 1. Cria a sessão e o cliente S3
     try:
@@ -20,60 +48,45 @@ def download_csv_files(bucket_name, local_dir, file_ext):
     except (NoCredentialsError, PartialCredentialsError) as e:
         print(f"❌ Erro de credenciais: {e}")
         print("Verifique se suas credenciais AWS estão configuradas.")
-        return
+        return False
     except Exception as e:
         print(f"❌ Ocorreu um erro ao criar o cliente S3: {e}")
-        return
+        return False
 
     # 2. Cria o diretório local se não existir
     if not os.path.exists(local_dir):
         os.makedirs(local_dir)
         print(f"Diretório local '{local_dir}' criado.")
-    else:
-        print(f"Diretório local '{local_dir}' já existe.")
-
-    # 3. Lista os objetos no bucket
+    
+    # 3. Baixa o arquivo
     try:
-        response = s3.list_objects_v2(Bucket=bucket_name)
-    except ClientError as e:
-        if e.response['Error']['Code'] == 'NoSuchBucket':
-            print(f"❌ Erro: O bucket '{bucket_name}' não existe.")
-        elif e.response['Error']['Code'] == 'AccessDenied':
-            print(f"❌ Erro: Acesso negado ao bucket '{bucket_name}'.")
-        else:
-            print(f"❌ Erro ao listar objetos: {e}")
-        return
-    
-    # Verifica se há conteúdo no bucket
-    if 'Contents' not in response:
-        print(f"⚠️ O bucket '{bucket_name}' está vazio ou não contém objetos.")
-        return
-
-    # 4. Filtra e baixa os arquivos .csv
-    download_count = 0
-    
-    for obj in response['Contents']:
-        object_key = obj['Key']
+        # Verifica se o arquivo existe antes de tentar o download (opcional, mas útil)
+        s3.head_object(Bucket=bucket_name, Key=file_key)
         
-        # Verifica se o arquivo termina com a extensão desejada
-        if object_key.lower().endswith(file_ext):
-            local_file_path = os.path.join(local_dir, os.path.basename(object_key))
-            
-            try:
-                # O método download_file baixa o objeto para o caminho local especificado
-                s3.download_file(bucket_name, object_key, local_file_path)
-                print(f"✅ Baixado: s3://{bucket_name}/{object_key} -> {local_file_path}")
-                download_count += 1
-            except ClientError as e:
-                print(f"❌ Erro ao baixar '{object_key}': {e}")
-            except Exception as e:
-                print(f"❌ Erro desconhecido ao baixar '{object_key}': {e}")
-
-    # 5. Conclusão
-    print(f"\n--- Concluído ---")
-    print(f"Total de arquivos {file_ext} baixados: **{download_count}**")
-    print(f"Local salvo: **{os.path.abspath(local_dir)}**")
+        # O método download_file baixa o objeto para o caminho local especificado
+        s3.download_file(bucket_name, file_key, local_file_path)
+        
+        print("\n--- Concluído ---")
+        print(f"✅ Arquivo baixado com sucesso: **{local_file_path}**")
+        return True
+        
+    except ClientError as e:
+        if e.response['Error']['Code'] == '404' or e.response['Error']['Code'] == 'NoSuchKey':
+            print(f"❌ Erro: O arquivo '{file_key}' **não foi encontrado** no bucket '{bucket_name}'.")
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print(f"❌ Erro: Acesso negado. Verifique as permissões para o bucket/arquivo.")
+        else:
+            print(f"❌ Erro ao baixar '{file_key}': {e}")
+        return False
+    except Exception as e:
+        print(f"❌ Erro desconhecido ao baixar '{file_key}': {e}")
+        return False
 
 
 if __name__ == "__main__":
-    download_csv_files(BUCKET_NAME, LOCAL_DIRECTORY, FILE_EXTENSION)
+    # O nome do arquivo a ser baixado é o segundo elemento da lista sys.argv
+    file_to_download = get_file_csv_created()
+    
+    download_single_file(BUCKET_NAME, file_to_download, LOCAL_DIRECTORY)
+
+    set_file_downloaded(file_to_download)
