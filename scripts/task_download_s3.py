@@ -17,14 +17,13 @@ db = config.prod01sql
 
 print(f"DATABASE:{db['DATABASE']}")
 
-engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
-con = engine.connect()
-df = pd.read_sql("SELECT TOP 1 id, id_controle, arquivo FROM vertex_pauta.dbo.log_arquivo_csv_pautas (nolock) WHERE etapa='gerado' ORDER BY ID", con)
-for index,row in df.iterrows():
-    arquivo = row['arquivo'];
-print("arquivo:",arquivo)
-
 def get_file_csv_created():
+    engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
+    con = engine.connect()
+    df = pd.read_sql("SELECT TOP 1 id, id_controle, arquivo FROM vertex_pauta.dbo.log_arquivo_csv_pautas (nolock) WHERE etapa='gerado' ORDER BY ID", con)
+    for index,row in df.iterrows():
+        arquivo = row['arquivo'];
+    print("arquivo:",arquivo)
     return arquivo
 
 # O nome do arquivo a ser baixado é o segundo elemento da lista sys.argv
@@ -90,7 +89,7 @@ def download_single_file(bucket_name, file_key, local_dir):
 
 
 if __name__ == "__main__":
-    
+    file_to_download = get_file_csv_created()
     #download_single_file(BUCKET_NAME, file_to_download, LOCAL_DIRECTORY)
     print('EXECUTOU')
 
