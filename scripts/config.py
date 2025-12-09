@@ -5,8 +5,8 @@ prod01sql = {
     'DATABASE': 'systax_app',
     'DBPAUTAS': 'vertex_pautas',
     'PORT': '1433',
-    'UID': 'willian',
-    'PWD': 'billpoker13!'
+    'UID': 'replication',
+    'PWD': 'doDv7OAVPUkvXK'
 }
 
 prod01sqldev = {
