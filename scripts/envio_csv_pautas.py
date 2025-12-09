@@ -30,7 +30,7 @@ db = config.prod01sql
 def get_file_csv_downloaded():
     engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
     con = engine.connect()
-    arquivo = ""
+    arquivo = "" 
     df = pd.read_sql("SELECT TOP 1 id, id_controle, arquivo FROM vertex_pauta.dbo.log_arquivo_csv_pautas (nolock) WHERE etapa='downloaded' ORDER BY ID", con)
     for index,row in df.iterrows():
         arquivo = row['arquivo'];
@@ -86,11 +86,10 @@ def assume_role(role_arn, session_name, base_session=None):
         print(boto3.Session(session_name).get_credentials().get_frozen_credentials())
         raise
 
-
-# ===============================================
-# 1. ASSUME ROLE 1
-# ===============================================
 def assume_role_systax():
+    # ===========================================================
+    # 1. ASSUME ROLE 1 - SYSTAX
+    # ===========================================================    
     session_role1 = assume_role(
         role_arn=ROLE_1_ARN,
         session_name=SESSION_NAME_ROLE1,
@@ -104,22 +103,24 @@ def assume_role_systax():
     return session_role1
 
 def assume_role_vertex(session_role1):
-    # ===============================================
-    # 2. ASSUME ROLE 2 (USANDO CREDENCIAIS DA ROLE 1)
-    # ===============================================
+    # ===========================================================
+    # 2. ASSUME ROLE 2 - VERTEX (USANDO CREDENCIAIS DA ROLE 1)
+    # ===========================================================
     session_role2 = assume_role(
         role_arn=ROLE_2_ARN,
         session_name=SESSION_NAME_ROLE2,
         base_session=session_role1
     )
     print("Role 2 assumida com sucesso!")
+    return session_role2
+
+def upload_csv_s3(session_role2):
+    # ===========================================================
+    # 3. UPLOAD PARA O S3 USANDO A SEGUNDA ROLE
+    # ===========================================================
     s3 = session_role2.client("s3")
     s3.upload_file(LOCAL_FILE, BUCKET_NAME, OBJECT_KEY)
-    print("\nUpload concluído com sucesso!")    
-
-# ===============================================
-# 3. UPLOAD PARA O S3 USANDO A SEGUNDA ROLE
-# ===============================================
+    print("\nUpload concluído com sucesso!") 
 
 if __name__ == "__main__":
     print("INICIO")
@@ -129,7 +130,8 @@ if __name__ == "__main__":
     if arquivo_local != "":
         print(f"\nRealizando upload: {LOCAL_FILE} -> s3://{BUCKET_NAME}/{OBJECT_KEY}")
         sessao_systax = assume_role_systax()
-        assume_role_vertex(sessao_systax)
+        sessao_vertex = assume_role_vertex(sessao_systax)
+        upload_csv_s3(sessao_vertex)
         set_file_uploaded(arquivo_local)
 
 

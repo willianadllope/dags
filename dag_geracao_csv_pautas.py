@@ -51,7 +51,7 @@ class DAG_PAUTA_CSV:
     def wait_task(self):
         return BashOperator(
             task_id="wait_task",
-            bash_command="sleep 1800",
+            bash_command="sleep 10",
             doc_md=""" """,
             dag=self.dag,
         )
@@ -80,7 +80,7 @@ class DAG_PAUTA_CSV:
 # Instantiate the DAG class
 dag_generation_pauta_csv = DAG_PAUTA_CSV(
     dag_id='dag_generation_pauta_csv',
-    schedule='0 14-23 * * *',
+    schedule='0 13-23 * * *', #roda diariamente, 1x por hora, entre 13h e 23h
     start_date=datetime(2023, 1, 1),
     params=cfg.configs
 )
