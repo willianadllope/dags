@@ -1,14 +1,13 @@
-import boto3
+import os
 import sys
 import time
+import shutil
+import boto3
 from datetime import datetime
-
-arquivolocal = ""
-arquivos3 = ""
-if len(sys.argv)  >= 1:
-	arquivolocal = sys.argv[1]
-if len(sys.argv)  >= 2:
-	arquivos3 = sys.argv[2]
+from botocore.exceptions import NoCredentialsError, PartialCredentialsError, ClientError
+from sqlalchemy import create_engine
+import pandas as pd
+import config
 
 # ===============================================
 # CONFIGURAÇÕES
@@ -20,12 +19,35 @@ ROLE_2_ARN = "arn:aws:iam::954235624237:role/sandbox-trm-pauta-content-s3-systax
 SESSION_NAME_ROLE1 = "upload-session"
 SESSION_NAME_ROLE2 = "upload-session"
 
-LOCAL_FILE = arquivolocal
 BUCKET_NAME = "sandbox-trm-pauta-content-us-east-2"
 BUCKET_NAME = "systaxlinks"
-OBJECT_KEY = arquivos3
 
 BASE_PROFILE = "systax"
+LOCAL_DIRECTORY = '/csvpautas'
+
+db = config.prod01sql
+
+def get_file_csv_downloaded():
+    engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
+    con = engine.connect()
+    arquivo = ""
+    df = pd.read_sql("SELECT TOP 1 id, id_controle, arquivo FROM vertex_pauta.dbo.log_arquivo_csv_pautas (nolock) WHERE etapa='downloaded' ORDER BY ID", con)
+    for index,row in df.iterrows():
+        arquivo = row['arquivo'];
+    return arquivo
+
+def set_file_uploaded(arquivo):
+    engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
+    con2 = engine.raw_connection()
+    cursor = con2.cursor()
+    comando = f"UPDATE vertex_pauta.dbo.log_arquivo_csv_pautas SET etapa='uploaded' WHERE arquivo = '{arquivo}';"
+    cursor.execute(comando)
+    con2.commit()
+    cursor.close()
+
+arquivo_local = get_file_csv_downloaded()
+LOCAL_FILE = f"{LOCAL_DIRECTORY}/{arquivo_local}"
+OBJECT_KEY = arquivo_local
 # ===============================================
 # FUNÇÃO PARA ASSUMIR UMA ROLE COM CREDENCIAIS ESPECÍFICAS
 # ===============================================
@@ -78,7 +100,8 @@ def assume_role_systax():
     print("Role 1 assumida com sucesso!")
     s3 = session_role1.client("s3")
     s3.upload_file(LOCAL_FILE, BUCKET_NAME, OBJECT_KEY)
-    print("\nUpload concluído com sucesso!")
+    print("\nUpload concluído com sucesso!")        
+    return session_role1
 
 def assume_role_vertex(session_role1):
     # ===============================================
@@ -90,6 +113,9 @@ def assume_role_vertex(session_role1):
         base_session=session_role1
     )
     print("Role 2 assumida com sucesso!")
+    s3 = session_role2.client("s3")
+    s3.upload_file(LOCAL_FILE, BUCKET_NAME, OBJECT_KEY)
+    print("\nUpload concluído com sucesso!")    
 
 # ===============================================
 # 3. UPLOAD PARA O S3 USANDO A SEGUNDA ROLE
@@ -100,8 +126,11 @@ if __name__ == "__main__":
     formatted_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(formatted_datetime)
     
-    print(f"\nRealizando upload: {LOCAL_FILE} -> s3://{BUCKET_NAME}/{OBJECT_KEY}")
-    assume_role_systax()
+    if arquivo_local != "":
+        print(f"\nRealizando upload: {LOCAL_FILE} -> s3://{BUCKET_NAME}/{OBJECT_KEY}")
+        sessao_systax = assume_role_systax()
+        #assume_role_vertex(sessao_systax)
+        
 
     formatted_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(formatted_datetime)
