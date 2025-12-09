@@ -37,7 +37,7 @@ def assume_role(role_arn, session_name, base_session=None):
         if base_session:
             sts = base_session.client("sts")
         else:
-            #base_session = boto3.Session(profile_name=BASE_PROFILE)
+            base_session = boto3.Session(profile_name=BASE_PROFILE)
             sts = base_session.client("sts")
 
         print(f"\nAssumindo role: {role_arn} ...")
@@ -70,7 +70,7 @@ def assume_role(role_arn, session_name, base_session=None):
 session_role1 = assume_role(
     role_arn=ROLE_1_ARN,
     session_name=SESSION_NAME_ROLE1,
-    base_session=BASE_PROFILE  # usa credenciais padrão da máquina
+    base_session=None  # usa credenciais padrão da máquina
 )
 print(session_role1)
 print("Role 1 assumida com sucesso!")
