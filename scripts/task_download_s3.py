@@ -3,8 +3,8 @@ import os
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError, ClientError
 
 # --- Configurações ---
-BUCKET_NAME = 'csvpautas'
-LOCAL_DIRECTORY = 'csvpautas'
+BUCKET_NAME = 'csvvertex'
+LOCAL_DIRECTORY = '/csvpautas'
 FILE_EXTENSION = '.csv'
 
 def download_csv_files(bucket_name, local_dir, file_ext):
