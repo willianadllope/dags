@@ -88,15 +88,17 @@ def download_single_file(bucket_name, file_key, local_dir):
 
 if __name__ == "__main__":
     print("INICIO")
-    current_datetime = datetime.now()
-    formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    formatted_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(formatted_datetime)
     file_to_download = get_file_csv_created()
     print("ARQUIVO:",file_to_download)
+    time.sleep(2)
     if file_to_download!="":
         download_single_file(BUCKET_NAME, file_to_download, LOCAL_DIRECTORY)
         print("BAIXOU ARQUIVO")
         set_file_downloaded(file_to_download)
         print("ATUALIZOU ARQUIVO BAIXADO")
+    formatted_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(formatted_datetime)        
     print("FIM")        
     
