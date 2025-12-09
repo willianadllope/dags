@@ -13,7 +13,7 @@ import config
 BUCKET_NAME = 'csvvertex'
 LOCAL_DIRECTORY = '/csvpautas'
 FILE_EXTENSION = '.csv'
-db = config.prod01sqldev
+db = config.prod01sql
 
 print(f"DATABASE:{db['DATABASE']}")
 
