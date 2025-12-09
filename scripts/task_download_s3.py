@@ -27,6 +27,7 @@ def get_file_csv_created():
 #file_to_download = get_file_csv_created()
 
 def set_file_downloaded(arquivo):
+    engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
     con = engine.connect()
     cursor = con.cursor()
     comando = f"UPDATE vertex_pauta.dbo.log_arquivo_csv_pautas SET etapa='downloaded' WHERE arquivo = '{arquivo}';"
