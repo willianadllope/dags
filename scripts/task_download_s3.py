@@ -19,14 +19,12 @@ print(f"DATABASE:{db['DATABASE']}")
 
 engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
 con = engine.connect()
+df = pd.read_sql("SELECT TOP 1 id, id_controle, arquivo FROM vertex_pauta.dbo.log_arquivo_csv_pautas (nolock) WHERE etapa='gerado' ORDER BY ID", con)
+for index,row in df.iterrows():
+    arquivo = row['arquivo'];
+print("arquivo:",arquivo)
 
-print(engine)
 def get_file_csv_created():
-    con = engine.connect()
-    df = pd.read_sql("SELECT TOP 1 id, id_controle, arquivo FROM vertex_pauta.dbo.log_arquivo_csv_pautas (nolock) WHERE etapa='gerado' ORDER BY ID", con)
-    for index,row in df.iterrows():
-        arquivo = row['arquivo'];
-    print("arquivo:",arquivo)
     return arquivo
 
 # O nome do arquivo a ser baixado é o segundo elemento da lista sys.argv
