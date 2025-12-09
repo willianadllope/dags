@@ -13,11 +13,12 @@ import config
 BUCKET_NAME = 'csvvertex'
 LOCAL_DIRECTORY = '/csvpautas'
 FILE_EXTENSION = '.csv'
-db = config.prod01sql
+db = config.prod01sqldev
 
 print(f"DATABASE:{db['DBPAUTAS']}")
 
-engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DBPAUTAS']}")
+engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
+con = engine.connect()
 
 print(engine)
 def get_file_csv_created():
