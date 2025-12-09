@@ -130,7 +130,8 @@ if __name__ == "__main__":
         print(f"\nRealizando upload: {LOCAL_FILE} -> s3://{BUCKET_NAME}/{OBJECT_KEY}")
         sessao_systax = assume_role_systax()
         #assume_role_vertex(sessao_systax)
-        
+        set_file_uploaded(arquivo_local)
+
 
     formatted_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(formatted_datetime)
