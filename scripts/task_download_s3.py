@@ -1,6 +1,6 @@
 import sys
 import shutil
-from time import time
+import time
 import boto3
 import os
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError, ClientError
