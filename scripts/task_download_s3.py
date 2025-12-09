@@ -15,7 +15,7 @@ LOCAL_DIRECTORY = '/csvpautas'
 FILE_EXTENSION = '.csv'
 db = config.prod01sqldev
 
-print(f"DATABASE:{db['DBPAUTAS']}")
+print(f"DATABASE:{db['DATABASE']}")
 
 engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
 con = engine.connect()
