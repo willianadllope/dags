@@ -1,7 +1,7 @@
 # Configurações do SqlServer
 prod01sql = {
     'DRIVER': '{ODBC Driver 17 for SQL Server}',
-    'SERVER': '192.168.0.35',
+    'SERVER': 'prod01sql.systax.com.br',
     'DATABASE': 'systax_app',
     'DBPAUTAS': 'vertex_pautas',
     'PORT': '1433',

@@ -89,4 +89,4 @@ if __name__ == "__main__":
     
     download_single_file(BUCKET_NAME, file_to_download, LOCAL_DIRECTORY)
 
-    set_file_downloaded(file_to_download)
+    #set_file_downloaded(file_to_download)
