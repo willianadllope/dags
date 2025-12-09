@@ -15,6 +15,8 @@ LOCAL_DIRECTORY = '/csvpautas'
 FILE_EXTENSION = '.csv'
 db = config.prod01sql
 
+print(f"DATABASE:{db['DBPAUTAS']}")
+
 engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DBPAUTAS']}")
 def get_file_csv_created():
     con = engine.connect().execution_options(stream_results=True)
@@ -85,8 +87,9 @@ def download_single_file(bucket_name, file_key, local_dir):
 
 if __name__ == "__main__":
     # O nome do arquivo a ser baixado é o segundo elemento da lista sys.argv
-    file_to_download = get_file_csv_created()
+    #file_to_download = get_file_csv_created()
     
-    download_single_file(BUCKET_NAME, file_to_download, LOCAL_DIRECTORY)
+    #download_single_file(BUCKET_NAME, file_to_download, LOCAL_DIRECTORY)
+    print('EXECUTOU')
 
     #set_file_downloaded(file_to_download)
