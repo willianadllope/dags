@@ -86,9 +86,10 @@ def download_single_file(bucket_name, file_key, local_dir):
         print(f"❌ Erro desconhecido ao baixar '{file_key}': {e}")
         return False
 
-
 if __name__ == "__main__":
     print("INICIO")
+    formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    print(formatted_datetime)
     file_to_download = get_file_csv_created()
     print("ARQUIVO:",file_to_download)
     if file_to_download!="":
