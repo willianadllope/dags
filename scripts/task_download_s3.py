@@ -1,9 +1,9 @@
 import sys
+import shutil
+from time import time
 import boto3
 import os
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError, ClientError
-import shutil
-from time import time
 from sqlalchemy import create_engine
 from datetime import datetime
 import pandas as pd
@@ -18,6 +18,8 @@ db = config.prod01sql
 print(f"DATABASE:{db['DBPAUTAS']}")
 
 engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DBPAUTAS']}")
+
+print(engine)
 def get_file_csv_created():
     con = engine.connect()
     df = pd.read_sql("SELECT TOP 1 id, id_controle, arquivo FROM vertex_pauta.dbo.log_arquivo_csv_pautas (nolock) WHERE etapa='gerado' ORDER BY ID", con)
@@ -27,7 +29,7 @@ def get_file_csv_created():
     return arquivo
 
 # O nome do arquivo a ser baixado é o segundo elemento da lista sys.argv
-file_to_download = get_file_csv_created()
+#file_to_download = get_file_csv_created()
 
 def set_file_downloaded(arquivo):
     con = engine.connect()
