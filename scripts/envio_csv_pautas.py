@@ -20,7 +20,7 @@ SESSION_NAME_ROLE1 = "upload-session"
 SESSION_NAME_ROLE2 = "upload-session"
 
 BUCKET_NAME = "sandbox-trm-pauta-content-us-east-2"
-BUCKET_NAME = "systaxlinks"
+#BUCKET_NAME = "systaxlinks"
 
 BASE_PROFILE = "systax"
 LOCAL_DIRECTORY = '/csvpautas'
@@ -98,9 +98,9 @@ def assume_role_systax():
     )
     print(session_role1)
     print("Role 1 assumida com sucesso!")
-    s3 = session_role1.client("s3")
-    s3.upload_file(LOCAL_FILE, BUCKET_NAME, OBJECT_KEY)
-    print("\nUpload concluído com sucesso!")        
+    #s3 = session_role1.client("s3")
+    #s3.upload_file(LOCAL_FILE, BUCKET_NAME, OBJECT_KEY)
+    #print("\nUpload concluído com sucesso!")        
     return session_role1
 
 def assume_role_vertex(session_role1):
@@ -129,7 +129,7 @@ if __name__ == "__main__":
     if arquivo_local != "":
         print(f"\nRealizando upload: {LOCAL_FILE} -> s3://{BUCKET_NAME}/{OBJECT_KEY}")
         sessao_systax = assume_role_systax()
-        #assume_role_vertex(sessao_systax)
+        assume_role_vertex(sessao_systax)
         set_file_uploaded(arquivo_local)
 
 

@@ -76,6 +76,8 @@ files_python = {
     'taskteste':diretorios['tasks']+'task_test.py',
     'docs':diretorios['docs'],
     'call_procedure_prod01sql_ibs':diretorios['tasks']+'task_call_procedure_prod01sql_ibs.py',
+    'download_s3_pautas':diretorios['tasks']+'task_download_s3_pautas.py',
+    'envio_csv_pautas':diretorios['tasks']+'envio_csv_pautas.py',
 }
 
 scripts = {
@@ -108,6 +110,8 @@ scripts = {
     'taskteste':files_python['taskteste'],
     'docs':files_python['docs'],
     'task_carga_tabelas_ibs':files_python['call_procedure_prod01sql_ibs'], 
+    'task_download_s3_pautas':files_python['download_s3_pautas'],
+    'task_send_csv_pautas':files_python['envio_csv_pautas'],
 }
 
 configs = {
