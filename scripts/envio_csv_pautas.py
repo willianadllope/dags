@@ -1,5 +1,7 @@
 import boto3
 import sys
+import time
+from datetime import datetime
 
 arquivolocal = ""
 arquivos3 = ""
@@ -66,34 +68,41 @@ def assume_role(role_arn, session_name, base_session=None):
 # ===============================================
 # 1. ASSUME ROLE 1
 # ===============================================
+def assume_role_systax():
+    session_role1 = assume_role(
+        role_arn=ROLE_1_ARN,
+        session_name=SESSION_NAME_ROLE1,
+        base_session=None  # usa credenciais padrão da máquina
+    )
+    print(session_role1)
+    print("Role 1 assumida com sucesso!")
+    s3 = session_role1.client("s3")
+    s3.upload_file(LOCAL_FILE, BUCKET_NAME, OBJECT_KEY)
+    print("\nUpload concluído com sucesso!")
 
-session_role1 = assume_role(
-    role_arn=ROLE_1_ARN,
-    session_name=SESSION_NAME_ROLE1,
-    base_session=None  # usa credenciais padrão da máquina
-)
-print(session_role1)
-print("Role 1 assumida com sucesso!")
-'''
-# ===============================================
-# 2. ASSUME ROLE 2 (USANDO CREDENCIAIS DA ROLE 1)
-# ===============================================
-session_role2 = assume_role(
-    role_arn=ROLE_2_ARN,
-    session_name=SESSION_NAME_ROLE2,
-    base_session=session_role1
-)
-print("Role 2 assumida com sucesso!")
-'''
+def assume_role_vertex(session_role1):
+    # ===============================================
+    # 2. ASSUME ROLE 2 (USANDO CREDENCIAIS DA ROLE 1)
+    # ===============================================
+    session_role2 = assume_role(
+        role_arn=ROLE_2_ARN,
+        session_name=SESSION_NAME_ROLE2,
+        base_session=session_role1
+    )
+    print("Role 2 assumida com sucesso!")
+
 # ===============================================
 # 3. UPLOAD PARA O S3 USANDO A SEGUNDA ROLE
 # ===============================================
 
-print(f"\nRealizando upload: {LOCAL_FILE} -> s3://{BUCKET_NAME}/{OBJECT_KEY}")
+if __name__ == "__main__":
+    print("INICIO")
+    formatted_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(formatted_datetime)
+    
+    print(f"\nRealizando upload: {LOCAL_FILE} -> s3://{BUCKET_NAME}/{OBJECT_KEY}")
+    assume_role_systax()
 
-s3 = session_role1.client("s3")
-#s3 = session_role2.client("s3")
-
-s3.upload_file(LOCAL_FILE, BUCKET_NAME, OBJECT_KEY)
-
-print("\nUpload concluído com sucesso!")
+    formatted_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(formatted_datetime)
+    print("FIM")
