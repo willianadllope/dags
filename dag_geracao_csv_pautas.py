@@ -80,7 +80,7 @@ class DAG_PAUTA_CSV:
 # Instantiate the DAG class
 dag_generation_pauta_csv = DAG_PAUTA_CSV(
     dag_id='dag_generation_pauta_csv',
-    schedule='0 13-23 * * *', #roda diariamente, 1x por hora, entre 13h e 23h
+    schedule='0 14-21 * * *', #roda diariamente, 1x por hora, entre 13h e 23h
     start_date=datetime(2023, 1, 1),
     params=cfg.configs
 )
