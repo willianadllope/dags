@@ -120,10 +120,7 @@ def main():
         export_query_to_parquet(cons, tipoExecucao, consulta.tabela, consulta.limite)
         send_parquet_snowflake(tipoExecucao, consulta.tabela)
 ## exemplos:
-## parquet_geracao_envio.py ALL FULL 1 500
-## parquet_geracao_envio.py tributos_internos_cache incremental 1 500
-## parquet_geracao_envio.py tributos_internos_cache FULL 999  => somente envio da tributos_internos_cache
-## parquet_geracao_envio.py tributos_internos_cache incremental 999  => somente envio da tributos_internos_cache
+## task_parquet_geracao_envio_prod01sql_ibs_snowflake.py ALL FULL 1 500
 
 ### ANTES DA EXECUCAO, chamar:
 ###  call staging.pr_carga_inicial_limpa_arquivos();

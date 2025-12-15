@@ -24,9 +24,6 @@ def get_file_csv_created():
         arquivo = row['arquivo'];
     return arquivo
 
-# O nome do arquivo a ser baixado é o segundo elemento da lista sys.argv
-#file_to_download = get_file_csv_created()
-
 def set_file_downloaded(arquivo):
     engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
     con2 = engine.raw_connection()
