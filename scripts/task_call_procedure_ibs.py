@@ -39,3 +39,8 @@ print(results)
 cs.close()
 
 #print('fechou')
+# python task_call_procedure_ibs.py STAGING pr_carga_inicial_limpa_arquivos
+# python task_parquet_geracao_envio_prod01sql_ibs_snowflake.py ALL FULL
+# python task_call_procedure_ibs.py STAGING pr_carregar_tabelas_ibs
+# python task_call_procedure_ibs.py STAGING pr_carregar_tabelas_ibs_producao
+
