@@ -75,7 +75,7 @@ files_python = {
     'send_s3_rds':diretorios['tasks']+'task_send_s3_rds.py',
     'taskteste':diretorios['tasks']+'task_test.py',
     'docs':diretorios['docs'],
-    'call_procedure_prod01sql_ibs':diretorios['tasks']+'task_call_procedure_prod01sql_ibs.py',
+    'call_procedure_prod01sql_ibs':diretorios['tasks']+'task_call_procedure_ibs.py',
     'download_s3_pautas':diretorios['tasks']+'task_download_s3_pautas.py',
     'envio_csv_pautas':diretorios['tasks']+'envio_csv_pautas.py',
     'call_procedure_ibs':diretorios['tasks']+'task_call_procedure_ibs.py',
