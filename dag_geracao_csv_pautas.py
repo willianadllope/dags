@@ -38,10 +38,10 @@ class DAG_PAUTA_CSV:
         )   
 
     ## envia o arquivo CSV local para o bucket da Vertex, assumindo a role do lado Systax e depois a role do lado Vertex
-    def send_csv_pautas(self):
+    def send_csv_pautas(self, vertexrole):
         return BashOperator(
             task_id='send_csv_pautas',
-            bash_command="python "+self.dag.params['scripts']['task_send_csv_pautas'],
+            bash_command="python "+self.dag.params['scripts']['task_send_csv_pautas']+" "+vertexrole,
             doc_md="""
             envia o arquivo CSV local para o bucket da Vertex, assumindo a role do lado Systax e depois a role do lado Vertex
             """,
@@ -71,10 +71,12 @@ class DAG_PAUTA_CSV:
     def create_dag(self):
         t0 = self.start_task()
         t1 = self.download_s3_pautas()
-        t2 = self.send_csv_pautas()
+        t2sandbox = self.send_csv_pautas('SANDBOX')
+        t2stage = self.send_csv_pautas('STAGE')
+        t2prod = self.send_csv_pautas('PROD')
         tw = self.wait_task()
         tf = self.end_task()
-        t0 >> t1 >> t2 >> tw >> tf
+        t0 >> t1 >> t2sandbox >> t2stage >> t2prod >> tw >> tf
         return self.dag
 
 # Instantiate the DAG class
