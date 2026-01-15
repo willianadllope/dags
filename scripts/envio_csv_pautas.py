@@ -59,7 +59,7 @@ def get_file_csv_downloaded():
     engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
     con = engine.connect()
     arquivo = "" 
-    comando = "SELECT TOP 1 id, id_controle, arquivo FROM vertex_pauta.dbo.log_arquivo_csv_pautas (nolock) WHERE etapa='downloaded' AND vertexrole = '{ROLE}' ORDER BY ID"
+    comando = f"SELECT TOP 1 id, id_controle, arquivo FROM vertex_pauta.dbo.log_arquivo_csv_pautas (nolock) WHERE etapa='downloaded' AND vertexrole = '{ROLE}' ORDER BY ID"
     print(comando)
     df = pd.read_sql(comando, con)
     for index,row in df.iterrows():
