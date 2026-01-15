@@ -18,6 +18,7 @@ ROLE = ""
 if len(sys.argv)  >= 2:
     ROLE = sys.argv[1]
 
+print("{ROLE}")
 
 ROLE_1_ARN = "arn:aws:iam::939357810902:role/RoleS3VertexPautasCSV"
 ROLE_SANDBOX = "arn:aws:iam::954235624237:role/sandbox-trm-pauta-content-s3-systax-us-east-2"
