@@ -58,7 +58,9 @@ def get_file_csv_downloaded():
     engine = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
     con = engine.connect()
     arquivo = "" 
-    df = pd.read_sql("SELECT TOP 1 id, id_controle, arquivo FROM vertex_pauta.dbo.log_arquivo_csv_pautas (nolock) WHERE etapa='downloaded' AND vertexrole = '{ROLE}' ORDER BY ID", con)
+    comando = "SELECT TOP 1 id, id_controle, arquivo FROM vertex_pauta.dbo.log_arquivo_csv_pautas (nolock) WHERE etapa='downloaded' AND vertexrole = '{ROLE}' ORDER BY ID"
+    print(comando)
+    df = pd.read_sql(comando, con)
     for index,row in df.iterrows():
         arquivo = row['arquivo'];
     return arquivo
@@ -68,6 +70,7 @@ def set_file_uploaded(arquivo):
     con2 = engine.raw_connection()
     cursor = con2.cursor()
     comando = f"UPDATE vertex_pauta.dbo.log_arquivo_csv_pautas SET etapa='uploaded', datahora=getdate() WHERE arquivo = '{arquivo}' AND vertexrole = '{ROLE}';"
+    print(comando)
     cursor.execute(comando)
     con2.commit()
     cursor.close()
