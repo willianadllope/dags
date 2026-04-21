@@ -1,5 +1,6 @@
 import config
 import queriesibs
+import gera_parquets
 import sys
 import os
 import shutil
@@ -51,7 +52,8 @@ def export_query_to_parquet(sql,tipo, fileprefix, limit, strposicao='001'):
         t_step = time()
         current_date = datetime.now()
         formatted_previous_day = current_date.strftime("%Y%m%d%H%M%S")
-        file_name = pastas['ibs']+tipo+'/'+fileprefix+'/'+fileprefix + '_'+strposicao + '_'+str(i) +'_'+ formatted_previous_day+'.parquet'   
+        file_name = pastas['ibs']+tipo+'/'+fileprefix+'/'+fileprefix + '_'+strposicao + '_'+str(i) +'_'+ formatted_previous_day+'.parquet'
+        df = gera_parquets.normalize_text_columns_latin1_to_utf8(df)
         df.to_parquet(file_name, index=False)
         lines += df.shape[0]
         print('  ', file_name, df.shape[0], f'lines ({round(time() - t_step, 2)}s)')

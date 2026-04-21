@@ -1,5 +1,5 @@
 import config
-import queries
+import queriesvigde
 import gera_parquets
 import sys
 import os
@@ -11,11 +11,14 @@ from datetime import datetime
 import pandas as pd
 import urllib as ul
 import snowflake as sf
-from snowflake import connector
 
-db = config.prod01sql
-cfg = config.snowtabelao
-sql_queries = queries.sql_queries
+from snowflake import connector
+import ClassConnectSnowflake as ConxSnow
+
+
+db = config.prod01sqldev
+cfg = config.snowibs
+sql_queries = queriesvigde.sql_queries
 pastas = config.diretorios
 
 props = ul.parse.quote_plus("DRIVER={SQL Server Native Client 11.0};"
@@ -25,14 +28,17 @@ props = ul.parse.quote_plus("DRIVER={SQL Server Native Client 11.0};"
                                 "Encrypt=yes;TrustServerCertificate=yes;")
 con = create_engine(f"mssql+pymssql://{db['UID']}:{db['PWD']}@{db['SERVER']}:{db['PORT']}/{db['DATABASE']}")
 
+connectSnowflake = ConxSnow.ConnectSnowflake(cfg)
+private_key_bytes = connectSnowflake.get_value_key()
 
 connSnow = sf.connector.connect(
     user=cfg['user'],
-    password=cfg['password'],
     account=cfg['account'],
+    private_key=private_key_bytes,
     warehouse=cfg['warehouse'],
     database=cfg['database'],
-    schema=cfg['schema']
+    schema=cfg['schema'],
+    role=cfg['role']
 )
 
 def export_query_to_parquet(sql,tipo, fileprefix, limit, strposicao='001'):
@@ -46,7 +52,7 @@ def export_query_to_parquet(sql,tipo, fileprefix, limit, strposicao='001'):
         t_step = time()
         current_date = datetime.now()
         formatted_previous_day = current_date.strftime("%Y%m%d%H%M%S")
-        file_name = pastas['parquet']+tipo+'/'+fileprefix+'/'+fileprefix + '_'+strposicao + '_'+str(i) +'_'+ formatted_previous_day+'.parquet'
+        file_name = pastas['ibs']+tipo+'/'+fileprefix+'/'+fileprefix + '_'+strposicao + '_'+str(i) +'_'+ formatted_previous_day+'.parquet'
         df = gera_parquets.normalize_text_columns_latin1_to_utf8(df)
         df.to_parquet(file_name, index=False)
         lines += df.shape[0]
@@ -55,7 +61,7 @@ def export_query_to_parquet(sql,tipo, fileprefix, limit, strposicao='001'):
 
 def delete_files_directory(tipo, diretorio):
     # Specify the path of the directory to be deleted
-    directory_path = pastas['parquet']+tipo+'/'+diretorio
+    directory_path = pastas['ibs']+tipo+'/'+diretorio
     # Check if the directory exists before attempting to delete it
     if os.path.exists(directory_path):
         shutil.rmtree(directory_path)
@@ -66,11 +72,12 @@ def delete_files_directory(tipo, diretorio):
 
 def send_parquet_snowflake(tipo, tabela):
     # populate the file_name and stage_name with the arguments
-    file_name = pastas['parquet']+tipo+'/'+tabela+'/*'
-    STAGE_SCHEMA = 'FULL'
-    if(tipo=='INCREMENTAL'):
-        STAGE_SCHEMA = 'INCREMENTAL'
-    stage_name = 'DB_TABELAO.'+STAGE_SCHEMA+'.STAGE_FILES_TABELAO/tabelao/'+tabela+'/'
+    file_name = pastas['ibs']+tipo+'/'+tabela+'/*'
+    STAGE_SCHEMA = 'STAGING'
+    #STAGE_SCHEMA = 'FULL'
+    #if(tipo=='INCREMENTAL'):
+    #    STAGE_SCHEMA = 'INCREMENTAL'
+    stage_name = 'COCKPIT.'+STAGE_SCHEMA+'.STAGE_FILES_IBS/'+tabela+'/'
     cs = connSnow.cursor()
     print('Enviando '+tabela)
     try:
@@ -110,34 +117,21 @@ def main():
       posicao_final = int(sys.argv[4]) # fim do loop
     print('TIPO: ' + tipoExecucao)
     for consulta in sqls:
-        cons = consulta.consulta.replace('[SNOWFLAKE]','snowflake_'+tipoExecucao.lower())
-        if(posicao==1):
-          delete_files_directory(tipoExecucao, consulta.tabela)
-        if(consulta.tabela in ('tributos_internos_cache', 'tributos_internos_cache_st', 'custom_prod', 'grupo_custom_prod','custom_prod_figuras_fiscais') ):
-          while posicao<=posicao_final:
-            stringposicao = str(posicao)
-            if(posicao < 10):
-               stringposicao = '00'+stringposicao
-            if(posicao >=10 and posicao < 100):
-               stringposicao = '0'+stringposicao
-            print('POSICAO: '+stringposicao)
-            consulta_posicao = cons.replace('[POSICAO]',stringposicao)
-            export_query_to_parquet(consulta_posicao, tipoExecucao, consulta.tabela, consulta.limite, stringposicao)
-            posicao = posicao + 1
-          if posicao==999:
-              send_parquet_snowflake(tipoExecucao, consulta.tabela)
-        else: ## nao eh tributos_internos_cache
-          export_query_to_parquet(cons, tipoExecucao, consulta.tabela, consulta.limite)
-          send_parquet_snowflake(tipoExecucao, consulta.tabela)
+        cons = consulta.consulta
+        delete_files_directory(tipoExecucao, consulta.tabela)
+        export_query_to_parquet(cons, tipoExecucao, consulta.tabela, consulta.limite)
+        send_parquet_snowflake(tipoExecucao, consulta.tabela)
 ## exemplos:
-## parquet_geracao_envio.py ALL FULL 1 500
-## parquet_geracao_envio.py tributos_internos_cache incremental 1 500
-## parquet_geracao_envio.py tributos_internos_cache FULL 999  => somente envio da tributos_internos_cache
-## parquet_geracao_envio.py tributos_internos_cache incremental 999  => somente envio da tributos_internos_cache
+## task_parquet_geracao_envio_prod01sql_ibs_snowflake.py ALL FULL 1 500
+
+### ANTES DA EXECUCAO, chamar:
+###  call staging.pr_carga_inicial_limpa_arquivos();
 
 if __name__ == "__main__":
     print('INICIO: '+datetime.now().strftime("%Y-%m-%d %H %M %S"))
     main()
     print('FIM: '+datetime.now().strftime("%Y-%m-%d %H %M %S"))
 
-    
+### APOS A EXECUCAO, chamar:
+###  call staging.pr_carregar_tabelas_ibs();
+###  call staging.pr_carregar_tabelas_ibs_producao();

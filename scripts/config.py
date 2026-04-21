@@ -80,6 +80,8 @@ files_python = {
     'envio_csv_pautas':diretorios['tasks']+'envio_csv_pautas.py',
     'call_procedure_ibs':diretorios['tasks']+'task_call_procedure_ibs.py',
     'carga_csv_ibs':diretorios['tasks']+'task_parquet_geracao_envio_prod01sql_ibs_snowflake.py',
+    'carga_csv_vigencia_de':diretorios['tasks']+'task_parquet_geracao_envio_prod01sql_vigencia_de.py',
+    'call_procedure_vigencia_de':diretorios['tasks']+'task_call_procedure_ibs.py',
 }
 
 scripts = {
@@ -116,6 +118,8 @@ scripts = {
     'task_send_csv_pautas':files_python['envio_csv_pautas'],
     'task_call_procedure_ibs':files_python['call_procedure_ibs'],
     'task_carga_csv_ibs':files_python['carga_csv_ibs'],
+    'task_call_procedure_vigencia_de':files_python['call_procedure_vigencia_de'],
+    'task_carga_csv_vigencia_de':files_python['carga_csv_vigencia_de'],
 }
 
 configs = {
