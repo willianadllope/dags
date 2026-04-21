@@ -74,6 +74,7 @@ class DAG_CARGA_VIG_DE:
 # Instantiate the DAG class
 dag_carga_vig_de = DAG_CARGA_VIG_DE(
     dag_id='dag_carga_vig_de',
+    schedule=None,
     ##schedule='0 */4 * * *', #roda diariamente, 1x a cada 4h
     start_date=datetime(2023, 1, 1),
     params=cfg.configs
