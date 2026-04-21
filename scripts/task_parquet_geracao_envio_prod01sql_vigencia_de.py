@@ -16,7 +16,7 @@ from snowflake import connector
 import ClassConnectSnowflake as ConxSnow
 
 
-db = config.prod01sqldev
+db = config.prod01sql
 cfg = config.snowibs
 sql_queries = queriesvigde.sql_queries
 pastas = config.diretorios
